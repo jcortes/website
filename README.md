@@ -51,6 +51,21 @@ pnpm preview      # serve dist/ locally
 `.github/workflows/ci.yml` runs lint, typecheck, unit tests, build and E2E on
 every pull request and on pushes to `main`.
 
+## Third-party accounts and secrets
+
+Cloudflare, Resend and Cal.com are set up by hand, guided by a wizard:
+
+```sh
+./scripts/setup-accounts.sh
+```
+
+It opens each dashboard, tells you what to click, and stores the values in the
+git-ignored `.env` and in the `production` GitHub Actions environment
+(`CLOUDFLARE_API_TOKEN`, `RESEND_API_KEY` and `CONTACT_TO_EMAIL` as secrets;
+`CLOUDFLARE_ACCOUNT_ID` and `CALCOM_BOOKING_URL` as variables). CI jobs that
+need them must declare `environment: production`. Re-running it is safe: press
+Enter to keep a saved value.
+
 ## Brand
 
 Three variants of the "JC" circuit-gear logo live in `src/assets/brand/`.

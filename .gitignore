@@ -7,3 +7,8 @@ dist/
 test-results/
 playwright-report/
 .DS_Store
+
+# Local secrets: never commit.
+.env
+.env.*
+!.env.example
