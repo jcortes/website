@@ -1,0 +1,129 @@
+order: 3
+title:
+  es: "Software a medida: backend, APIs e integraciones que conectan tu negocio"
+  en: "Custom software: backends, APIs and integrations that connect your business"
+summary:
+  es: Backends y APIs con Node.js, NestJS y GraphQL, e integraciones con otros sistemas, sobre AWS serverless o contenedores.
+  en: Backends and APIs with Node.js, NestJS and GraphQL, plus integrations with other systems, on AWS serverless or containers.
+description:
+  es: >-
+    Necesitas que tus sistemas hablen entre sí, exponer tus datos a una app o construir el backend de un producto nuevo.
+    Desarrollo APIs REST y GraphQL con Node.js, TypeScript y NestJS, integro servicios de terceros mediante APIs y webhooks,
+    y lo despliego en AWS con Lambda o contenedores, con pruebas automatizadas y documentación desde el primer día.
+  en: >-
+    You need your systems to talk to each other, to expose your data to an app, or to build the backend of a new product.
+    I build REST and GraphQL APIs with Node.js, TypeScript and NestJS, integrate third-party services through APIs and webhooks,
+    and deploy them on AWS with Lambda or containers, with automated tests and documentation from day one.
+category:
+  es: Desarrollo backend
+  en: Backend development
+tags:
+  - { es: Node.js, en: Node.js }
+  - { es: NestJS, en: NestJS }
+  - { es: GraphQL, en: GraphQL }
+  - { es: AWS serverless, en: AWS serverless }
+  - { es: Integraciones, en: Integrations }
+gallery:
+  - image: ../../assets/gigs/backend-apis.svg
+    alt:
+      es: "Diagrama de backend: los clientes web y móviles llaman a una API REST o GraphQL, que se apoya en servicios NestJS y funciones AWS Lambda conectadas a bases de datos, APIs de terceros y colas."
+      en: "Backend diagram: web and mobile clients call a REST or GraphQL API, backed by NestJS services and AWS Lambda functions connected to databases, third-party APIs and queues."
+packages:
+  basic:
+    name: { es: Básico, en: Basic }
+    scope:
+      es: Una integración o un endpoint puntual, por ejemplo conectar dos sistemas mediante una API o un webhook.
+      en: A single integration or endpoint, for example connecting two systems through an API or a webhook.
+    deliverables:
+      - {
+          es: Integración o endpoint en Node.js y TypeScript,
+          en: Integration or endpoint in Node.js and TypeScript,
+        }
+      - {
+          es: Validación de entradas y manejo de errores,
+          en: Input validation and error handling,
+        }
+      - { es: Pruebas automatizadas, en: Automated tests }
+      - { es: Documentación de uso, en: Usage documentation }
+    deliveryDays: 5
+    revisions: 1
+  standard:
+    name: { es: Estándar, en: Standard }
+    scope:
+      es: Una API REST o GraphQL completa con NestJS, desplegada en AWS.
+      en: A complete REST or GraphQL API with NestJS, deployed on AWS.
+    deliverables:
+      - { es: Todo lo del paquete Básico, en: Everything in Basic }
+      - { es: Modelo de datos y base de datos, en: Data model and database }
+      - {
+          es: Autenticación y autorización,
+          en: Authentication and authorization,
+        }
+      - { es: Documentación de la API, en: API documentation }
+      - {
+          es: Despliegue en AWS (Lambda o contenedores),
+          en: Deployment on AWS (Lambda or containers),
+        }
+    deliveryDays: 15
+    revisions: 2
+  premium:
+    name: { es: Premium, en: Premium }
+    scope:
+      es: El backend de un producto, con varios servicios, eventos y colas, y todo lo necesario para operarlo.
+      en: The backend of a product, with several services, events and queues, and everything needed to run it.
+    deliverables:
+      - { es: Todo lo del paquete Estándar, en: Everything in Standard }
+      - {
+          es: Arquitectura orientada a eventos con colas,
+          en: Event-driven architecture with queues,
+        }
+      - { es: "Logs, métricas y alertas", en: "Logs, metrics and alerts" }
+      - { es: Pipeline de CI/CD, en: CI/CD pipeline }
+      - {
+          es: Sesión de traspaso con tu equipo,
+          en: A handover session with your team,
+        }
+    deliveryDays: 30
+    revisions: 3
+faq:
+  - question:
+      es: ¿Con qué tecnologías trabajas?
+      en: Which technologies do you work with?
+    answer:
+      es: Node.js y TypeScript con NestJS o Express, GraphQL, PostgreSQL, MongoDB y DynamoDB, y AWS (Lambda, API Gateway, contenedores).
+      en: Node.js and TypeScript with NestJS or Express, GraphQL, PostgreSQL, MongoDB and DynamoDB, and AWS (Lambda, API Gateway, containers).
+  - question:
+      es: ¿Puedes trabajar sobre código que ya existe?
+      en: Can you work on an existing codebase?
+    answer:
+      es: Sí. Empiezo por entender el código y sus pruebas, y propongo los cambios dentro de la arquitectura que ya tienes.
+      en: Yes. I start by understanding the code and its tests, and propose changes within the architecture you already have.
+  - question:
+      es: ¿De quién es el código?
+      en: Who owns the code?
+    answer:
+      es: El código es tuyo y vive en tu repositorio desde el primer día.
+      en: The code is yours and lives in your repository from day one.
+  - question:
+      es: ¿Incluye pruebas?
+      en: Are tests included?
+    answer:
+      es: Sí. Todos los paquetes incluyen pruebas automatizadas para el comportamiento entregado.
+      en: Yes. Every package includes automated tests for the delivered behavior.
+requirements:
+  - {
+      es: Una descripción del problema y de quién va a usar el sistema,
+      en: A description of the problem and who will use the system,
+    }
+  - {
+      es: Documentación y credenciales de prueba de los sistemas a integrar,
+      en: Documentation and test credentials for the systems to integrate,
+    }
+  - {
+      es: "Acceso al repositorio y a la cuenta de nube, o la decisión de crearlos",
+      en: "Access to the repository and cloud account, or the decision to create them",
+    }
+  - {
+      es: Una persona que pueda tomar decisiones de producto,
+      en: Someone who can make product decisions,
+    }

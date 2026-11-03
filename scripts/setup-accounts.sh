@@ -257,7 +257,7 @@ _EMAIL_RE='^[^@"\\[:space:]]+@[^@"\\[:space:]]+\.[^@"\\[:space:]]+$'
 
 run_wizard() {
 
-TOTAL_STAGES=6
+TOTAL_STAGES=7
 
 banner "Website: third-party accounts and secrets"
 
@@ -358,6 +358,17 @@ env_var CALCOM_BOOKING_URL "$CALCOM_BOOKING_URL"
 code=$(_http_code "$CALCOM_BOOKING_URL" -L)
 if [[ "$code" == 200 ]]; then note "  ✓ booking page is reachable"; else warn "booking page returned HTTP $code"; fi
 note "Use this URL as the Cal.com booking URL in the site settings."
+pause
+
+stage "Privacy guard: client-name denylist"
+say "The E2E privacy guard fails the build if any of these names appears on the"
+say "site. The repository is public, so the list lives only in a GitHub secret"
+say "(repository-level, so pull-request CI can read it) and in your local .env."
+step "Type the names of clients you must never mention, separated by commas."
+note "Include product names and alternate spellings. Input is hidden."
+require PRIVACY_DENYLIST "Client names (comma-separated):" secret
+write_env PRIVACY_DENYLIST "$PRIVACY_DENYLIST"
+set_secret PRIVACY_DENYLIST "$PRIVACY_DENYLIST"
 pause
 
 finish

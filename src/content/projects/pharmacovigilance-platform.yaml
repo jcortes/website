@@ -1,0 +1,41 @@
+gigs: [custom-backend-apis]
+title:
+  es: Plataforma de farmacovigilancia orientada a eventos
+  en: Event-driven pharmacovigilance platform
+descriptor:
+  es: Firma global de servicios profesionales · sector farmacéutico
+  en: Global professional services firm · pharmaceutical sector
+role:
+  es: Desarrollador backend Node.js
+  en: Node.js backend developer
+problem:
+  es: >-
+    La información de farmacovigilancia llegaba de varias fuentes y había que centralizarla,
+    además de encontrar de forma fiable los registros duplicados.
+  en: >-
+    Pharmacovigilance information came from several sources and had to be centralized,
+    and duplicate records had to be found reliably.
+solution:
+  es: >-
+    Dentro de una arquitectura de microservicios orientada a eventos en AWS, implementé endpoints GraphQL y funciones
+    Lambda en Node.js y TypeScript sobre PostgreSQL en RDS, y consultas simples y compuestas en Elasticsearch para
+    detectar datos duplicados.
+  en: >-
+    Within an event-driven microservices architecture on AWS, I implemented GraphQL endpoints and Lambda functions in
+    Node.js and TypeScript on top of PostgreSQL on RDS, plus simple and compound Elasticsearch queries to detect
+    duplicate data.
+result:
+  es: La información quedó centralizada detrás de una API GraphQL, con detección de duplicados basada en búsquedas.
+  en: The information was centralized behind a GraphQL API, with search-based duplicate detection.
+tech:
+  [
+    Node.js,
+    TypeScript,
+    GraphQL,
+    AWS Lambda,
+    Elasticsearch,
+    PostgreSQL,
+    Sequelize,
+    Docker,
+  ]
+confidential: true

@@ -7,10 +7,14 @@ import CircuitBackground from "../components/CircuitBackground.astro";
 
 interface Props {
   locale: Locale;
+  /** Page title; the site title is appended. Omit on the home page. */
+  title?: string;
+  description?: string;
 }
 
-const { locale } = Astro.props;
+const { locale, title, description } = Astro.props;
 const t = useTranslations(locale);
+const fullTitle = title ? `${title} · ${t("site.title")}` : t("site.title");
 ---
 
 <!doctype html>
@@ -20,8 +24,8 @@ const t = useTranslations(locale);
     <ThemeScript />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{t("site.title")}</title>
-    <meta name="description" content={t("site.description")} />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description ?? t("site.description")} />
   </head>
   <body class="relative isolate min-h-dvh">
     <CircuitBackground />

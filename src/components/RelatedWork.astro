@@ -1,0 +1,112 @@
+---
+import { Image } from "astro:assets";
+import type { Project } from "../content/catalog";
+import { useTranslations, type Locale } from "../i18n/ui";
+
+interface Props {
+  locale: Locale;
+  projects: Project[];
+}
+
+const { locale, projects } = Astro.props;
+const t = useTranslations(locale);
+---
+
+{projects.length > 0 && (
+  <section aria-labelledby="related-work" class="flex flex-col gap-6">
+    <div class="flex flex-col gap-2">
+      <h2 id="related-work" class="text-2xl font-semibold tracking-tight">
+        {t("work.title")}
+      </h2>
+      <p class="text-ink-muted">{t("work.lead")}</p>
+    </div>
+    <div class="grid gap-6 lg:grid-cols-2">
+      {projects.map(({ id, data }) => {
+        // Confidential projects never show who the client is or link out.
+        const client = data.confidential ? undefined : data.client;
+        const links = data.confidential ? [] : (data.links ?? []);
+        return (
+          <article
+            aria-labelledby={`project-${id}`}
+            class="flex flex-col gap-5 rounded-xl border border-line bg-surface-raised p-6"
+          >
+            <header class="flex flex-col gap-2">
+              <p class="font-mono text-xs tracking-widest text-accent uppercase">
+                {client ? `${client} · ` : ""}
+                {data.descriptor[locale]}
+              </p>
+              <h3 id={`project-${id}`} class="text-lg font-semibold">
+                {data.title[locale]}
+              </h3>
+              <p class="text-sm text-ink-muted">
+                {data.role[locale]}
+                {data.duration && ` · ${data.duration[locale]}`}
+              </p>
+            </header>
+
+            {data.images?.map(({ image, alt }) => (
+              <Image
+                src={image}
+                alt={alt[locale]}
+                loading="lazy"
+                class="h-auto w-full rounded-lg border border-line"
+              />
+            ))}
+
+            <dl class="flex flex-col gap-4">
+              {(
+                [
+                  ["work.problem", data.problem],
+                  ["work.solution", data.solution],
+                  ["work.result", data.result],
+                ] as const
+              ).map(([label, text]) => (
+                <div class="flex flex-col gap-1">
+                  <dt class="font-mono text-xs tracking-widest text-accent uppercase">
+                    {t(label)}
+                  </dt>
+                  <dd class="text-pretty text-ink-muted">{text[locale]}</dd>
+                </div>
+              ))}
+            </dl>
+
+            {data.metrics && data.metrics.length > 0 && (
+              <ul class="flex flex-col gap-1 text-sm">
+                {data.metrics.map((metric) => (
+                  <li>{metric[locale]}</li>
+                ))}
+              </ul>
+            )}
+
+            <ul
+              aria-label={t("work.tech")}
+              class="mt-auto flex flex-wrap gap-2 pt-2"
+            >
+              {data.tech.map((tag) => (
+                <li class="rounded-md border border-line px-2 py-0.5 font-mono text-xs text-ink-muted">
+                  {tag}
+                </li>
+              ))}
+            </ul>
+
+            {links.length > 0 && (
+              <ul class="flex flex-wrap gap-4 text-sm">
+                {links.map(({ label, url }) => (
+                  <li>
+                    <a
+                      href={url}
+                      rel="noopener"
+                      class="text-accent hover:underline"
+                    >
+                      {label[locale]}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </article>
+        );
+      })}
+    </div>
+  </section>
+)}

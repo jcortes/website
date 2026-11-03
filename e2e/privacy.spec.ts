@@ -1,16 +1,31 @@
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import { expect, test } from "@playwright/test";
+import { findDeniedNames, parseDenylist } from "./support/denylist";
 import { findPhoneNumbers } from "./support/phone-numbers";
 
 const DIST = path.resolve(import.meta.dirname, "../dist");
 
-async function builtHtmlFiles(dir = DIST): Promise<string[]> {
-  const entries = await readdir(dir, { withFileTypes: true, recursive: true });
+/** Files in the production build with one of the given extensions. */
+async function builtFiles(extensions: string[]): Promise<string[]> {
+  const entries = await readdir(DIST, { withFileTypes: true, recursive: true });
   return entries
-    .filter((entry) => entry.isFile() && entry.name.endsWith(".html"))
+    .filter(
+      (entry) =>
+        entry.isFile() && extensions.includes(path.extname(entry.name)),
+    )
     .map((entry) => path.join(entry.parentPath, entry.name));
 }
+
+const TEXT_EXTENSIONS = [
+  ".html",
+  ".svg",
+  ".xml",
+  ".txt",
+  ".json",
+  ".js",
+  ".css",
+];
 
 test.describe("privacy guard", () => {
   test("the phone detector catches real phone formats", () => {
@@ -48,7 +63,7 @@ test.describe("privacy guard", () => {
   });
 
   test("no built page contains a phone number", async () => {
-    const files = await builtHtmlFiles();
+    const files = await builtFiles([".html"]);
     expect(
       files.length,
       "no built HTML found; run the build first",
@@ -59,6 +74,61 @@ test.describe("privacy guard", () => {
       const html = await readFile(file, "utf8");
       for (const match of findPhoneNumbers(html)) {
         findings.push(`${path.relative(DIST, file)}: ${match}`);
+      }
+    }
+    expect(findings).toEqual([]);
+  });
+});
+
+test.describe("privacy guard: client names", () => {
+  test("the denylist accepts names separated by newlines or commas", () => {
+    expect(parseDenylist(" Acme, Initech\nSmith & Wesson\n\n , ")).toEqual([
+      "Acme",
+      "Initech",
+      "Smith & Wesson",
+    ]);
+  });
+
+  test("the name detector catches names however they are written", () => {
+    const names = ["Acme", "Smith & Wesson", "Café Olé", "Banco Ejemplo"];
+    const leaks: Array<[string, string]> = [
+      ["Built for ACME", "Acme"],
+      ["<p>Smith &amp; Wesson</p>", "Smith & Wesson"],
+      ["cafe ole", "Café Olé"],
+      ['<a href="https://acme.com/x">site</a>', "Acme"],
+      ['<img alt="Logo de banco  \n  ejemplo">', "Banco Ejemplo"],
+      ["Caf&eacute; Ol&#233;", "Café Olé"],
+    ];
+    for (const [text, name] of leaks) {
+      expect(findDeniedNames(text, names), text).toEqual([name]);
+    }
+  });
+
+  test("the name detector ignores names inside other words", () => {
+    expect(findDeniedNames("Acmeified, subacme", ["Acme"])).toEqual([]);
+  });
+
+  test("no built file contains a client name from the denylist", async () => {
+    const names = parseDenylist(process.env.PRIVACY_DENYLIST ?? "");
+    if (names.length === 0) {
+      // CI must always check; locally the secret is usually absent.
+      expect(
+        process.env.CI,
+        "PRIVACY_DENYLIST is empty: set the GitHub Actions secret",
+      ).toBeFalsy();
+      test.skip(true, "PRIVACY_DENYLIST not set (see README → Privacy)");
+    }
+
+    const files = await builtFiles(TEXT_EXTENSIONS);
+    expect(files.length, "no build output found").toBeGreaterThan(0);
+
+    const findings: string[] = [];
+    for (const file of files) {
+      const text = await readFile(file, "utf8");
+      // Report the file and a count only: the names themselves are secret.
+      const found = findDeniedNames(text, names);
+      if (found.length > 0) {
+        findings.push(`${path.relative(DIST, file)}: ${found.length} name(s)`);
       }
     }
     expect(findings).toEqual([]);

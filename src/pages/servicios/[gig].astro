@@ -1,0 +1,13 @@
+---
+import GigPage from "../../components/GigPage.astro";
+import { getCatalog, type Gig } from "../../content/catalog";
+
+export async function getStaticPaths() {
+  const { gigs } = await getCatalog();
+  return gigs.map((gig) => ({ params: { gig: gig.id }, props: { gig } }));
+}
+
+const { gig } = Astro.props as { gig: Gig };
+---
+
+<GigPage locale="es" gig={gig} />

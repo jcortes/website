@@ -1,0 +1,44 @@
+# E2E fixture: a gig no project links to, so its page has no related work.
+# Only built in with CONTENT_FIXTURES=true (see src/content.config.ts).
+order: 99
+title:
+  {
+    es: "Gig de prueba sin trabajo relacionado",
+    en: "Test gig without related work",
+  }
+summary: { es: Resumen de prueba., en: Test summary. }
+description: { es: Descripción de prueba., en: Test description. }
+category: { es: Prueba, en: Test }
+tags:
+  - { es: Prueba, en: Test }
+gallery:
+  - image: ../../../../src/assets/gigs/ci-cd-pipeline.svg
+    alt: { es: Diagrama de prueba, en: Test diagram }
+packages:
+  basic:
+    name: { es: Básico, en: Basic }
+    scope: { es: Alcance básico., en: Basic scope. }
+    deliverables:
+      - { es: Entregable, en: Deliverable }
+    deliveryDays: 1
+    revisions: 0
+    price: { amount: 4321, currency: USD }
+  standard:
+    name: { es: Estándar, en: Standard }
+    scope: { es: Alcance estándar., en: Standard scope. }
+    deliverables:
+      - { es: Entregable, en: Deliverable }
+    deliveryDays: 2
+    revisions: 1
+  premium:
+    name: { es: Premium, en: Premium }
+    scope: { es: Alcance premium., en: Premium scope. }
+    deliverables:
+      - { es: Entregable, en: Deliverable }
+    deliveryDays: 3
+    revisions: 2
+faq:
+  - question: { es: ¿Pregunta?, en: Question? }
+    answer: { es: Respuesta., en: Answer. }
+requirements:
+  - { es: Requisito, en: Requirement }

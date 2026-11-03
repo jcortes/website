@@ -1,0 +1,160 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCatalog, tiers, type Gig } from "../content/catalog";
+import RelatedWork from "./RelatedWork.astro";
+import { quotePath } from "../i18n/paths";
+import { usePlural, useTranslations, type Locale } from "../i18n/ui";
+
+interface Props {
+  locale: Locale;
+  gig: Gig;
+}
+
+const { locale, gig } = Astro.props;
+const t = useTranslations(locale);
+const plural = usePlural(locale);
+const { data } = gig;
+const projects = (await getCatalog()).relatedWork(gig);
+---
+
+<BaseLayout
+  locale={locale}
+  title={data.title[locale]}
+  description={data.summary[locale]}
+>
+  <article class="mx-auto flex max-w-6xl flex-col gap-16 px-6 py-16 sm:py-24">
+    <header class="flex max-w-3xl flex-col gap-5">
+      <p class="font-mono text-sm tracking-widest text-accent uppercase">
+        {data.category[locale]}
+      </p>
+      <h1 class="text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
+        {data.title[locale]}
+      </h1>
+      <p class="text-xl text-pretty text-ink">{data.summary[locale]}</p>
+      <p class="text-lg text-pretty text-ink-muted">
+        {data.description[locale]}
+      </p>
+      <ul class="flex flex-wrap gap-2">
+        {data.tags.map((tag) => (
+          <li class="rounded-md border border-line px-2 py-0.5 font-mono text-xs text-ink-muted">
+            {tag[locale]}
+          </li>
+        ))}
+      </ul>
+    </header>
+
+    <section aria-labelledby="gallery" class="flex flex-col gap-6">
+      <h2 id="gallery" class="sr-only">
+        {t("gig.gallery")}
+      </h2>
+      <ul class="grid gap-6 md:grid-cols-2">
+        {data.gallery.map(({ image, alt }, i) => (
+          <li class:list={[{ "md:col-span-2": i === 0 }]}>
+            <Image
+              src={image}
+              alt={alt[locale]}
+              loading={i === 0 ? "eager" : "lazy"}
+              class="h-auto w-full rounded-xl border border-line"
+            />
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section aria-labelledby="packages" class="flex flex-col gap-6">
+      <div class="flex flex-col gap-2">
+        <h2 id="packages" class="text-2xl font-semibold tracking-tight">
+          {t("gig.packages")}
+        </h2>
+        <p class="text-ink-muted">{t("gig.packagesLead")}</p>
+      </div>
+      <div class="grid gap-6 lg:grid-cols-3">
+        {tiers.map((tier) => {
+          const pkg = data.packages[tier];
+          return (
+            <article
+              aria-labelledby={`package-${tier}`}
+              class="flex flex-col gap-5 rounded-xl border border-line bg-surface-raised p-6 data-[tier=standard]:border-accent"
+              data-tier={tier}
+            >
+              <h3 id={`package-${tier}`} class="text-xl font-semibold">
+                {pkg.name[locale]}
+              </h3>
+              <p class="text-pretty text-ink-muted">{pkg.scope[locale]}</p>
+              <div class="flex flex-col gap-2">
+                <h4
+                  id={`package-${tier}-deliverables`}
+                  class="font-mono text-xs tracking-widest text-accent uppercase"
+                >
+                  {t("gig.deliverables")}
+                </h4>
+                <ul
+                  aria-labelledby={`package-${tier}-deliverables`}
+                  class="flex list-disc flex-col gap-1.5 pl-5 marker:text-accent"
+                >
+                  {pkg.deliverables.map((item) => (
+                    <li>{item[locale]}</li>
+                  ))}
+                </ul>
+              </div>
+              <ul class="mt-auto flex flex-col gap-1 border-t border-line pt-4 font-mono text-sm text-ink-muted">
+                <li>{plural("gig.deliveryDays", pkg.deliveryDays)}</li>
+                <li>{plural("gig.revisions", pkg.revisions)}</li>
+              </ul>
+              <a
+                href={quotePath(locale, gig.id, tier)}
+                class="rounded-md border border-accent px-4 py-2.5 text-center font-medium text-accent transition-colors hover:bg-accent hover:text-surface"
+              >
+                {t("gig.requestQuote")}
+                <span class="sr-only">: {pkg.name[locale]}</span>
+              </a>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+
+    <RelatedWork locale={locale} projects={projects} />
+
+    <div class="grid gap-16 lg:grid-cols-2">
+      <section aria-labelledby="requirements" class="flex flex-col gap-4">
+        <h2 id="requirements" class="text-2xl font-semibold tracking-tight">
+          {t("gig.requirements")}
+        </h2>
+        <ul class="flex flex-col gap-3">
+          {data.requirements.map((item) => (
+            <li class="flex gap-3 text-pretty text-ink-muted">
+              <span aria-hidden="true" class="font-mono text-accent">
+                ▸
+              </span>
+              <span>{item[locale]}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section aria-labelledby="faq" class="flex flex-col gap-4">
+        <h2 id="faq" class="text-2xl font-semibold tracking-tight">
+          {t("gig.faq")}
+        </h2>
+        <div class="flex flex-col divide-y divide-line border-y border-line">
+          {data.faq.map(({ question, answer }) => (
+            <details class="group py-4">
+              <summary class="flex cursor-pointer list-none items-start justify-between gap-4 font-medium [&::-webkit-details-marker]:hidden">
+                {question[locale]}
+                <span
+                  aria-hidden="true"
+                  class="font-mono text-accent transition-transform group-open:rotate-45"
+                >
+                  +
+                </span>
+              </summary>
+              <p class="pt-3 text-pretty text-ink-muted">{answer[locale]}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+    </div>
+  </article>
+</BaseLayout>

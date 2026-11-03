@@ -1,20 +1,57 @@
+import type { Tier } from "../content/catalog";
 import { defaultLocale, locales, type Locale } from "./ui";
 
+/** First path segment of each section, per locale. */
+const sections = {
+  services: { es: "servicios", en: "services" },
+  contact: { es: "contacto", en: "contact" },
+} as const satisfies Record<string, Record<Locale, string>>;
+
+export type Section = keyof typeof sections;
+
+function localeRoot(locale: Locale): string {
+  return locale === defaultLocale ? "/" : `/${locale}/`;
+}
+
 /**
- * Strips the locale prefix from a pathname. The default locale (Spanish) is
- * unprefixed; other locales live under `/<locale>/`.
+ * Splits a pathname into its locale and the rest (always starting with "/").
+ * The default locale (Spanish) is unprefixed; others live under `/<locale>/`.
  */
-function withoutLocale(pathname: string): string {
+function parse(pathname: string): { locale: Locale; rest: string } {
   const [, first, ...rest] = pathname.split("/");
-  const prefixed = locales.some(
-    (locale) => locale !== defaultLocale && locale === first,
+  const locale = locales.find(
+    (candidate) => candidate !== defaultLocale && candidate === first,
   );
-  return prefixed ? "/" + rest.join("/") : pathname;
+  return locale
+    ? { locale, rest: "/" + rest.join("/") }
+    : { locale: defaultLocale, rest: pathname };
 }
 
 /** Path of the page equivalent to `pathname` in `target` locale. */
 export function localizedPath(pathname: string, target: Locale): string {
-  const rest = withoutLocale(pathname);
-  if (target === defaultLocale) return rest || "/";
-  return `/${target}${rest === "/" ? "/" : rest}`;
+  const { locale, rest } = parse(pathname);
+  const [, first = "", ...tail] = rest.split("/");
+  const section = Object.values(sections).find(
+    (names) => names[locale] === first,
+  );
+  const translated = [section ? section[target] : first, ...tail].join("/");
+  return localeRoot(target) + translated;
+}
+
+/** Path of a section page (and optional sub-pages) in `locale`. */
+export function sectionPath(
+  locale: Locale,
+  section: Section,
+  ...segments: string[]
+): string {
+  return (
+    localeRoot(locale) +
+    [sections[section][locale], ...segments].map((s) => `${s}/`).join("")
+  );
+}
+
+/** Contact page with a gig and package preselected through the query string. */
+export function quotePath(locale: Locale, gig: string, tier: Tier): string {
+  const query = new URLSearchParams({ gig, package: tier });
+  return `${sectionPath(locale, "contact")}?${query}`;
 }

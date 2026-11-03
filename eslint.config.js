@@ -6,7 +6,15 @@ import globals from "globals";
 import tseslint from "typescript-eslint";
 
 export default defineConfig(
-  { ignores: ["dist/", ".astro/", "playwright-report/", "test-results/"] },
+  {
+    ignores: [
+      "dist/",
+      "dist-e2e/",
+      ".astro/",
+      "playwright-report/",
+      "test-results/",
+    ],
+  },
   js.configs.recommended,
   tseslint.configs.recommended,
   astro.configs.recommended,

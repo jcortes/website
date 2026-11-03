@@ -1,5 +1,5 @@
 ---
-import { localizedPath } from "../i18n/paths";
+import { localizedPath, sectionPath } from "../i18n/paths";
 import { useTranslations, type Locale } from "../i18n/ui";
 import LanguageSwitcher from "./LanguageSwitcher.astro";
 import ThemeToggle from "./ThemeToggle.astro";
@@ -24,6 +24,14 @@ const t = useTranslations(locale);
     <span class="sr-only">· {t("nav.home")}</span>
   </a>
   <div class="flex items-center gap-3">
+    <nav aria-label={t("nav.main")}>
+      <a
+        href={sectionPath(locale, "services")}
+        class="rounded-md px-2.5 py-1.5 text-sm text-ink-muted transition-colors hover:text-accent"
+      >
+        {t("nav.services")}
+      </a>
+    </nav>
     <LanguageSwitcher locale={locale} />
     <ThemeToggle locale={locale} />
   </div>

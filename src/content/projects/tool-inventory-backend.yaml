@@ -1,0 +1,33 @@
+gigs: [custom-backend-apis]
+title:
+  es: Backend de inventario de herramientas integrado con Salesforce
+  en: Tool inventory backend integrated with Salesforce
+descriptor:
+  es: Fabricante global de herramientas · Estados Unidos
+  en: Global tool manufacturer · United States
+role:
+  es: Desarrollador Node.js
+  en: Node.js developer
+duration:
+  es: 1 año y 5 meses
+  en: 1 year and 5 months
+problem:
+  es: >-
+    Las empresas de construcción necesitaban registrar, rastrear y personalizar sus herramientas en varias obras,
+    y ese inventario tenía que llegar al CRM (Salesforce) e incorporar nuevos usuarios fácilmente.
+  en: >-
+    Construction companies needed to register, track and customize their tools across multiple job sites,
+    and that inventory had to reach the CRM (Salesforce) and onboard new users easily.
+solution:
+  es: >-
+    Implementé la API de registro de herramientas hacia Salesforce y el envío de invitaciones por SMS, mejoré la
+    importación y exportación de herramientas, y escribí pruebas unitarias y de integración, además de corregir
+    errores y dar soporte en producción.
+  en: >-
+    I implemented the tool registration API for Salesforce and SMS invitations, improved tool import and export,
+    and wrote unit and integration tests, while fixing bugs and supporting production.
+result:
+  es: Las herramientas registradas en el producto llegan a Salesforce mediante una API, y los nuevos usuarios se invitan por SMS.
+  en: Tools registered in the product reach Salesforce through an API, and new users are invited by SMS.
+tech: [Node.js, JavaScript, REST APIs, Salesforce, SMS]
+confidential: true

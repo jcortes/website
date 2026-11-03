@@ -26,6 +26,20 @@ pnpm dev          # http://localhost:4321
 Pages live in `src/pages/` (Spanish at the root, English under `src/pages/en/`).
 UI strings for both languages are in `src/i18n/ui.ts`.
 
+## Content
+
+Gigs and projects are YAML files, one per entry, with every text in both
+languages (`{ es: …, en: … }`). The file name is the slug.
+
+- `src/content/gigs/`: services, listed at `/servicios/` and `/en/services/`.
+  Each has exactly three packages (`basic`, `standard`, `premium`). A package
+  may carry a `price`, which is never shown.
+- `src/content/projects/`: past work, shown as "Related work" on every gig it
+  lists in `gigs`. Confidential projects may not have a client name or links.
+
+Schemas live in `src/content.config.ts`. The build fails on invalid content,
+including a project that references a missing gig.
+
 ## Test
 
 ```sh
@@ -35,9 +49,14 @@ pnpm test         # unit tests (Vitest)
 pnpm test:e2e     # builds the site, then runs Playwright against the build
 ```
 
-The E2E suite runs against the production build served by `astro preview`.
-It includes a **privacy guard** that scans every built HTML file and fails if
-it finds a phone number.
+The E2E suite runs against a production build served by `astro preview`,
+built with `CONTENT_FIXTURES=true` so that test-only entries from
+`e2e/fixtures/content/` (for example a gig with no related work) are included.
+That build goes to `dist-e2e/`, never to `dist/`, and the privacy guard scans
+the real production build in `dist/`.
+
+It includes a **privacy guard** that scans the build and fails if it finds a
+phone number or a client name from the denylist (see [Privacy](#privacy)).
 
 ## Build
 
@@ -77,3 +96,10 @@ copy). To switch variants, change that import and replace `public/favicon.svg`.
 
 This repository is public. The original CV (`cv.pdf`) is git-ignored and must
 never be committed, and no page may expose phone numbers.
+
+Client names are kept out of the repository too, including from the guard
+that checks for them: the denylist is the `PRIVACY_DENYLIST` repository
+secret (names separated by commas or newlines), set by the setup wizard. CI
+fails when it's missing, which includes pull requests from forks (GitHub
+doesn't pass them secrets). Locally, `pnpm test:e2e` reads it from `.env` and
+skips that check when it's absent.
