@@ -1,4 +1,7 @@
 locals {
+  # Cloudflare assigns <name>.pages.dev unless that name is already taken.
+  hostname = "${var.project_name}.pages.dev"
+
   # Shared by production and preview deployments: previews run the real
   # contact flow (Turnstile and Resend, to the owner's inbox only).
   function_config = {
@@ -38,14 +41,24 @@ resource "cloudflare_pages_project" "site" {
     production = local.function_config
     preview    = local.function_config
   }
+
+  lifecycle {
+    # The Turnstile widget is bound to this hostname (it can't reference the
+    # computed subdomain: the project already depends on the widget's secret).
+    postcondition {
+      condition     = self.subdomain == local.hostname
+      error_message = "The project got ${self.subdomain}, not ${local.hostname}: pick another project_name."
+    }
+  }
 }
 
 # Spam protection for the contact form. A hostname also covers its
 # subdomains, so preview deployments (<hash>.<project>.pages.dev) work too.
+# Its secret feeds the project's bindings, so it's created first.
 resource "cloudflare_turnstile_widget" "contact" {
   account_id = var.account_id
   name       = "${var.project_name} contact form"
-  domains    = [cloudflare_pages_project.site.subdomain]
+  domains    = [local.hostname]
   mode       = "managed"
   region     = "world"
 }

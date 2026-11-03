@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { getSettings } from "../content/settings";
 import type { Locale } from "../i18n/ui";
 
 interface Props {
@@ -8,7 +9,9 @@ interface Props {
 
 const { locale } = Astro.props;
 
-const REPO = "https://github.com/jcortes/website";
+// This site's repository, under the GitHub profile from the site settings.
+const { social } = await getSettings();
+const REPO = `${social.github.replace(/\/$/, "")}/website`;
 
 /**
  * The site as it actually is: keep this page in step with infra/,

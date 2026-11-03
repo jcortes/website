@@ -92,14 +92,16 @@ Conversion events: a click on any element marked `data-track="book_call"` (every
 are reported with `navigator.sendBeacon` to `/api/event`
 (`functions/api/event.ts`, a thin shell around `src/analytics/events.ts`). It
 accepts only known event names and site paths and writes them to the Workers
-Analytics Engine dataset `website_events` (`blob1` = event, `blob2` = path).
+Analytics Engine dataset `website_events` (`blob1` = event, `blob2` = path,
+`blob3` = hostname, since previews share the dataset); see
+[ADR 0003](docs/adr/0003-conversion-events-in-analytics-engine.md).
 Query them with the
 [SQL API](https://developers.cloudflare.com/analytics/analytics-engine/sql-api/):
 
 ```sql
 SELECT blob1 AS event, blob2 AS path, SUM(_sample_interval) AS count
 FROM website_events
-WHERE timestamp > NOW() - INTERVAL '30' DAY
+WHERE timestamp > NOW() - INTERVAL '30' DAY AND blob3 = 'jcortes.pages.dev'
 GROUP BY event, path
 ```
 
@@ -165,6 +167,8 @@ After the checks pass, the workflow (jobs `infra` and `deploy`, in the
 - **On pull requests**: `tofu fmt -check`, `validate` and `plan`; the plan is
   posted to the PR as a comment. Then a preview deploy of the branch, whose URL
   is posted to the PR too. PRs from forks get neither (no secrets).
+  Both jobs use the `production` environment, so it must not restrict
+  deployment branches or require reviewers.
 - **On `main`**: `tofu apply`, then a production deploy.
 
 The build gets `SITE_URL`, `PUBLIC_TURNSTILE_SITE_KEY` and

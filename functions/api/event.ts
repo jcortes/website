@@ -20,11 +20,17 @@ export async function onRequest({
   request: Request;
   env: Env;
 }): Promise<Response> {
+  const { EVENTS } = env;
+  if (!EVENTS) {
+    console.error("event: missing EVENTS binding");
+    return new Response(null, { status: 500 });
+  }
+  // Previews share the dataset; the hostname tells them apart.
+  const host = new URL(request.url).hostname;
   const handle = createEventHandler({
     record: async ({ name, path }) => {
-      if (!env.EVENTS) throw new Error("EVENTS binding missing");
-      // Query with the SQL API: blob1 = event name, blob2 = page path.
-      env.EVENTS.writeDataPoint({ indexes: [name], blobs: [name, path] });
+      // SQL API columns: blob1 = event, blob2 = page path, blob3 = hostname.
+      EVENTS.writeDataPoint({ indexes: [name], blobs: [name, path, host] });
     },
   });
   return handle(request);

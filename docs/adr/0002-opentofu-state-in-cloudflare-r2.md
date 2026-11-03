@@ -39,8 +39,9 @@ the endpoint is derived from the `CLOUDFLARE_ACCOUNT_ID` variable. The bucket
 and the token are created by hand once (`scripts/setup-accounts.sh`), because
 the state can't hold the resource that stores it.
 
-No state locking is configured: every OpenTofu job runs in the `opentofu`
-concurrency group, so CI never runs two at once, and plans use `-lock=false`.
+No state locking is configured: applies only run on `main`, in a CI
+concurrency group that runs one at a time, and PR plans are read-only
+(`-lock=false`).
 
 ## Consequences
 

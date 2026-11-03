@@ -5,8 +5,9 @@ on:
   push:
     branches: [main]
 
-# Superseded PR runs are cancelled; runs on main never are, so an apply or a
-# production deploy always finishes, and they run one at a time.
+# Superseded PR runs are cancelled. Runs on main are never cancelled once
+# started; a run still waiting is replaced by a newer one (GitHub keeps one
+# pending run per group), which then applies and deploys the newer main.
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
@@ -90,9 +91,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment: production
-    # Plans and applies share the state: one at a time, never cancelled.
+    # Applies run one at a time and aren't cancelled once started (see the
+    # workflow's concurrency). Plans are read-only (-lock=false), so they
+    # only wait for their own PR's earlier run.
     concurrency:
-      group: opentofu
+      group: opentofu-${{ github.event_name == 'push' && 'apply' || github.ref }}
       cancel-in-progress: false
     permissions:
       contents: read

@@ -13,7 +13,8 @@ terraform {
   # (https://<account id>.r2.cloudflarestorage.com) comes from
   # AWS_ENDPOINT_URL_S3, and the credentials from AWS_ACCESS_KEY_ID and
   # AWS_SECRET_ACCESS_KEY (an R2 API token), so nothing account-specific is
-  # committed. CI serializes runs, so no state locking is configured.
+  # committed. CI runs applies one at a time, so no state locking is
+  # configured (see the ADR before running OpenTofu locally).
   backend "s3" {
     bucket = "website-tofu-state"
     key    = "website/terraform.tfstate"

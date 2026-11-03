@@ -34,7 +34,7 @@ export function setupContactForm(form: HTMLFormElement): void {
   const calLinks =
     document.querySelectorAll<HTMLAnchorElement>("[data-cal-link]");
 
-  const resetTurnstile = setupTurnstile(form);
+  const turnstile = setupTurnstile(form);
 
   preselect(gig, pkg);
   const syncCalLinks = () => {
@@ -70,8 +70,7 @@ export function setupContactForm(form: HTMLFormElement): void {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...validation.submission,
-          // Added to the form by the Turnstile widget.
-          turnstileToken: data["cf-turnstile-response"] ?? "",
+          turnstileToken: await turnstile.get(),
         }),
       });
       if (response.ok) {
@@ -81,7 +80,7 @@ export function setupContactForm(form: HTMLFormElement): void {
         track("contact_submitted");
         return;
       }
-      resetTurnstile();
+      turnstile.reset();
       const body = (await response.json().catch(() => ({}))) as {
         fields?: FieldErrors;
       };
@@ -91,7 +90,7 @@ export function setupContactForm(form: HTMLFormElement): void {
       }
       showFailure(failure);
     } catch {
-      resetTurnstile();
+      turnstile.reset();
       showFailure(failure);
     } finally {
       submit.disabled = false;
