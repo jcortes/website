@@ -96,4 +96,72 @@ const projects = defineCollection({
       }),
 });
 
-export const collections = { gigs, projects };
+/** "2011" or "2021-10": the CV lists some early roles by year only. */
+const yearMonth = z
+  .string()
+  .regex(/^\d{4}(-(0[1-9]|1[0-2]))?$/, "Expected YYYY or YYYY-MM");
+
+const experience = z
+  .strictObject({
+    role: localized,
+    // Omitted for independent work.
+    employer: z.string().trim().min(1).optional(),
+    location: localized.optional(),
+    start: yearMonth,
+    // Omitted while the role is current.
+    end: yearMonth.optional(),
+    // Who the work was for, only as anonymized descriptors (industry and
+    // region), never by name.
+    clients: z.array(localized).optional(),
+    achievements: nonEmptyList(localized),
+    tech: z.array(z.string().trim().min(1)),
+  })
+  .refine((e) => !e.end || e.end >= e.start, {
+    message: "An experience entry cannot end before it starts",
+  });
+
+// Singleton: exactly one file (see src/content/profile.ts). It feeds both the
+// About page and the CV PDF.
+const profile = defineCollection({
+  loader: yamlFiles("profile"),
+  schema: z.strictObject({
+    name: z.string().trim().min(1),
+    headline: localized,
+    location: localized,
+    positioning: localized,
+    summary: nonEmptyList(localized),
+    experience: nonEmptyList(experience),
+    skills: nonEmptyList(
+      z.strictObject({
+        area: localized,
+        items: nonEmptyList(z.string().trim().min(1)),
+      }),
+    ),
+    education: nonEmptyList(
+      z.strictObject({
+        title: localized,
+        institution: z.string().trim().min(1),
+        location: localized.optional(),
+        year: z.number().int().optional(),
+        details: localized.optional(),
+      }),
+    ),
+    courses: nonEmptyList(
+      z.strictObject({
+        // Course titles are proper names and are not translated.
+        name: z.string().trim().min(1),
+        provider: z.string().trim().min(1).optional(),
+        certification: z.boolean().default(false),
+      }),
+    ),
+    languages: nonEmptyList(
+      z.strictObject({ language: localized, level: localized }),
+    ),
+    links: z.strictObject({
+      github: z.url(),
+      linkedin: z.url().optional(),
+    }),
+  }),
+});
+
+export const collections = { gigs, projects, profile };

@@ -4,6 +4,7 @@ import { defaultLocale, locales, type Locale } from "./ui";
 /** First path segment of each section, per locale. */
 const sections = {
   services: { es: "servicios", en: "services" },
+  about: { es: "sobre-mi", en: "about" },
   contact: { es: "contacto", en: "contact" },
 } as const satisfies Record<string, Record<Locale, string>>;
 
@@ -54,4 +55,9 @@ export function sectionPath(
 export function quotePath(locale: Locale, gig: string, tier: Tier): string {
   const query = new URLSearchParams({ gig, package: tier });
   return `${sectionPath(locale, "contact")}?${query}`;
+}
+
+/** The CV PDF generated from the profile, next to the About page. */
+export function cvPath(locale: Locale): string {
+  return `${sectionPath(locale, "about")}jorge-cortes-cv.pdf`;
 }

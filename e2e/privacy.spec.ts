@@ -2,6 +2,7 @@ import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import { expect, test } from "@playwright/test";
 import { findDeniedNames, parseDenylist } from "./support/denylist";
+import { pdfText } from "./support/pdf-text";
 import { findPhoneNumbers } from "./support/phone-numbers";
 
 const DIST = path.resolve(import.meta.dirname, "../dist");
@@ -17,6 +18,13 @@ async function builtFiles(extensions: string[]): Promise<string[]> {
     .map((entry) => path.join(entry.parentPath, entry.name));
 }
 
+/** A built file as a reader sees it: PDFs as their extracted text. */
+async function readBuilt(file: string): Promise<string> {
+  return path.extname(file) === ".pdf"
+    ? pdfText(await readFile(file))
+    : readFile(file, "utf8");
+}
+
 const TEXT_EXTENSIONS = [
   ".html",
   ".svg",
@@ -25,6 +33,7 @@ const TEXT_EXTENSIONS = [
   ".json",
   ".js",
   ".css",
+  ".pdf",
 ];
 
 test.describe("privacy guard", () => {
@@ -62,17 +71,20 @@ test.describe("privacy guard", () => {
     }
   });
 
-  test("no built page contains a phone number", async () => {
-    const files = await builtFiles([".html"]);
+  test("no built page or PDF (the CV) contains a phone number", async () => {
+    const files = await builtFiles([".html", ".pdf"]);
     expect(
-      files.length,
+      files.filter((file) => file.endsWith(".html")).length,
       "no built HTML found; run the build first",
+    ).toBeGreaterThan(0);
+    expect(
+      files.filter((file) => file.endsWith(".pdf")).length,
+      "no built PDF found",
     ).toBeGreaterThan(0);
 
     const findings: string[] = [];
     for (const file of files) {
-      const html = await readFile(file, "utf8");
-      for (const match of findPhoneNumbers(html)) {
+      for (const match of findPhoneNumbers(await readBuilt(file))) {
         findings.push(`${path.relative(DIST, file)}: ${match}`);
       }
     }
@@ -124,7 +136,7 @@ test.describe("privacy guard: client names", () => {
 
     const findings: string[] = [];
     for (const file of files) {
-      const text = await readFile(file, "utf8");
+      const text = await readBuilt(file);
       // Report the file and a count only: the names themselves are secret.
       const found = findDeniedNames(text, names);
       if (found.length > 0) {

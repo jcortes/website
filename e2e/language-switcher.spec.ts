@@ -21,6 +21,8 @@ test("switching from English lands on the equivalent Spanish page", async ({
 for (const [from, link, to] of [
   ["/servicios/", "English", "/en/services/"],
   ["/en/services/", "Español", "/servicios/"],
+  ["/sobre-mi/", "English", "/en/about/"],
+  ["/en/about/", "Español", "/sobre-mi/"],
   [
     "/servicios/ci-cd-github-actions/",
     "English",

@@ -1,4 +1,5 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test } from "@playwright/test";
+import { section } from "./support/regions";
 
 const gigSlugs = [
   "ci-cd-github-actions",
@@ -49,9 +50,6 @@ const locales = [
 
 // Gigs whose content links at least one (confidential) project.
 const gigsWithRelatedWork = ["ci-cd-github-actions", "custom-backend-apis"];
-
-const section = (page: Page, name: string) =>
-  page.getByRole("region", { name, exact: true });
 
 for (const l of locales) {
   test.describe(`services (${l.lang})`, () => {

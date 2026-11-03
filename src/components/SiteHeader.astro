@@ -25,12 +25,23 @@ const t = useTranslations(locale);
   </a>
   <div class="flex items-center gap-3">
     <nav aria-label={t("nav.main")}>
-      <a
-        href={sectionPath(locale, "services")}
-        class="rounded-md px-2.5 py-1.5 text-sm text-ink-muted transition-colors hover:text-accent"
-      >
-        {t("nav.services")}
-      </a>
+      <ul class="flex items-center gap-1">
+        {(
+          [
+            ["services", "nav.services"],
+            ["about", "nav.about"],
+          ] as const
+        ).map(([section, label]) => (
+          <li>
+            <a
+              href={sectionPath(locale, section)}
+              class="rounded-md px-2.5 py-1.5 text-sm text-ink-muted transition-colors hover:text-accent"
+            >
+              {t(label)}
+            </a>
+          </li>
+        ))}
+      </ul>
     </nav>
     <LanguageSwitcher locale={locale} />
     <ThemeToggle locale={locale} />

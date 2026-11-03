@@ -1,0 +1,223 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getProfile } from "../content/profile";
+import { periodBounds } from "../i18n/dates";
+import { cvPath } from "../i18n/paths";
+import { useTranslations, type Locale } from "../i18n/ui";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const profile = await getProfile();
+---
+
+<BaseLayout
+  locale={locale}
+  title={t("about.title")}
+  description={profile.positioning[locale]}
+>
+  <article class="mx-auto flex max-w-5xl flex-col gap-16 px-6 py-16 sm:py-24">
+    <header class="flex max-w-3xl flex-col gap-5">
+      <p class="font-mono text-sm tracking-widest text-accent uppercase">
+        {profile.name} · {profile.headline[locale]}
+      </p>
+      <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">
+        {t("about.title")}
+      </h1>
+      <p class="text-xl text-pretty text-ink">{profile.positioning[locale]}</p>
+      {profile.summary.map((paragraph) => (
+        <p class="text-lg text-pretty text-ink-muted">{paragraph[locale]}</p>
+      ))}
+      <ul class="flex flex-wrap items-center gap-4 pt-2">
+        <li>
+          <a
+            href={cvPath(locale)}
+            download
+            type="application/pdf"
+            class="inline-block rounded-md border border-accent px-4 py-2.5 font-medium text-accent transition-colors hover:bg-accent hover:text-surface"
+          >
+            {t("about.downloadCv")}
+          </a>
+        </li>
+        <li>
+          <a
+            href={profile.links.github}
+            rel="me noopener"
+            class="font-mono text-sm text-accent hover:underline"
+          >
+            {t("about.github")} ↗
+          </a>
+        </li>
+        {profile.links.linkedin && (
+          <li>
+            <a
+              href={profile.links.linkedin}
+              rel="me noopener"
+              class="font-mono text-sm text-accent hover:underline"
+            >
+              LinkedIn ↗
+            </a>
+          </li>
+        )}
+      </ul>
+    </header>
+
+    <section aria-labelledby="experience" class="flex flex-col gap-8">
+      <h2 id="experience" class="text-2xl font-semibold tracking-tight">
+        {t("about.experience")}
+      </h2>
+      <ol class="flex flex-col border-l border-line">
+        {profile.experience.map((job, i) => (
+          <li class="relative pb-10 pl-8 last:pb-0">
+            <span
+              aria-hidden="true"
+              class="absolute top-1.5 -left-[5px] size-2.5 rounded-full border-2 border-accent bg-surface"
+            />
+            <article aria-labelledby={`role-${i}`} class="flex flex-col gap-3">
+              <header class="flex flex-col gap-1">
+                <p class="font-mono text-xs tracking-widest text-accent uppercase">
+                  {periodBounds(locale, job, t("about.present")).map(
+                    ({ label, datetime }, j) => (
+                      <>
+                        {j > 0 && " – "}
+                        {datetime ? (
+                          <time datetime={datetime}>{label}</time>
+                        ) : (
+                          label
+                        )}
+                      </>
+                    ),
+                  )}
+                </p>
+                <h3 id={`role-${i}`} class="text-lg font-semibold">
+                  {job.role[locale]}
+                </h3>
+                {(job.employer || job.location) && (
+                  <p class="text-sm text-ink-muted">
+                    {[job.employer, job.location?.[locale]]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </p>
+                )}
+              </header>
+              {job.clients && job.clients.length > 0 && (
+                <ul
+                  aria-label={t("about.clients")}
+                  class="flex flex-col gap-0.5 text-sm text-ink-muted italic"
+                >
+                  {job.clients.map((client) => (
+                    <li>{client[locale]}</li>
+                  ))}
+                </ul>
+              )}
+              <ul class="flex list-disc flex-col gap-1.5 pl-5 text-pretty marker:text-accent">
+                {job.achievements.map((item) => (
+                  <li>{item[locale]}</li>
+                ))}
+              </ul>
+              <ul
+                aria-label={t("about.tech")}
+                class="flex flex-wrap gap-2 pt-1"
+              >
+                {job.tech.map((tag) => (
+                  <li class="rounded-md border border-line px-2 py-0.5 font-mono text-xs text-ink-muted">
+                    {tag}
+                  </li>
+                ))}
+              </ul>
+            </article>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section aria-labelledby="skills" class="flex flex-col gap-6">
+      <h2 id="skills" class="text-2xl font-semibold tracking-tight">
+        {t("about.skills")}
+      </h2>
+      <div class="grid gap-4 sm:grid-cols-2">
+        {profile.skills.map(({ area, items }, i) => (
+          <div class="flex flex-col gap-3 rounded-xl border border-line bg-surface-raised p-5">
+            <h3
+              id={`skills-${i}`}
+              class="font-mono text-xs tracking-widest text-accent uppercase"
+            >
+              {area[locale]}
+            </h3>
+            <ul aria-labelledby={`skills-${i}`} class="flex flex-wrap gap-2">
+              {items.map((item) => (
+                <li class="rounded-md border border-line px-2 py-0.5 font-mono text-xs text-ink-muted">
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <div class="grid gap-16 lg:grid-cols-2">
+      <section aria-labelledby="education" class="flex flex-col gap-4">
+        <h2 id="education" class="text-2xl font-semibold tracking-tight">
+          {t("about.education")}
+        </h2>
+        <ul class="flex flex-col gap-4">
+          {profile.education.map((item) => (
+            <li class="flex flex-col gap-1">
+              <span class="font-medium">{item.title[locale]}</span>
+              <span class="text-sm text-ink-muted">
+                {[item.institution, item.location?.[locale], item.year]
+                  .filter(Boolean)
+                  .join(" · ")}
+              </span>
+              {item.details && (
+                <span class="text-sm text-pretty text-ink-muted">
+                  {item.details[locale]}
+                </span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section aria-labelledby="languages" class="flex flex-col gap-4">
+        <h2 id="languages" class="text-2xl font-semibold tracking-tight">
+          {t("about.languages")}
+        </h2>
+        <dl class="flex flex-col gap-2">
+          {profile.languages.map(({ language, level }) => (
+            <div class="flex gap-2">
+              <dt class="font-medium">{language[locale]}</dt>
+              <dd class="text-ink-muted">· {level[locale]}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+    </div>
+
+    <section aria-labelledby="courses" class="flex flex-col gap-4">
+      <h2 id="courses" class="text-2xl font-semibold tracking-tight">
+        {t("about.courses")}
+      </h2>
+      <ul class="grid gap-x-10 gap-y-3 md:grid-cols-2">
+        {profile.courses.map((course) => (
+          <li class="flex flex-col gap-0.5">
+            <span class="text-pretty">{course.name}</span>
+            <span class="font-mono text-xs text-ink-muted">
+              {course.provider}
+              {course.certification && (
+                <>
+                  {course.provider && " · "}
+                  <span class="text-accent">{t("about.certification")}</span>
+                </>
+              )}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </article>
+</BaseLayout>

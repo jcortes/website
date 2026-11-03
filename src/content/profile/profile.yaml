@@ -1,0 +1,459 @@
+# Profile/CV singleton: feeds the About page and the generated CV PDF.
+# Public repository: no phone numbers, no references, no client names. Clients
+# are described only by industry and region.
+name: Jorge Cortés
+headline:
+  es: Ingeniero de Software y DevOps
+  en: Software & DevOps Engineer
+location:
+  es: Bogotá, Colombia · Trabajo remoto
+  en: Bogotá, Colombia · Working remotely
+positioning:
+  es: >-
+    Ingeniero de sistemas con 15+ años de experiencia en desarrollo backend, nube (AWS) y CI/CD. Ayudo a empresas a
+    automatizar sus entregas, llevar su infraestructura a código y construir backends y APIs confiables.
+  en: >-
+    Systems engineer with 15+ years of experience in backend development, cloud (AWS) and CI/CD. I help companies
+    automate their delivery, move their infrastructure to code and build reliable backends and APIs.
+summary:
+  - es: >-
+      A lo largo de mi carrera he trabajado con clientes internacionales y he contribuido a productos de los que
+      dependen usuarios reales: plataformas de integraciones, sistemas de inventario, plataformas de
+      farmacovigilancia y aplicaciones para el sector financiero.
+    en: >-
+      Throughout my career I've worked with international clients and contributed to products that real users rely
+      on: integration platforms, inventory systems, pharmacovigilance platforms and applications for the financial
+      sector.
+  - es: >-
+      Creo que el buen software empieza con una comunicación clara y expectativas honestas: cuando trabajas conmigo,
+      siempre sabes en qué punto están las cosas. El buen software no se construye solo; se construye en equipo, y
+      para todos.
+    en: >-
+      I believe great software starts with clear communication and honest expectations: when you work with me, you
+      always know where things stand. Great software isn't built alone; it's built together, for everyone.
+
+experience:
+  - role:
+      es: Ingeniero de Software y DevOps independiente
+      en: Independent Software & DevOps Engineer
+    location:
+      es: Bogotá, Colombia · Remoto
+      en: Bogotá, Colombia · Remote
+    start: 2026-05
+    achievements:
+      - es: >-
+          Diseño e implemento pipelines de CI/CD con GitHub Actions, infraestructura como código en AWS y backends y
+          APIs a medida para clientes y empresas.
+        en: >-
+          I design and build CI/CD pipelines with GitHub Actions, infrastructure as code on AWS, and custom backends
+          and APIs for clients and companies.
+      - es: >-
+          Construí este sitio como pieza de portafolio: sitio estático con Astro, pruebas de extremo a extremo y
+          entrega continua con GitHub Actions.
+        en: >-
+          I built this website as a portfolio piece: a static Astro site with end-to-end tests and continuous
+          delivery through GitHub Actions.
+    tech: [GitHub Actions, AWS, Terraform, OpenTofu, Node.js, TypeScript, Astro]
+
+  - role:
+      es: Desarrollador Node.js
+      en: Node.js Developer
+    employer: Turing
+    start: 2021-10
+    end: 2026-05
+    clients:
+      - es: Plataforma de integraciones de código abierto · Estados Unidos
+        en: Open-source integration platform · United States
+    achievements:
+      - es: Implementé componentes de fuentes y acciones para las integraciones de la plataforma.
+        en: Built source and action components for the platform's integrations.
+      - es: >-
+          Creé una GitHub Action que revisa el árbol de dependencias para verificar que se actualizaron las versiones
+          de todos los componentes modificados.
+        en: >-
+          Created a GitHub Action that walks the dependency tree to check that every modified component had its
+          version bumped.
+      - es: Implementé un workflow de GitHub para monitorear errores en más de 3.000 aplicaciones integradas.
+        en: Implemented a GitHub workflow that monitors errors across more than 3,000 integrated apps.
+    tech: [Node.js, JavaScript, TypeScript, GitHub Actions]
+
+  - role:
+      es: Desarrollador Node.js
+      en: Node.js Developer
+    employer: White Prompt
+    start: 2021-07
+    end: 2021-09
+    clients:
+      - es: Plataforma de automatización de pruebas sin código
+        en: Codeless test automation platform
+    achievements:
+      - es: >-
+          Desarrollé nuevas funcionalidades en backend y frontend de una herramienta de pruebas funcionales
+          automatizadas que no requiere escribir código.
+        en: >-
+          Delivered new back-end and front-end features for an automated functional testing tool that requires no
+          code.
+      - es: Corregí errores en los entornos de producción, staging e integración.
+        en: Fixed bugs in production, staging and integration environments.
+    tech: [TypeScript, NestJS, PostgreSQL, JavaScript, Heroku, Docker]
+
+  - role:
+      es: Desarrollador Node.js
+      en: Node.js Developer
+    employer: Globant
+    location:
+      es: Colombia
+      en: Colombia
+    start: 2020-02
+    end: 2021-07
+    clients:
+      - es: Fabricante global de herramientas · Estados Unidos
+        en: Global tool manufacturer · United States
+    achievements:
+      - es: >-
+          Trabajé en el backend de un sistema de inventario que conecta, rastrea y personaliza herramientas en varias
+          obras.
+        en: Worked on the backend of an inventory system that connects, tracks and customizes tools across job sites.
+      - es: Mejoré la importación y exportación de herramientas.
+        en: Improved tool import and export.
+      - es: Implementé la API de registro de herramientas para Salesforce y las invitaciones por SMS.
+        en: Implemented the tool registration API for Salesforce and SMS invitations.
+      - es: Escribí pruebas unitarias y de integración, y di soporte y corrección de errores.
+        en: Wrote unit and integration tests, and handled support and bug fixing.
+    tech: [Node.js, JavaScript, Salesforce]
+
+  - role:
+      es: Desarrollador Node.js
+      en: Node.js Developer
+    employer: Belatrix
+    location:
+      es: Colombia
+      en: Colombia
+    start: 2017-07
+    end: 2020-02
+    clients:
+      - es: Firma global de servicios profesionales · sector farmacéutico
+        en: Global professional services firm · pharmaceutical sector
+      - es: Empresa de software de marketing automotriz
+        en: Automotive marketing software company
+      - es: Startup de video en línea
+        en: Online video startup
+    achievements:
+      - es: >-
+          Implementé endpoints GraphQL y funciones AWS Lambda para una plataforma de farmacovigilancia con
+          arquitectura orientada a eventos e información centralizada.
+        en: >-
+          Implemented GraphQL endpoints and AWS Lambda functions for a pharmacovigilance platform with an event-driven
+          architecture and centralized data.
+      - es: Escribí consultas simples y compuestas en Elasticsearch para encontrar datos duplicados.
+        en: Wrote simple and compound Elasticsearch queries to find duplicate data.
+      - es: >-
+          Implementé la subida de videos en varias resoluciones a OpenShot con peticiones HTTP multipart, sobre Node.js,
+          AWS Lambda y Firebase.
+        en: >-
+          Implemented uploading videos in several resolutions to OpenShot with multipart HTTP requests, on Node.js, AWS
+          Lambda and Firebase.
+      - es: >-
+          Añadí validaciones y pruebas unitarias a microservicios Node.js sobre MySQL y AWS (Serverless, Lambda, API
+          Gateway).
+        en: >-
+          Added validation and unit tests to Node.js microservices on MySQL and AWS (Serverless, Lambda, API
+          Gateway).
+    tech:
+      [
+        Node.js,
+        JavaScript,
+        TypeScript,
+        GraphQL,
+        AWS Lambda,
+        API Gateway,
+        RDS PostgreSQL,
+        Elasticsearch,
+        Sequelize,
+        Docker,
+        Firebase,
+        MySQL,
+      ]
+
+  - role:
+      es: Desarrollador Front-End
+      en: Front-End Developer
+    # The employer was also the client and is on the privacy denylist, so it
+    # is described anonymously, like any other client.
+    location:
+      es: Estados Unidos · Remoto
+      en: United States · Remote
+    start: 2016-10
+    end: 2017-07
+    clients:
+      - es: Empresa de tecnología para el hogar inteligente · Estados Unidos
+        en: Smart-home technology company · United States
+    achievements:
+      - es: >-
+          Desarrollé la app híbrida de hogar inteligente de la empresa con Angular 2, Ionic 2 y TypeScript, e
+          introduje Redux en el proyecto.
+        en: >-
+          Built the company's hybrid smart-home app with Angular 2, Ionic 2 and TypeScript, and introduced Redux to
+          the project.
+      - es: >-
+          Implementé la integración entre la app y un sistema de riego inteligente, y la interfaz de reglas de
+          automatización.
+        en: Implemented the integration between the app and a smart irrigation system, and the automation rules UI.
+      - es: >-
+          Implementé en la API en la nube (Node.js y MongoDB) y en el SDK cliente mensajes en lenguaje natural para
+          las reglas de automatización, con pruebas en Mocha.
+        en: >-
+          Added natural-language descriptions of automation rules to the Node.js and MongoDB cloud API and the client
+          SDK, tested with Mocha.
+      - es: Desplegué en desarrollo, staging y producción con el servidor de integración continua Bamboo.
+        en: Deployed to development, staging and production with the Bamboo continuous integration server.
+    tech: [Angular, Ionic, TypeScript, Redux, Node.js, MongoDB, Mocha, Bamboo]
+
+  - role:
+      es: Desarrollador Front-End
+      en: Front-End Developer
+    employer: Softhouse
+    location:
+      es: Bogotá, Colombia
+      en: Bogotá, Colombia
+    start: 2015-07
+    end: 2016-10
+    clients:
+      - es: Editorial de contenidos educativos · Colombia
+        en: Educational publisher · Colombia
+    achievements:
+      - es: Construí la interfaz de una plataforma educativa con AngularJS y Angular Material.
+        en: Built the interface of an educational platform with AngularJS and Angular Material.
+      - es: Desarrollé servicios backend con Django REST Framework.
+        en: Developed back-end services with Django REST Framework.
+      - es: Migré la aplicación AngularJS a una app híbrida con Cordova para publicarla en Android.
+        en: Migrated the AngularJS application to a hybrid Cordova app to ship it on Android.
+    tech: [AngularJS, Angular Material, Django REST Framework, Python, Cordova]
+
+  - role:
+      es: Desarrollador Senior
+      en: Senior Developer
+    employer: One IT World
+    location:
+      es: Bogotá, Colombia
+      en: Bogotá, Colombia
+    start: 2013-09
+    end: 2015-02
+    clients:
+      - es: Entidades del sector financiero · Colombia
+        en: Financial sector institutions · Colombia
+    achievements:
+      - es: >-
+          Desarrollé aplicaciones web en Java para entidades financieras: mercado de capitales, depósitos judiciales,
+          pagos en línea y un portal web.
+        en: >-
+          Built Java web applications for financial institutions: capital markets, judicial deposits, online payments
+          and a web portal.
+      - es: Participé en la migración de un banco a una arquitectura SOA.
+        en: Took part in a bank's migration to a service-oriented architecture (SOA).
+    tech: [Java, JSF, RichFaces, JavaScript, SOA]
+
+  - role:
+      es: Desarrollador Senior
+      en: Senior Developer
+    employer: ITC
+    location:
+      es: Bogotá, Colombia
+      en: Bogotá, Colombia
+    start: 2012-03
+    end: 2013-09
+    clients:
+      - es: Sociedades fiduciarias y comisionistas de bolsa · Colombia
+        en: Trust companies and brokerage firms · Colombia
+    achievements:
+      - es: >-
+          Formé parte del equipo de implantación, a cargo de los aspectos funcionales y no funcionales de las
+          aplicaciones web de la empresa.
+        en: >-
+          Was part of the implementation team, in charge of the functional and non-functional aspects of the
+          company's web applications.
+      - es: >-
+          Lideré los procesos de construcción y despliegue de aplicaciones web y SOA sobre Apache ODE, Oracle WebLogic
+          11g y Apache Tomcat, con Ant.
+        en: >-
+          Led the build and deployment processes of web and SOA applications on Apache ODE, Oracle WebLogic 11g and
+          Apache Tomcat, with Ant.
+      - es: Capacité a los equipos de infraestructura de los clientes en esos procesos.
+        en: Trained client infrastructure teams on those processes.
+    tech: [Java, Oracle WebLogic, Apache ODE, Apache Tomcat, Ant, SOA]
+
+  - role:
+      es: Desarrollador Junior
+      en: Junior Developer
+    employer: Indra
+    location:
+      es: Bogotá, Colombia
+      en: Bogotá, Colombia
+    start: 2011-02
+    end: 2012-03
+    clients:
+      - es: Operador de telefonía móvil · Colombia
+        en: Mobile network operator · Colombia
+    achievements:
+      - es: >-
+          Como parte del equipo de aprovisionamiento, desarrollé y documenté proyectos de portabilidad numérica,
+          reporte de robo de celulares y consulta unificada.
+        en: >-
+          As part of the provisioning team, developed and documented number portability, stolen-phone reporting and
+          unified query projects.
+      - es: Desarrollé sobre arquitectura SOA con XML, XPath, XQuery, BPEL, PL/SQL y XSLT.
+        en: Developed on a SOA architecture with XML, XPath, XQuery, BPEL, PL/SQL and XSLT.
+      - es: >-
+          Construí aplicaciones de mediación para las rutas de facturación de datos y voz, y aplicaciones en Python
+          conectadas a Oracle.
+        en: Built mediation applications for data and voice billing routes, and Python applications connected to Oracle.
+    tech: [SOA, BPEL, XML, XSLT, PL/SQL, Python, Oracle]
+
+  - role:
+      es: Ingeniero de Infraestructura
+      en: Infrastructure Engineer
+    employer: Consulting Net
+    location:
+      es: Bogotá, Colombia
+      en: Bogotá, Colombia
+    start: "2009"
+    end: "2010"
+    achievements:
+      - es: Instalé y configuré servidores GNU/Linux en hardware IBM System x.
+        en: Installed and configured GNU/Linux servers on IBM System x hardware.
+      - es: >-
+          Administré respaldos diferenciales e incrementales, firewalls con iptables, servidores Samba y estaciones
+          remotas por SSH.
+        en: Managed differential and incremental backups, iptables firewalls, Samba servers and remote workstations over SSH.
+      - es: Instalé el software de autenticación de la empresa en un cliente.
+        en: Installed the company's authentication software at a client site.
+    tech: [GNU/Linux, iptables, Samba, SSH]
+
+  - role:
+      es: Consultor
+      en: Consultant
+    employer: Fundación OLPC
+    location:
+      es: Bogotá, Colombia
+      en: Bogotá, Colombia
+    start: "2007"
+    end: "2007"
+    achievements:
+      - es: >-
+          Evalué la instalación y configuración de cuatro servidores XS para colegios de Bogotá, Barranquilla y Quibdó,
+          dentro del proyecto One Laptop per Child.
+        en: >-
+          Assessed the installation and setup of four XS servers for schools in Bogotá, Barranquilla and Quibdó, as
+          part of the One Laptop per Child project.
+    tech: [GNU/Linux]
+
+skills:
+  - area:
+      es: Desarrollo
+      en: Development
+    items:
+      [
+        JavaScript,
+        TypeScript,
+        Node.js,
+        NestJS,
+        Express,
+        GraphQL,
+        Python,
+        Bash,
+        Angular,
+        React,
+        Redux,
+        Sequelize,
+        Mongoose,
+        Mocha,
+        Chai,
+      ]
+  - area:
+      es: Nube y DevOps
+      en: Cloud & DevOps
+    items:
+      [
+        AWS,
+        AWS Lambda,
+        API Gateway,
+        Fargate,
+        Serverless,
+        Docker,
+        GitHub Actions,
+        Terraform,
+        OpenTofu,
+        CI/CD,
+      ]
+  - area:
+      es: Bases de datos
+      en: Databases
+    items: [PostgreSQL, MySQL, MongoDB, DynamoDB, Neo4j, Elasticsearch]
+  - area:
+      es: Herramientas
+      en: Tools
+    items:
+      [
+        Git,
+        GitHub,
+        GitLab,
+        Bitbucket,
+        Jira,
+        Confluence,
+        GNU/Linux,
+        macOS,
+        Visual Studio Code,
+      ]
+
+education:
+  - title:
+      es: Ingeniería de Sistemas
+      en: Systems Engineering degree
+    institution: Universidad Manuela Beltrán
+    location:
+      es: Bogotá, Colombia
+      en: Bogotá, Colombia
+    year: 2011
+  - title:
+      es: Diplomado en Nuevas Tecnologías en las Organizaciones
+      en: Diploma in New Technologies in Organizations
+    institution: Universidad Manuela Beltrán
+    details:
+      es: ITIL, XML, servicios web, J2ME, J2EE, SQL Server Integration Services, BPM y evaluación de proyectos.
+      en: ITIL, XML, web services, J2ME, J2EE, SQL Server Integration Services, BPM and project evaluation.
+
+courses:
+  - name: Oracle Service Oriented Architecture Infrastructure Implementation Certified Expert
+    provider: Oracle
+    certification: true
+  - name: "Oracle SOA Suite 11g: Build Composite Applications"
+    provider: Oracle
+  - name: "Oracle SOA Suite 11g: Essential Concepts"
+    provider: Oracle
+  - name: "Oracle Fusion Middleware 11g: Build Web Services"
+    provider: Oracle
+  - name: AngularJS Engineering
+    provider: Thinkful
+  - name: "Microservices: Designing Highly Scalable Systems"
+    provider: Udemy
+  - name: Build a Blockchain and a Cryptocurrency from Scratch
+    provider: Udemy
+  - name: Ethereum Blockchain Developer Bootcamp With Solidity
+    provider: Udemy
+
+languages:
+  - language:
+      es: Español
+      en: Spanish
+    level:
+      es: Nativo
+      en: Native
+  - language:
+      es: Inglés
+      en: English
+    level:
+      es: Intermedio
+      en: Intermediate
+
+links:
+  github: https://github.com/jcortes

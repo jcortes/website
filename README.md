@@ -37,6 +37,14 @@ languages (`{ es: …, en: … }`). The file name is the slug.
 - `src/content/projects/`: past work, shown as "Related work" on every gig it
   lists in `gigs`. Confidential projects may not have a client name or links.
 
+- `src/content/profile/profile.yaml`: the Profile/CV singleton (summary,
+  experience, skills, education, courses, languages, links). It feeds the
+  About page (`/sobre-mi/`, `/en/about/`) and the CV PDF generated from it at
+  build time (`jorge-cortes-cv.pdf` next to each About page), so the two
+  never diverge. Clients appear only as anonymized descriptors; the profile
+  has no phone numbers and no references. See
+  [ADR 0001](docs/adr/0001-cv-pdf-generated-with-pdfkit.md).
+
 Schemas live in `src/content.config.ts`. The build fails on invalid content,
 including a project that references a missing gig.
 
@@ -55,8 +63,9 @@ built with `CONTENT_FIXTURES=true` so that test-only entries from
 That build goes to `dist-e2e/`, never to `dist/`, and the privacy guard scans
 the real production build in `dist/`.
 
-It includes a **privacy guard** that scans the build and fails if it finds a
-phone number or a client name from the denylist (see [Privacy](#privacy)).
+It includes a **privacy guard** that scans the build, including the text of
+the CV PDFs, and fails if it finds a phone number or a client name from the
+denylist (see [Privacy](#privacy)).
 
 ## Build
 
