@@ -1,0 +1,150 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import type { Locale } from "../i18n/ui";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const REPO = "https://github.com/jcortes/website";
+
+/**
+ * The site as it actually is: keep this page in step with infra/,
+ * .github/workflows/ and functions/ when they change.
+ */
+const copy = {
+  es: {
+    title: "Cómo construí este sitio",
+    kicker: "Detrás de escena",
+    lead: "Este sitio también es parte de mi portafolio: el mismo enfoque de entrega automatizada e infraestructura como código que ofrezco a mis clientes, aplicado aquí. Todo el código es público.",
+    repo: "Ver el repositorio",
+    sections: [
+      {
+        title: "Arquitectura",
+        intro:
+          "Un sitio estático servido desde el borde de Cloudflare, con dos funciones pequeñas para lo que necesita un servidor.",
+        items: [
+          "Astro genera HTML estático en español (raíz) e inglés (/en/), con Tailwind CSS. No hay base de datos.",
+          "El contenido (servicios, proyectos, perfil, testimonios) son archivos YAML en el repositorio, validados con esquemas: contenido inválido rompe el build.",
+          "El CV en PDF y las imágenes Open Graph se generan en cada build a partir del mismo contenido, así que nunca se desactualizan.",
+          "Cloudflare Pages sirve el sitio en *.pages.dev. Dos Pages Functions: /api/contact valida el formulario, verifica Turnstile y envía el correo con Resend; /api/event guarda los eventos de conversión en Workers Analytics Engine.",
+          "Analítica sin cookies con Cloudflare Web Analytics, por eso no hay banner de consentimiento.",
+        ],
+      },
+      {
+        title: "Pipeline",
+        intro: "GitHub Actions verifica cada cambio antes de publicarlo.",
+        items: [
+          "Lint (ESLint y Prettier), chequeo de tipos y pruebas unitarias (Vitest) de los manejadores HTTP.",
+          "Lighthouse CI en cada página: falla por debajo de 95 en rendimiento.",
+          "Pruebas end-to-end con Playwright sobre el build de producción: rutas en ambos idiomas, formulario, eventos de conversión, accesibilidad con axe, SEO y una guarda de privacidad que busca teléfonos y nombres de clientes en el HTML y el PDF.",
+          "En cada pull request: tofu fmt, validate y plan (publicado en el PR) y un despliegue de vista previa con su propia URL.",
+          "Al fusionar en main: tofu apply y despliegue a producción.",
+        ],
+      },
+      {
+        title: "Infraestructura como código",
+        intro:
+          "OpenTofu define todo lo que el sitio necesita en Cloudflare, en infra/.",
+        items: [
+          "El proyecto de Cloudflare Pages y la configuración de sus funciones: secretos como variables de entorno y el dataset de Analytics Engine.",
+          "El widget de Turnstile (protección contra spam sin CAPTCHAs molestos), cuya clave secreta va directo a la función de contacto.",
+          "El sitio de Web Analytics.",
+          "El estado vive en un bucket privado de Cloudflare R2; la decisión está documentada en un ADR.",
+          "Ningún secreto está en el repositorio: vienen de los secretos de GitHub Actions y de Cloudflare.",
+        ],
+      },
+    ],
+  },
+  en: {
+    title: "How I built this site",
+    kicker: "Behind the scenes",
+    lead: "This site is part of my portfolio too: the same automated delivery and infrastructure as code I offer clients, applied here. All the code is public.",
+    repo: "See the repository",
+    sections: [
+      {
+        title: "Architecture",
+        intro:
+          "A static site served from Cloudflare's edge, with two small functions for what needs a server.",
+        items: [
+          "Astro builds static HTML in Spanish (root) and English (/en/), styled with Tailwind CSS. There is no database.",
+          "Content (services, projects, profile, testimonials) is YAML files in the repository, validated against schemas: invalid content fails the build.",
+          "The CV PDF and the Open Graph images are generated on every build from the same content, so they never go stale.",
+          "Cloudflare Pages serves the site on *.pages.dev. Two Pages Functions: /api/contact validates the form, verifies Turnstile and sends the email through Resend; /api/event stores conversion events in Workers Analytics Engine.",
+          "Cookie-free analytics with Cloudflare Web Analytics, so there's no consent banner.",
+        ],
+      },
+      {
+        title: "Pipeline",
+        intro: "GitHub Actions verifies every change before it goes live.",
+        items: [
+          "Lint (ESLint and Prettier), typechecking and unit tests (Vitest) for the HTTP handlers.",
+          "Lighthouse CI on every page: fails below 95 on performance.",
+          "End-to-end tests with Playwright against the production build: routes in both languages, the contact form, conversion events, axe accessibility checks, SEO, and a privacy guard that scans the HTML and the PDF for phone numbers and client names.",
+          "On every pull request: tofu fmt, validate and plan (posted to the PR), and a preview deploy with its own URL.",
+          "On merge to main: tofu apply and a production deploy.",
+        ],
+      },
+      {
+        title: "Infrastructure as code",
+        intro:
+          "OpenTofu defines everything the site needs on Cloudflare, in infra/.",
+        items: [
+          "The Cloudflare Pages project and its functions' configuration: secrets as environment variables and the Analytics Engine dataset.",
+          "The Turnstile widget (spam protection without annoying CAPTCHAs), whose secret key goes straight to the contact function.",
+          "The Web Analytics site.",
+          "State lives in a private Cloudflare R2 bucket; the decision is recorded in an ADR.",
+          "No secret is in the repository: they come from GitHub Actions and Cloudflare secrets.",
+        ],
+      },
+    ],
+  },
+} as const satisfies Record<Locale, unknown>;
+
+const c = copy[locale];
+const repoLabel = new URL(REPO).pathname.slice(1);
+---
+
+<BaseLayout locale={locale} title={c.title} description={c.lead}>
+  <article class="mx-auto flex max-w-5xl flex-col gap-16 px-6 py-16 sm:py-24">
+    <header class="flex max-w-3xl flex-col gap-5">
+      <p class="font-mono text-sm tracking-widest text-accent uppercase">
+        {c.kicker}
+      </p>
+      <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">
+        {c.title}
+      </h1>
+      <p class="text-lg text-pretty text-ink-muted">{c.lead}</p>
+      <p class="pt-2">
+        <a
+          href={REPO}
+          rel="noopener"
+          class="inline-block rounded-md border border-accent px-4 py-2.5 font-medium text-accent transition-colors hover:bg-accent hover:text-surface"
+        >
+          {c.repo}: <span class="font-mono">{repoLabel}</span> ↗
+        </a>
+      </p>
+    </header>
+
+    {c.sections.map((section, index) => (
+      <section
+        aria-labelledby={`built-${index}`}
+        class="flex flex-col gap-5 border-t border-line pt-10"
+      >
+        <h2 id={`built-${index}`} class="text-2xl font-semibold tracking-tight">
+          {section.title}
+        </h2>
+        <p class="max-w-3xl text-lg text-pretty text-ink-muted">
+          {section.intro}
+        </p>
+        <ul class="flex max-w-3xl list-disc flex-col gap-3 pl-5 marker:text-accent">
+          {section.items.map((item) => (
+            <li class="text-pretty">{item}</li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </article>
+</BaseLayout>

@@ -10,6 +10,8 @@ import {
   type FieldError,
   type FieldErrors,
 } from "./submission";
+import { track } from "../analytics/track";
+import { setupTurnstile } from "./turnstile";
 
 /** Localized strings the script needs, rendered by the page. */
 export interface FormMessages {
@@ -31,6 +33,8 @@ export function setupContactForm(form: HTMLFormElement): void {
   const success = byId("contact-success")!;
   const calLinks =
     document.querySelectorAll<HTMLAnchorElement>("[data-cal-link]");
+
+  const resetTurnstile = setupTurnstile(form);
 
   preselect(gig, pkg);
   const syncCalLinks = () => {
@@ -74,8 +78,10 @@ export function setupContactForm(form: HTMLFormElement): void {
         form.hidden = true;
         success.hidden = false;
         success.focus();
+        track("contact_submitted");
         return;
       }
+      resetTurnstile();
       const body = (await response.json().catch(() => ({}))) as {
         fields?: FieldErrors;
       };
@@ -85,6 +91,7 @@ export function setupContactForm(form: HTMLFormElement): void {
       }
       showFailure(failure);
     } catch {
+      resetTurnstile();
       showFailure(failure);
     } finally {
       submit.disabled = false;

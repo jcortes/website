@@ -72,9 +72,36 @@ The form posts JSON to `/api/contact`, a Cloudflare Pages Function
 verifier and email sender are injected, so unit tests drive it with fakes.
 Form and handler share the validation in `src/contact/submission.ts`. The
 function reads `CONTACT_TO_EMAIL`, `RESEND_API_KEY` and
-`TURNSTILE_SECRET_KEY` from the Pages environment. Nothing is hardcoded. The
-Turnstile widget and these bindings are part of the infrastructure work, so
-real submissions are rejected (403) until then.
+`TURNSTILE_SECRET_KEY` from the Pages environment, set by OpenTofu (see
+[Infrastructure and deployment](#infrastructure-and-deployment)). Nothing is
+hardcoded.
+
+The Turnstile widget renders only when the build gets
+`PUBLIC_TURNSTILE_SITE_KEY` (CI passes it from the OpenTofu outputs); local,
+E2E and Lighthouse builds have no widget, so a real handler would reject their
+submissions with 403. Cloudflare's script loads on the visitor's first
+interaction with the form, to keep the page fast.
+
+## Analytics
+
+Page views: Cloudflare Web Analytics (cookie-free). The beacon is embedded
+only when the build gets `PUBLIC_CF_ANALYTICS_TOKEN`, so production only.
+
+Conversion events: a click on any element marked `data-track="book_call"` (every
+"Book a call" link) and a successful contact submission (`contact_submitted`)
+are reported with `navigator.sendBeacon` to `/api/event`
+(`functions/api/event.ts`, a thin shell around `src/analytics/events.ts`). It
+accepts only known event names and site paths and writes them to the Workers
+Analytics Engine dataset `website_events` (`blob1` = event, `blob2` = path).
+Query them with the
+[SQL API](https://developers.cloudflare.com/analytics/analytics-engine/sql-api/):
+
+```sql
+SELECT blob1 AS event, blob2 AS path, SUM(_sample_interval) AS count
+FROM website_events
+WHERE timestamp > NOW() - INTERVAL '30' DAY
+GROUP BY event, path
+```
 
 ## Test
 
@@ -119,7 +146,49 @@ pnpm preview      # serve dist/ locally
 
 `.github/workflows/ci.yml` runs lint, typecheck, unit tests, build,
 Lighthouse CI and E2E on every pull request and on pushes to `main`. The
-Lighthouse reports are uploaded as a build artifact.
+Lighthouse reports are uploaded as a build artifact. Then it plans or applies
+the infrastructure and deploys, below.
+
+## Infrastructure and deployment
+
+The site runs on Cloudflare Pages at `https://jcortes.pages.dev`. Everything
+it needs on Cloudflare is OpenTofu code in `infra/`: the Pages project
+(direct upload), the contact and event functions' bindings (`CONTACT_TO_EMAIL`,
+`RESEND_API_KEY` and `TURNSTILE_SECRET_KEY` as secrets, the `EVENTS` Analytics
+Engine dataset) for production and previews, the Turnstile widget and the Web
+Analytics site. State lives in a private R2 bucket
+([ADR 0002](docs/adr/0002-opentofu-state-in-cloudflare-r2.md)).
+
+After the checks pass, the workflow (jobs `infra` and `deploy`, in the
+`production` GitHub environment):
+
+- **On pull requests**: `tofu fmt -check`, `validate` and `plan`; the plan is
+  posted to the PR as a comment. Then a preview deploy of the branch, whose URL
+  is posted to the PR too. PRs from forks get neither (no secrets).
+- **On `main`**: `tofu apply`, then a production deploy.
+
+The build gets `SITE_URL`, `PUBLIC_TURNSTILE_SITE_KEY` and
+`PUBLIC_CF_ANALYTICS_TOKEN` from the OpenTofu outputs, and Wrangler
+(`pages deploy`) uploads `dist/` and the `functions/`. Until the first apply
+has created the project, the deploy job is skipped.
+
+No secret is in the repository. CI reads `CLOUDFLARE_API_TOKEN`,
+`RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `TOFU_STATE_ACCESS_KEY_ID` and
+`TOFU_STATE_SECRET_ACCESS_KEY` (secrets) and `CLOUDFLARE_ACCOUNT_ID` (a
+variable) from the `production` environment; the Turnstile secret goes from
+OpenTofu straight to Cloudflare.
+
+### First deployment
+
+1. Run `./scripts/setup-accounts.sh`: it creates the GitHub environment and
+   walks you through the R2 state bucket and its keys, among the rest.
+2. Open a pull request: the plan should create three resources. The preview
+   deploy is skipped this time, since nothing exists yet.
+3. Merge: CI applies, then deploys production.
+
+The "How I built this site" page (`/como-lo-construi/`,
+`/en/how-i-built-it/`, `src/components/BuiltPage.astro`) describes this setup
+for visitors; keep it in step when it changes.
 
 ## SEO
 
@@ -141,7 +210,9 @@ Cloudflare, Resend and Cal.com are set up by hand, guided by a wizard:
 
 It opens each dashboard, tells you what to click, and stores the values in the
 git-ignored `.env` and in the `production` GitHub Actions environment
-(`CLOUDFLARE_API_TOKEN`, `RESEND_API_KEY` and `CONTACT_TO_EMAIL` as secrets;
+(`CLOUDFLARE_API_TOKEN`, `TOFU_STATE_ACCESS_KEY_ID`,
+`TOFU_STATE_SECRET_ACCESS_KEY`, `RESEND_API_KEY` and `CONTACT_TO_EMAIL` as
+secrets;
 `CLOUDFLARE_ACCOUNT_ID` and `CALCOM_BOOKING_URL` as variables). CI jobs that
 need them must declare `environment: production`. Re-running it is safe: press
 Enter to keep a saved value.

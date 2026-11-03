@@ -203,6 +203,7 @@ finish() {
 # to the GitHub Actions environment below.
 GH_ENVIRONMENT="${GH_ENVIRONMENT:-production}"
 CF_API="https://api.cloudflare.com/client/v4"
+TOFU_STATE_BUCKET="website-tofu-state"   # must match infra/versions.tf
 
 _gh_ready() { command -v gh >/dev/null 2>&1 && gh auth status >/dev/null 2>&1; }
 
@@ -257,7 +258,7 @@ _EMAIL_RE='^[^@"\\[:space:]]+@[^@"\\[:space:]]+\.[^@"\\[:space:]]+$'
 
 run_wizard() {
 
-TOTAL_STAGES=7
+TOTAL_STAGES=8
 
 banner "Website: third-party accounts and secrets"
 
@@ -296,8 +297,6 @@ note "    Account · Cloudflare Pages · Edit"
 note "    Account · Turnstile · Edit"
 note "    Account · Account Settings · Edit   (Web Analytics: create)"
 note "    Account · Account Settings · Read   (Web Analytics: read; Edit doesn't cover it)"
-note "    Account · Workers R2 Storage · Edit (only if OpenTofu state lives in R2;"
-note "                                         enable R2 in the dashboard first)"
 step "Account Resources: Include → your account. Continue to summary → Create Token."
 step "Copy the token (it's shown only once)."
 require CLOUDFLARE_API_TOKEN "Paste the API token:" secret
@@ -312,6 +311,28 @@ cf_check() {
 cf_check "Pages" "pages/projects"
 cf_check "Turnstile" "challenges/widgets"
 cf_check "Web Analytics" "rum/site_info/list"
+pause
+
+stage "Cloudflare R2: OpenTofu state"
+say "OpenTofu keeps its state in a private R2 bucket (docs/adr/0002)."
+open_url "https://dash.cloudflare.com/?to=/:account/r2/overview"
+step "If asked, enable R2 (the free tier is enough; it may ask for a payment method)."
+step "Create bucket → name it exactly: $TOFU_STATE_BUCKET → location Automatic → Create."
+step "Back on R2 overview: Manage R2 API Tokens (API → Manage API tokens) → Create Account API token."
+step "Name 'website-opentofu-state', permission 'Object Read & Write',"
+note "    'Apply to specific buckets only' → $TOFU_STATE_BUCKET. Create."
+step "Copy the S3 'Access Key ID' and 'Secret Access Key' (shown only once)."
+require TOFU_STATE_ACCESS_KEY_ID "Paste the Access Key ID:"
+write_env TOFU_STATE_ACCESS_KEY_ID "$TOFU_STATE_ACCESS_KEY_ID"
+env_secret TOFU_STATE_ACCESS_KEY_ID "$TOFU_STATE_ACCESS_KEY_ID"
+require TOFU_STATE_SECRET_ACCESS_KEY "Paste the Secret Access Key:" secret
+write_env TOFU_STATE_SECRET_ACCESS_KEY "$TOFU_STATE_SECRET_ACCESS_KEY"
+env_secret TOFU_STATE_SECRET_ACCESS_KEY "$TOFU_STATE_SECRET_ACCESS_KEY"
+# Lists the bucket with a SigV4-signed request; credentials go through stdin.
+code=$(printf 'user = "%s:%s"\n' "$TOFU_STATE_ACCESS_KEY_ID" "$TOFU_STATE_SECRET_ACCESS_KEY" |
+  _http_code "https://$CLOUDFLARE_ACCOUNT_ID.r2.cloudflarestorage.com/$TOFU_STATE_BUCKET?list-type=2&max-keys=1" \
+    --aws-sigv4 "aws:amz:auto:s3" -K -)
+if [[ "$code" == 200 ]]; then note "  ✓ the bucket is reachable with these keys"; else warn "bucket check: HTTP $code (bucket name or key scope?)"; fi
 pause
 
 stage "Resend: API key"

@@ -19,6 +19,7 @@ export const ui = {
     "nav.services": "Servicios",
     "nav.about": "Sobre mí",
     "nav.contact": "Contacto",
+    "nav.built": "Cómo lo hice",
     "contact.title": "Contacto",
     "contact.lead":
       "Cuéntame qué necesitas y te responderé a tu correo con los siguientes pasos.",
@@ -148,6 +149,7 @@ export const ui = {
     "nav.services": "Services",
     "nav.about": "About",
     "nav.contact": "Contact",
+    "nav.built": "How I built it",
     "contact.title": "Contact",
     "contact.lead":
       "Tell me what you need and I'll reply to your email with the next steps.",

@@ -37,6 +37,8 @@ const alternates = [
   },
 ];
 const ogLocales: Record<Locale, string> = { es: "es_CO", en: "en_US" };
+// Cookie-free page views (Cloudflare Web Analytics); production builds only.
+const analyticsToken = import.meta.env.PUBLIC_CF_ANALYTICS_TOKEN;
 ---
 
 <!doctype html>
@@ -69,6 +71,14 @@ const ogLocales: Record<Locale, string> = { es: "es_CO", en: "en_US" };
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={t("site.title")} />
     <meta name="twitter:card" content="summary_large_image" />
+    {analyticsToken && (
+      <script
+        is:inline
+        defer
+        src="https://static.cloudflareinsights.com/beacon.min.js"
+        data-cf-beacon={JSON.stringify({ token: analyticsToken })}
+      />
+    )}
   </head>
   <body class="relative isolate min-h-dvh">
     <CircuitBackground />
@@ -82,5 +92,10 @@ const ogLocales: Record<Locale, string> = { es: "es_CO", en: "en_US" };
     <main id="main">
       <slot />
     </main>
+    <script>
+      import { trackMarkedClicks } from "../analytics/track";
+
+      trackMarkedClicks(document);
+    </script>
   </body>
 </html>

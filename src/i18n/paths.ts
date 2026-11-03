@@ -6,6 +6,7 @@ const sections = {
   services: { es: "servicios", en: "services" },
   about: { es: "sobre-mi", en: "about" },
   contact: { es: "contacto", en: "contact" },
+  built: { es: "como-lo-construi", en: "how-i-built-it" },
 } as const satisfies Record<string, Record<Locale, string>>;
 
 export type Section = keyof typeof sections;

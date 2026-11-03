@@ -28,12 +28,13 @@ const t = useTranslations(locale);
     aria-label={t("nav.main")}
     class="order-last basis-full sm:order-none sm:ml-auto sm:basis-auto"
   >
-    <ul class="-mx-2.5 flex items-center gap-1 sm:mx-0">
+    <ul class="-mx-2.5 flex flex-wrap items-center gap-x-1 sm:mx-0">
       {(
         [
           ["services", "nav.services"],
           ["about", "nav.about"],
           ["contact", "nav.contact"],
+          ["built", "nav.built"],
         ] as const
       ).map(([section, label]) => (
         <li>
