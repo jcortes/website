@@ -45,6 +45,8 @@ jobs:
         run: pnpm build
         env:
           CONTENT_FIXTURES: "true"
+          # Fake booking link expected by e2e/contact.spec.ts.
+          CALCOM_BOOKING_URL: https://cal.com/e2e/discovery-call
 
       - name: Install Playwright browser
         run: pnpm exec playwright install --with-deps chromium

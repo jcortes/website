@@ -2,6 +2,9 @@ import { existsSync } from "node:fs";
 import { defineConfig, devices } from "@playwright/test";
 
 const PORT = 4329;
+// Fake booking URL built into the E2E site; e2e/contact.spec.ts expects it.
+// CI sets the same value on its E2E build step.
+const E2E_CALCOM_BOOKING_URL = "https://cal.com/e2e/discovery-call";
 
 // Local runs pick up PRIVACY_DENYLIST (and the rest) from the git-ignored
 // .env written by scripts/setup-accounts.sh. CI passes secrets as env vars.
@@ -25,7 +28,7 @@ export default defineConfig({
   webServer: {
     command: process.env.CI
       ? `CONTENT_FIXTURES=true pnpm preview --port ${PORT} --ignore-lock`
-      : `pnpm build && CONTENT_FIXTURES=true pnpm build && CONTENT_FIXTURES=true pnpm preview --port ${PORT} --ignore-lock`,
+      : `pnpm build && CONTENT_FIXTURES=true CALCOM_BOOKING_URL=${E2E_CALCOM_BOOKING_URL} pnpm build && CONTENT_FIXTURES=true pnpm preview --port ${PORT} --ignore-lock`,
     url: `http://localhost:${PORT}`,
     reuseExistingServer: false,
     timeout: 120_000,

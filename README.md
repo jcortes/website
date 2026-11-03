@@ -48,6 +48,24 @@ languages (`{ es: …, en: … }`). The file name is the slug.
 Schemas live in `src/content.config.ts`. The build fails on invalid content,
 including a project that references a missing gig.
 
+## Contact
+
+`/contacto/` and `/en/contact/` hold the contact form. A gig's "Request a
+quote" button opens it with `?gig=<slug>&package=<tier>`, which preselects
+both. Next to the form, "Book a 30-min call" links to `CALCOM_BOOKING_URL`
+(read at build time; the link is omitted when it's unset), with the selected
+gig in the booking notes.
+
+The form posts JSON to `/api/contact`, a Cloudflare Pages Function
+(`functions/api/contact.ts`). The function is a thin shell around
+`src/contact/handler.ts`, a request → response handler whose Turnstile
+verifier and email sender are injected, so unit tests drive it with fakes.
+Form and handler share the validation in `src/contact/submission.ts`. The
+function reads `CONTACT_TO_EMAIL`, `RESEND_API_KEY` and
+`TURNSTILE_SECRET_KEY` from the Pages environment. Nothing is hardcoded. The
+Turnstile widget and these bindings are part of the infrastructure work, so
+real submissions are rejected (403) until then.
+
 ## Test
 
 ```sh
