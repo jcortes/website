@@ -1,0 +1,30 @@
+---
+import { localizedPath } from "../i18n/paths";
+import { useTranslations, type Locale } from "../i18n/ui";
+import LanguageSwitcher from "./LanguageSwitcher.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+// Chosen variant; alternatives live alongside it in src/assets/brand/.
+import Logo from "../assets/brand/logo-c-solid.svg";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<header class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-5">
+  <a
+    href={localizedPath("/", locale)}
+    class="flex items-center gap-3 font-mono text-sm font-semibold tracking-wide"
+  >
+    <Logo class="size-9" />
+    <span>Jorge Cortés</span>
+    <span class="sr-only">· {t("nav.home")}</span>
+  </a>
+  <div class="flex items-center gap-3">
+    <LanguageSwitcher locale={locale} />
+    <ThemeToggle locale={locale} />
+  </div>
+</header>

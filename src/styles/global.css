@@ -1,0 +1,45 @@
+@import "tailwindcss";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/jetbrains-mono";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/*
+ * Palette: deep "PCB" navy surfaces with a single copper-teal accent.
+ * Light mode swaps to paper surfaces and a darker accent for contrast.
+ */
+@theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+
+  --color-surface: #f6f8fa;
+  --color-surface-raised: #ffffff;
+  --color-ink: #0f172a;
+  --color-ink-muted: #475569;
+  --color-line: #cbd5e1;
+  --color-accent: #0f766e;
+}
+
+[data-theme="dark"] {
+  --color-surface: #070d1a;
+  --color-surface-raised: #0e1726;
+  --color-ink: #e2e8f0;
+  --color-ink-muted: #94a3b8;
+  --color-line: #1e293b;
+  --color-accent: #2dd4bf;
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+}
+
+@layer base {
+  html {
+    @apply bg-surface text-ink font-sans antialiased;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-accent;
+  }
+}

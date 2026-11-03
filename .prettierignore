@@ -1,0 +1,7 @@
+dist/
+.astro/
+pnpm-lock.yaml
+playwright-report/
+test-results/
+src/assets/brand/
+public/favicon.svg

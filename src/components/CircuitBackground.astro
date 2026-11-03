@@ -1,0 +1,142 @@
+---
+// Decorative PCB-style traces with a few "signal pulses" travelling along
+// them. Pure SVG + CSS; the pulses stop under prefers-reduced-motion.
+
+// Traces in a 1440×900 board, using right angles and 45° bends. Some carry
+// an animated signal pulse with its own timing (seconds).
+interface Trace {
+  d: string;
+  pulse?: { duration: number; delay: number };
+}
+
+const traces: Trace[] = [
+  {
+    d: "M0 120 H180 L240 180 H420 L480 120 H640",
+    pulse: { duration: 7, delay: 0 },
+  },
+  { d: "M0 300 H90 L150 360 H330", pulse: { duration: 6, delay: 3.5 } },
+  {
+    d: "M0 640 H220 L280 580 H460 L520 520 H600",
+    pulse: { duration: 9, delay: 2.5 },
+  },
+  { d: "M0 780 H140 L200 840 H380" },
+  {
+    d: "M1440 90 H1260 L1200 150 H1020 L960 210 H860",
+    pulse: { duration: 8, delay: 1 },
+  },
+  { d: "M1440 330 H1320 L1260 390 H1100" },
+  {
+    d: "M1440 560 H1300 L1240 500 H1060 L1000 560 H900",
+    pulse: { duration: 10, delay: 4 },
+  },
+  {
+    d: "M1440 760 H1220 L1160 820 H980 L920 760 H820",
+    pulse: { duration: 9, delay: 6 },
+  },
+  { d: "M300 0 V60 L360 120" },
+  { d: "M1100 900 V820 L1040 760 H980" },
+  { d: "M700 900 V840 L760 780 H880" },
+  { d: "M760 0 V50 L820 110 H900" },
+];
+
+// Vias (pads) sitting on trace ends.
+const pads: Array<[number, number]> = [
+  [640, 120],
+  [420, 180],
+  [330, 360],
+  [600, 520],
+  [460, 580],
+  [380, 840],
+  [860, 210],
+  [1020, 150],
+  [1100, 390],
+  [900, 560],
+  [1060, 500],
+  [820, 760],
+  [980, 820],
+  [360, 120],
+  [980, 760],
+  [880, 780],
+  [900, 110],
+];
+---
+
+<div
+  data-testid="circuit-background"
+  aria-hidden="true"
+  class="circuit-background pointer-events-none fixed inset-0 -z-10 overflow-hidden"
+>
+  <svg
+    class="size-full"
+    viewBox="0 0 1440 900"
+    preserveAspectRatio="xMidYMid slice"
+    fill="none"
+  >
+    <g
+      class="text-line"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linejoin="round"
+    >
+      {traces.map(({ d }) => (
+        <path d={d} />
+      ))}
+    </g>
+    <g
+      class="text-line"
+      fill="var(--color-surface)"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      {pads.map(([cx, cy]) => (
+        <circle cx={cx} cy={cy} r="5" />
+      ))}
+    </g>
+    <g
+      class="text-accent"
+      stroke="currentColor"
+      stroke-width="2.5"
+      stroke-linecap="round"
+    >
+      {traces.map(
+        ({ d, pulse }) =>
+          pulse && (
+            <path
+              class="circuit-pulse"
+              d={d}
+              pathLength="100"
+              style={`animation-duration: ${pulse.duration}s; animation-delay: -${pulse.delay}s`}
+            />
+          ),
+      )}
+    </g>
+  </svg>
+</div>
+
+<style>
+  .circuit-background {
+    opacity: 0.55;
+    mask-image: radial-gradient(ellipse at center, transparent 20%, black 85%);
+  }
+
+  .circuit-pulse {
+    stroke-dasharray: 8 92;
+    stroke-dashoffset: 100;
+    animation-name: circuit-signal;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes circuit-signal {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .circuit-pulse {
+      animation: none;
+      stroke-dashoffset: 0;
+    }
+  }
+</style>

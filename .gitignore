@@ -1,0 +1,9 @@
+# Original CV: contains private data and must never be committed.
+/cv.pdf
+
+node_modules/
+dist/
+.astro/
+test-results/
+playwright-report/
+.DS_Store
