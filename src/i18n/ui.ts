@@ -103,10 +103,39 @@ export const ui = {
     "gig.requirements": "Lo que necesito de ti",
     "theme.toLight": "Cambiar a modo claro",
     "theme.toDark": "Cambiar a modo oscuro",
-    "home.eyebrow": "Sitio en construcción",
+    "og.tagline": "{years}+ años · Backend, nube (AWS) y CI/CD",
     "home.title": "Ingeniero de Software y DevOps independiente",
-    "home.lead":
-      "Más de 15 años construyendo backends, infraestructura en AWS y pipelines de CI/CD. Muy pronto encontrarás aquí mis servicios y proyectos.",
+    "home.value":
+      "{years}+ años llevando software a producción: entregas automatizadas, infraestructura como código y backends en los que puedes confiar.",
+    "home.bookCall": "Agendar una llamada",
+    "home.seeServices": "Ver servicios",
+    "home.trust": "En resumen",
+    "home.trust.years": "años de experiencia",
+    "home.trust.tech": "Tecnologías principales",
+    "home.services": "Servicios",
+    "home.services.lead":
+      "Tres formas concretas de ayudarte, cada una con paquetes de alcance claro.",
+    "home.services.all": "Ver todos los servicios",
+    "home.process": "Cómo trabajo",
+    "home.process.diagnosis": "Diagnóstico",
+    "home.process.diagnosis.body":
+      "Entiendo tu problema, lo que tienes hoy y lo que necesitas lograr.",
+    "home.process.proposal": "Propuesta",
+    "home.process.proposal.body":
+      "Te propongo un alcance, entregables y tiempos claros antes de empezar.",
+    "home.process.implementation": "Implementación",
+    "home.process.implementation.body":
+      "Construyo en tu repositorio, con pruebas y avances visibles en todo momento.",
+    "home.process.support": "Soporte",
+    "home.process.support.body":
+      "Te acompaño después de la entrega: traspaso, documentación y ajustes.",
+    "home.about": "Sobre mí",
+    "home.about.more": "Conoce mi trayectoria",
+    "home.testimonials": "Testimonios",
+    "home.cta": "¿Hablamos?",
+    "home.cta.lead":
+      "Cuéntame qué necesitas o agenda una llamada de 30 minutos. Sin compromiso.",
+    "home.cta.contact": "Escríbeme",
   },
   en: {
     "site.title": "Jorge Cortés · Software & DevOps Engineer",
@@ -204,10 +233,39 @@ export const ui = {
     "gig.requirements": "What I need from you",
     "theme.toLight": "Switch to light mode",
     "theme.toDark": "Switch to dark mode",
-    "home.eyebrow": "Site under construction",
+    "og.tagline": "{years}+ years · Backend, cloud (AWS) and CI/CD",
     "home.title": "Independent Software & DevOps Engineer",
-    "home.lead":
-      "15+ years building backends, AWS infrastructure and CI/CD pipelines. My services and past work will be here very soon.",
+    "home.value":
+      "{years}+ years shipping software to production: automated delivery, infrastructure as code and backends you can rely on.",
+    "home.bookCall": "Book a call",
+    "home.seeServices": "See services",
+    "home.trust": "At a glance",
+    "home.trust.years": "years of experience",
+    "home.trust.tech": "Key technologies",
+    "home.services": "Services",
+    "home.services.lead":
+      "Three concrete ways I can help, each with clearly scoped packages.",
+    "home.services.all": "See all services",
+    "home.process": "How I work",
+    "home.process.diagnosis": "Diagnosis",
+    "home.process.diagnosis.body":
+      "I get to know your problem, what you have today and what you need to achieve.",
+    "home.process.proposal": "Proposal",
+    "home.process.proposal.body":
+      "You get a clear scope, deliverables and timeline before any work starts.",
+    "home.process.implementation": "Implementation",
+    "home.process.implementation.body":
+      "I build in your repository, with tests and progress you can see at any time.",
+    "home.process.support": "Support",
+    "home.process.support.body":
+      "I stay with you after delivery: handover, documentation and adjustments.",
+    "home.about": "About me",
+    "home.about.more": "Read my background",
+    "home.testimonials": "Testimonials",
+    "home.cta": "Let's talk",
+    "home.cta.lead":
+      "Tell me what you need or book a 30-minute call. No strings attached.",
+    "home.cta.contact": "Write to me",
   },
 } as const satisfies Record<Locale, Record<string, string>>;
 

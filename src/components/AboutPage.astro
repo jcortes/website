@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getProfile } from "../content/profile";
+import { getSettings } from "../content/settings";
 import { periodBounds } from "../i18n/dates";
 import { cvPath } from "../i18n/paths";
 import { useTranslations, type Locale } from "../i18n/ui";
@@ -12,6 +13,7 @@ interface Props {
 const { locale } = Astro.props;
 const t = useTranslations(locale);
 const profile = await getProfile();
+const { social } = await getSettings();
 ---
 
 <BaseLayout
@@ -44,17 +46,17 @@ const profile = await getProfile();
         </li>
         <li>
           <a
-            href={profile.links.github}
+            href={social.github}
             rel="me noopener"
             class="font-mono text-sm text-accent hover:underline"
           >
             {t("about.github")} ↗
           </a>
         </li>
-        {profile.links.linkedin && (
+        {social.linkedin && (
           <li>
             <a
-              href={profile.links.linkedin}
+              href={social.linkedin}
               rel="me noopener"
               class="font-mono text-sm text-accent hover:underline"
             >

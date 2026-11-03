@@ -1,0 +1,12 @@
+# E2E fixture: replaces src/content/settings/ when CONTENT_FIXTURES=true, so
+# the values the tests check come from here (see e2e/home.spec.ts and
+# e2e/contact.spec.ts).
+bookingUrl: https://cal.com/e2e/discovery-call
+yearsOfExperience: 15
+trustBar:
+  - AWS
+  - GitHub Actions
+  - Fixture Tech
+social:
+  github: https://github.com/jcortes
+  linkedin: https://www.linkedin.com/in/e2e-fixture

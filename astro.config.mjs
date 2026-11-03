@@ -1,12 +1,17 @@
 // @ts-check
-import { defineConfig, envField } from "astro/config";
+import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
+import sitemap from "@astrojs/sitemap";
 
 // E2E builds include fixture content (see src/content.config.ts) and go to a
 // separate directory, so they can never be mistaken for the production build.
 const fixtures = process.env.CONTENT_FIXTURES === "true";
 
 export default defineConfig({
+  // Production origin, for canonical URLs, hreflang alternates, Open Graph
+  // and the sitemap. SITE_URL overrides it (e.g. for a custom domain).
+  site: process.env.SITE_URL ?? "https://jcortes.pages.dev",
+  integrations: [sitemap()],
   outDir: fixtures ? "./dist-e2e" : "./dist",
   i18n: {
     locales: ["es", "en"],
@@ -14,19 +19,6 @@ export default defineConfig({
     routing: {
       prefixDefaultLocale: false,
       redirectToDefaultLocale: false,
-    },
-  },
-  env: {
-    schema: {
-      // Public booking link for "Book a 30-min call", read at build time.
-      // Set by scripts/setup-accounts.sh (.env and the GitHub environment).
-      // Optional so builds without it still work; the link is then omitted.
-      CALCOM_BOOKING_URL: envField.string({
-        context: "server",
-        access: "public",
-        optional: true,
-        url: true,
-      }),
     },
   },
   vite: {

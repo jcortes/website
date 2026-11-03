@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   verify:
-    name: Lint, typecheck, test, build, E2E
+    name: Lint, typecheck, test, build, E2E, Lighthouse
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -41,12 +41,23 @@ jobs:
       - name: Build
         run: pnpm build
 
+      # Every built page; fails below 95 on performance and reports
+      # accessibility, best practices and SEO (see lighthouserc.json).
+      - name: Lighthouse CI
+        run: pnpm lighthouse
+
+      - name: Upload Lighthouse reports
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci/reports/
+          retention-days: 7
+
       - name: Build with E2E fixture content (into dist-e2e/)
         run: pnpm build
         env:
           CONTENT_FIXTURES: "true"
-          # Fake booking link expected by e2e/contact.spec.ts.
-          CALCOM_BOOKING_URL: https://cal.com/e2e/discovery-call
 
       - name: Install Playwright browser
         run: pnpm exec playwright install --with-deps chromium

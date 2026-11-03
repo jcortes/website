@@ -1,8 +1,7 @@
 ---
-import { CALCOM_BOOKING_URL } from "astro:env/server";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCatalog, tiers } from "../content/catalog";
-import { getProfile } from "../content/profile";
+import { getSettings } from "../content/settings";
 import { budgets, limits, type Field } from "../contact/submission";
 import type { FormMessages } from "../contact/form";
 import { useTranslations, type Locale } from "../i18n/ui";
@@ -14,7 +13,7 @@ interface Props {
 const { locale } = Astro.props;
 const t = useTranslations(locale);
 const { gigs } = await getCatalog();
-const { links } = await getProfile();
+const { bookingUrl, social: links } = await getSettings();
 
 const messages: FormMessages = {
   errors: {
@@ -195,18 +194,16 @@ const linkClass = "font-mono text-sm text-accent hover:underline";
           <p class="font-semibold">{t("contact.failure.title")}</p>
           <p class="text-pretty text-ink-muted">{t("contact.failure.body")}</p>
           <ul class="flex flex-wrap gap-4">
-            {CALCOM_BOOKING_URL && (
-              <li>
-                <a
-                  href={CALCOM_BOOKING_URL}
-                  data-cal-link
-                  data-base={CALCOM_BOOKING_URL}
-                  class={linkClass}
-                >
-                  {t("contact.call.book")} ↗
-                </a>
-              </li>
-            )}
+            <li>
+              <a
+                href={bookingUrl}
+                data-cal-link
+                data-base={bookingUrl}
+                class={linkClass}
+              >
+                {t("contact.call.book")} ↗
+              </a>
+            </li>
             {links.linkedin && (
               <li>
                 <a href={links.linkedin} rel="me noopener" class={linkClass}>
@@ -243,25 +240,23 @@ const linkClass = "font-mono text-sm text-accent hover:underline";
     </div>
 
     <aside class="flex flex-col gap-8 lg:pt-20">
-      {CALCOM_BOOKING_URL && (
-        <section
-          aria-labelledby="call"
-          class="flex flex-col gap-4 rounded-xl border border-line bg-surface-raised p-6"
+      <section
+        aria-labelledby="call"
+        class="flex flex-col gap-4 rounded-xl border border-line bg-surface-raised p-6"
+      >
+        <h2 id="call" class="text-xl font-semibold">
+          {t("contact.call.title")}
+        </h2>
+        <p class="text-pretty text-ink-muted">{t("contact.call.lead")}</p>
+        <a
+          href={bookingUrl}
+          data-cal-link
+          data-base={bookingUrl}
+          class="rounded-md border border-accent px-4 py-2.5 text-center font-medium text-accent transition-colors hover:bg-accent hover:text-surface"
         >
-          <h2 id="call" class="text-xl font-semibold">
-            {t("contact.call.title")}
-          </h2>
-          <p class="text-pretty text-ink-muted">{t("contact.call.lead")}</p>
-          <a
-            href={CALCOM_BOOKING_URL}
-            data-cal-link
-            data-base={CALCOM_BOOKING_URL}
-            class="rounded-md border border-accent px-4 py-2.5 text-center font-medium text-accent transition-colors hover:bg-accent hover:text-surface"
-          >
-            {t("contact.call.book")}
-          </a>
-        </section>
-      )}
+          {t("contact.call.book")}
+        </a>
+      </section>
       <section aria-labelledby="elsewhere" class="flex flex-col gap-3">
         <h2
           id="elsewhere"

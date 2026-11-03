@@ -1,5 +1,6 @@
 import PDFDocument from "pdfkit";
 import type { Profile } from "../content/profile";
+import type { Settings } from "../content/settings";
 import { formatPeriod } from "../i18n/dates";
 import { useTranslations, type Locale } from "../i18n/ui";
 
@@ -15,6 +16,7 @@ const MARGIN = 50;
  */
 export function renderCvPdf(
   profile: Profile,
+  links: Settings["social"],
   locale: Locale,
 ): Promise<Uint8Array<ArrayBuffer>> {
   const t = useTranslations(locale);
@@ -90,8 +92,8 @@ export function renderCvPdf(
     .text(
       [
         profile.location[locale],
-        profile.links.github.replace(/^https?:\/\//, ""),
-        profile.links.linkedin?.replace(/^https?:\/\//, ""),
+        links.github.replace(/^https?:\/\//, ""),
+        links.linkedin?.replace(/^https?:\/\//, ""),
       ]
         .filter(Boolean)
         .join("  ·  "),

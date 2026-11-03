@@ -1,0 +1,14 @@
+# Site settings singleton (see src/content/settings.ts). Public values only.
+bookingUrl: https://cal.com/jcortes/discovery-call-30-min
+yearsOfExperience: 15
+trustBar:
+  - AWS
+  - Terraform / OpenTofu
+  - GitHub Actions
+  - Docker
+  - Node.js
+  - TypeScript
+  - NestJS
+  - GraphQL
+social:
+  github: https://github.com/jcortes

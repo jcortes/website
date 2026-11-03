@@ -57,6 +57,11 @@ export function quotePath(locale: Locale, gig: string, tier: Tier): string {
   return `${sectionPath(locale, "contact")}?${query}`;
 }
 
+/** The Open Graph image shared by every page in `locale`. */
+export function ogImagePath(locale: Locale): string {
+  return `/og/${locale}.png`;
+}
+
 /** The CV PDF generated from the profile, next to the About page. */
 export function cvPath(locale: Locale): string {
   return `${sectionPath(locale, "about")}jorge-cortes-cv.pdf`;

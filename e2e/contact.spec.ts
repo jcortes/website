@@ -1,7 +1,7 @@
 import { expect, test, type Page, type Route } from "@playwright/test";
 
-// The E2E build sets CALCOM_BOOKING_URL to this (see playwright.config.ts and
-// the CI workflow); the real URL is configuration, never code.
+// The booking URL in the E2E fixture site settings
+// (e2e/fixtures/content/settings/site.yaml), not the real one.
 const CAL_URL = "https://cal.com/e2e/discovery-call";
 const ENDPOINT = "**/api/contact";
 

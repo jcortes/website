@@ -157,11 +157,50 @@ const profile = defineCollection({
     languages: nonEmptyList(
       z.strictObject({ language: localized, level: localized }),
     ),
-    links: z.strictObject({
+  }),
+});
+
+// What other people say about the work. The initial set is empty, and the
+// home page renders the section only when at least one exists.
+const testimonials = defineCollection({
+  loader: yamlFiles("testimonials"),
+  schema: z.strictObject({
+    order: z.number().int().default(0),
+    quote: localized,
+    author: z
+      .strictObject({
+        name: z.string().trim().min(1).optional(),
+        role: localized.optional(),
+        company: z.string().trim().min(1).optional(),
+      })
+      .default({}),
+    link: z.url().optional(),
+  }),
+});
+
+// Singleton (see src/content/settings.ts): site-wide values the owner edits.
+// E2E builds swap it for e2e/fixtures/content/settings/ instead of adding to
+// it, so tests control the values (e.g. a fake booking URL).
+const settings = defineCollection({
+  loader: glob({
+    base: ".",
+    pattern: withFixtures
+      ? "e2e/fixtures/content/settings/*.yaml"
+      : "src/content/settings/*.yaml",
+    generateId: ({ entry }) => path.basename(entry, ".yaml"),
+  }),
+  schema: z.strictObject({
+    // Public Cal.com link behind every "Book a call" button.
+    bookingUrl: z.url(),
+    // Shown as "<n>+ years" in the hero and the trust bar.
+    yearsOfExperience: z.number().int().positive(),
+    // Key technologies listed in the home page's trust bar.
+    trustBar: nonEmptyList(z.string().trim().min(1)),
+    social: z.strictObject({
       github: z.url(),
       linkedin: z.url().optional(),
     }),
   }),
 });
 
-export const collections = { gigs, projects, profile };
+export const collections = { gigs, projects, profile, testimonials, settings };

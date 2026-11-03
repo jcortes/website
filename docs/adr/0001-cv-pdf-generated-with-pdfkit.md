@@ -27,7 +27,7 @@ Options considered:
 Use **pdfkit** from static Astro endpoints
 (`src/pages/sobre-mi/jorge-cortes-cv.pdf.ts`,
 `src/pages/en/about/jorge-cortes-cv.pdf.ts`). `src/cv/render-pdf.ts` lays out
-an A4 CV from the profile, reusing the site's UI strings for section titles.
+an A4 CV from the profile (plus the social links from the site settings, `src/content/settings/`), reusing the site's UI strings for section titles.
 It uses the PDF standard Helvetica fonts, whose WinAnsi encoding covers
 Spanish and English text, so no font files are embedded.
 

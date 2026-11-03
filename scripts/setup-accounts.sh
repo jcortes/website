@@ -357,7 +357,7 @@ write_env CALCOM_BOOKING_URL "$CALCOM_BOOKING_URL"
 env_var CALCOM_BOOKING_URL "$CALCOM_BOOKING_URL"
 code=$(_http_code "$CALCOM_BOOKING_URL" -L)
 if [[ "$code" == 200 ]]; then note "  ✓ booking page is reachable"; else warn "booking page returned HTTP $code"; fi
-note "Use this URL as the Cal.com booking URL in the site settings."
+note "The site reads it from the site settings: set bookingUrl in src/content/settings/site.yaml."
 pause
 
 stage "Privacy guard: client-name denylist"

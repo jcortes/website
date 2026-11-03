@@ -39,6 +39,13 @@
     @apply bg-surface text-ink font-sans antialiased;
   }
 
+  /* Long tokens ("Terraform/OpenTofu") must not push headings off a phone. */
+  h1,
+  h2,
+  h3 {
+    overflow-wrap: break-word;
+  }
+
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-accent;
   }

@@ -1,0 +1,50 @@
+---
+import type { Gig } from "../content/catalog";
+import { sectionPath } from "../i18n/paths";
+import { useTranslations, type Locale } from "../i18n/ui";
+
+interface Props {
+  gig: Gig;
+  locale: Locale;
+  /** h2 on the services listing, h3 inside a home page section. */
+  headingLevel: 2 | 3;
+  class?: string;
+}
+
+const { gig, locale, headingLevel, class: className } = Astro.props;
+const t = useTranslations(locale);
+const Heading = `h${headingLevel}` as const;
+---
+
+<li
+  class:list={[
+    "group relative flex flex-col gap-4 rounded-xl border border-line bg-surface-raised p-6 transition-colors hover:border-accent",
+    className,
+  ]}
+>
+  <p class="font-mono text-xs tracking-widest text-accent uppercase">
+    {gig.data.category[locale]}
+  </p>
+  <Heading class="text-xl font-semibold text-balance">
+    <a
+      href={sectionPath(locale, "services", gig.id)}
+      class="after:absolute after:inset-0 after:rounded-xl"
+    >
+      {gig.data.title[locale]}
+    </a>
+  </Heading>
+  <p class="text-pretty text-ink-muted">{gig.data.summary[locale]}</p>
+  <ul class="mt-auto flex flex-wrap gap-2 pt-2">
+    {gig.data.tags.map((tag) => (
+      <li class="rounded-md border border-line px-2 py-0.5 font-mono text-xs text-ink-muted">
+        {tag[locale]}
+      </li>
+    ))}
+  </ul>
+  <span
+    aria-hidden="true"
+    class="font-mono text-sm text-accent group-hover:underline"
+  >
+    {t("services.seeDetails")} →
+  </span>
+</li>
