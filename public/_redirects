@@ -1,0 +1,3 @@
+# Cloudflare Pages. The admin panel (/keystatic) routes on the client, so
+# every path under it serves the same page (200: a rewrite, not a redirect).
+/keystatic/* /keystatic/ 200

@@ -11,6 +11,26 @@ const localized = z.strictObject({
 
 const nonEmptyList = <T extends z.ZodType>(item: T) => z.array(item).min(1);
 
+/**
+ * An optional object that may also be written as `{}`. The admin panel
+ * (Keystatic, see keystatic.config.ts) saves an optional group whose fields
+ * are all blank that way, so `{}` means "not set", same as leaving it out.
+ */
+const optionalGroup = <T extends z.ZodType>(group: T) =>
+  z.preprocess(
+    (value) =>
+      value !== null &&
+      typeof value === "object" &&
+      !Array.isArray(value) &&
+      Object.keys(value).length === 0
+        ? undefined
+        : value,
+    group.optional(),
+  );
+
+/** Optional text in every locale: both or neither. */
+const optionalLocalized = optionalGroup(localized);
+
 const pkg = z.strictObject({
   name: localized,
   scope: localized,
@@ -18,12 +38,12 @@ const pkg = z.strictObject({
   deliveryDays: z.number().int().positive(),
   revisions: z.number().int().nonnegative(),
   // Kept for the future; never rendered while prices are out of scope.
-  price: z
-    .strictObject({
+  price: optionalGroup(
+    z.strictObject({
       amount: z.number().positive(),
       currency: z.string().length(3),
-    })
-    .optional(),
+    }),
+  ),
 });
 
 // The E2E suite adds fixture entries (e.g. a gig with no related work) when
@@ -75,7 +95,7 @@ const projects = defineCollection({
         title: localized,
         descriptor: localized,
         role: localized,
-        duration: localized.optional(),
+        duration: optionalLocalized,
         problem: localized,
         solution: localized,
         result: localized,
@@ -106,7 +126,7 @@ const experience = z
     role: localized,
     // Omitted for independent work.
     employer: z.string().trim().min(1).optional(),
-    location: localized.optional(),
+    location: optionalLocalized,
     start: yearMonth,
     // Omitted while the role is current.
     end: yearMonth.optional(),
@@ -141,9 +161,9 @@ const profile = defineCollection({
       z.strictObject({
         title: localized,
         institution: z.string().trim().min(1),
-        location: localized.optional(),
+        location: optionalLocalized,
         year: z.number().int().optional(),
-        details: localized.optional(),
+        details: optionalLocalized,
       }),
     ),
     courses: nonEmptyList(
@@ -170,7 +190,7 @@ const testimonials = defineCollection({
     author: z
       .strictObject({
         name: z.string().trim().min(1).optional(),
-        role: localized.optional(),
+        role: optionalLocalized,
         company: z.string().trim().min(1).optional(),
       })
       .default({}),

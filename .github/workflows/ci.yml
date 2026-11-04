@@ -114,6 +114,10 @@ jobs:
       TF_VAR_account_id: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
       TF_VAR_contact_to_email: ${{ secrets.CONTACT_TO_EMAIL }}
       TF_VAR_resend_api_key: ${{ secrets.RESEND_API_KEY }}
+      # The admin panel's GitHub App (scripts/setup-accounts.sh); while unset,
+      # the panel's API isn't configured.
+      TF_VAR_keystatic_github_client_id: ${{ vars.KEYSTATIC_GITHUB_CLIENT_ID }}
+      TF_VAR_keystatic_github_client_secret: ${{ secrets.KEYSTATIC_GITHUB_CLIENT_SECRET }}
     outputs:
       project_name: ${{ steps.outputs.outputs.project_name }}
       site_url: ${{ steps.outputs.outputs.site_url }}
@@ -212,6 +216,7 @@ jobs:
           SITE_URL: ${{ needs.infra.outputs.site_url }}
           PUBLIC_TURNSTILE_SITE_KEY: ${{ needs.infra.outputs.turnstile_site_key }}
           PUBLIC_CF_ANALYTICS_TOKEN: ${{ needs.infra.outputs.web_analytics_token }}
+          PUBLIC_KEYSTATIC_GITHUB_APP_SLUG: ${{ vars.KEYSTATIC_GITHUB_APP_SLUG }}
 
       - name: Deploy
         id: deploy

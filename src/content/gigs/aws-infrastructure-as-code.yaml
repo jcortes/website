@@ -23,7 +23,7 @@ tags:
   - { es: OpenTofu, en: OpenTofu }
   - { es: Infraestructura como código, en: Infrastructure as code }
 gallery:
-  - image: ../../assets/gigs/aws-iac.svg
+  - image: ../../assets/gigs/aws-infrastructure-as-code/gallery/0/image.svg
     alt:
       es: "Diagrama de infraestructura como código: el código de Terraform/OpenTofu genera un plan revisado en el pull request y, con el estado remoto bloqueado, se aplica desde CI sobre la red, el cómputo, los datos y los permisos IAM en AWS."
       en: "Infrastructure-as-code diagram: Terraform/OpenTofu code produces a plan reviewed in the pull request and, with locked remote state, is applied from CI to the network, compute, data and IAM permissions on AWS."

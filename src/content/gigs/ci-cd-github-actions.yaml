@@ -23,7 +23,7 @@ tags:
   - { es: Despliegue continuo, en: Continuous deployment }
   - { es: Pruebas automatizadas, en: Automated testing }
 gallery:
-  - image: ../../assets/gigs/ci-cd-pipeline.svg
+  - image: ../../assets/gigs/ci-cd-github-actions/gallery/0/image.svg
     alt:
       es: "Diagrama del pipeline: cada pull request pasa por lint, pruebas y build y genera una vista previa; al fusionar a main se repiten los checks, se aprueba y se despliega a producción."
       en: "Pipeline diagram: every pull request goes through linting, tests and build and gets a preview; merging to main repeats the checks, requires approval and deploys to production."

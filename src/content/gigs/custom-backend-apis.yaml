@@ -24,7 +24,7 @@ tags:
   - { es: AWS serverless, en: AWS serverless }
   - { es: Integraciones, en: Integrations }
 gallery:
-  - image: ../../assets/gigs/backend-apis.svg
+  - image: ../../assets/gigs/custom-backend-apis/gallery/0/image.svg
     alt:
       es: "Diagrama de backend: los clientes web y móviles llaman a una API REST o GraphQL, que se apoya en servicios NestJS y funciones AWS Lambda conectadas a bases de datos, APIs de terceros y colas."
       en: "Backend diagram: web and mobile clients call a REST or GraphQL API, backed by NestJS services and AWS Lambda functions connected to databases, third-party APIs and queues."

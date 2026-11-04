@@ -1,0 +1,22 @@
+---
+/**
+ * /keystatic in production builds: a static shell for the Keystatic app,
+ * which routes /keystatic/* on the client (public/_redirects serves this page
+ * for every such path) and talks to functions/api/keystatic/. In `pnpm dev`
+ * the @keystatic/astro integration serves the panel instead (astro.config.mjs).
+ */
+import { Keystatic } from "./keystatic-app";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Admin · Keystatic</title>
+  </head>
+  <body>
+    <Keystatic client:only="react" />
+  </body>
+</html>

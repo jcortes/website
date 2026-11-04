@@ -12,7 +12,7 @@ category: { es: Prueba, en: Test }
 tags:
   - { es: Prueba, en: Test }
 gallery:
-  - image: ../../../../src/assets/gigs/ci-cd-pipeline.svg
+  - image: ../../../../src/assets/gigs/ci-cd-github-actions/gallery/0/image.svg
     alt: { es: Diagrama de prueba, en: Test diagram }
 packages:
   basic:

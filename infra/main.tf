@@ -7,7 +7,7 @@ locals {
   function_config = {
     compatibility_date = "2026-11-01"
 
-    env_vars = {
+    env_vars = merge({
       CONTACT_TO_EMAIL = {
         type  = "secret_text"
         value = var.contact_to_email
@@ -20,7 +20,7 @@ locals {
         type  = "secret_text"
         value = cloudflare_turnstile_widget.contact.secret
       }
-    }
+    }, local.keystatic_env_vars)
 
     # Conversion events written by functions/api/event.ts.
     analytics_engine_datasets = {
@@ -29,6 +29,33 @@ locals {
       }
     }
   }
+}
+
+# The online admin panel's API (functions/api/keystatic/), once the GitHub App
+# exists (scripts/setup-accounts.sh). Login only works on the production
+# hostname, the App's callback URL; previews get the values but can't use them.
+locals {
+  keystatic_env_vars = var.keystatic_github_client_id == "" ? {} : {
+    KEYSTATIC_GITHUB_CLIENT_ID = {
+      type  = "plain_text"
+      value = var.keystatic_github_client_id
+    }
+    KEYSTATIC_GITHUB_CLIENT_SECRET = {
+      type  = "secret_text"
+      value = var.keystatic_github_client_secret
+    }
+    KEYSTATIC_SECRET = {
+      type  = "secret_text"
+      value = random_password.keystatic_secret.result
+    }
+  }
+}
+
+# Encrypts the admin panel's GitHub refresh-token cookie. Generated here, so
+# it never exists outside Cloudflare and the OpenTofu state.
+resource "random_password" "keystatic_secret" {
+  length  = 64
+  special = false
 }
 
 # Direct-upload project: CI builds the site and deploys it with Wrangler.

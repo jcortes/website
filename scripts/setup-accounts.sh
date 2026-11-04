@@ -204,6 +204,7 @@ finish() {
 GH_ENVIRONMENT="${GH_ENVIRONMENT:-production}"
 CF_API="https://api.cloudflare.com/client/v4"
 TOFU_STATE_BUCKET="website-tofu-state"   # must match infra/versions.tf
+SITE_ORIGIN="${SITE_ORIGIN:-https://jcortes.pages.dev}"   # production site: <project_name>.pages.dev (infra/)
 
 _gh_ready() { command -v gh >/dev/null 2>&1 && gh auth status >/dev/null 2>&1; }
 
@@ -258,7 +259,7 @@ _EMAIL_RE='^[^@"\\[:space:]]+@[^@"\\[:space:]]+\.[^@"\\[:space:]]+$'
 
 run_wizard() {
 
-TOTAL_STAGES=8
+TOTAL_STAGES=9
 
 banner "Website: third-party accounts and secrets"
 
@@ -379,6 +380,42 @@ env_var CALCOM_BOOKING_URL "$CALCOM_BOOKING_URL"
 code=$(_http_code "$CALCOM_BOOKING_URL" -L)
 if [[ "$code" == 200 ]]; then note "  ✓ booking page is reachable"; else warn "booking page returned HTTP $code"; fi
 note "The site reads it from the site settings: set bookingUrl in src/content/settings/site.yaml."
+pause
+
+stage "GitHub App: online admin panel (Keystatic)"
+say "The admin panel at $SITE_ORIGIN/keystatic signs in with GitHub through"
+say "a GitHub App and commits each save to this repository (docs/adr/0004)."
+say "Only people with write access to the repository can save."
+open_url "https://github.com/settings/apps/new"
+step "GitHub App name: something unique, e.g. 'jcortes-website-admin'."
+step "Homepage URL: $SITE_ORIGIN"
+step "Callback URL: $SITE_ORIGIN/api/keystatic/github/oauth/callback"
+step "Check 'Expire user authorization tokens' (the panel uses refresh tokens)."
+step "Check 'Request user authorization (OAuth) during installation'."
+step "Webhook: uncheck 'Active'."
+step "Repository permissions: Contents → Read and write; Pull requests → Read-only."
+note "    (Metadata → Read-only is added automatically.)"
+step "Where can this GitHub App be installed? → Only on this account. Create GitHub App."
+step "On the app's page: copy the Client ID, then 'Generate a new client secret'."
+require KEYSTATIC_GITHUB_CLIENT_ID "Paste the Client ID:"
+write_env KEYSTATIC_GITHUB_CLIENT_ID "$KEYSTATIC_GITHUB_CLIENT_ID"
+env_var KEYSTATIC_GITHUB_CLIENT_ID "$KEYSTATIC_GITHUB_CLIENT_ID"
+require KEYSTATIC_GITHUB_CLIENT_SECRET "Paste the client secret:" secret
+write_env KEYSTATIC_GITHUB_CLIENT_SECRET "$KEYSTATIC_GITHUB_CLIENT_SECRET"
+env_secret KEYSTATIC_GITHUB_CLIENT_SECRET "$KEYSTATIC_GITHUB_CLIENT_SECRET"
+note "The app's slug is the last part of its URL: github.com/settings/apps/<slug>"
+require KEYSTATIC_GITHUB_APP_SLUG "Paste the app slug:"
+write_env KEYSTATIC_GITHUB_APP_SLUG "$KEYSTATIC_GITHUB_APP_SLUG"
+env_var KEYSTATIC_GITHUB_APP_SLUG "$KEYSTATIC_GITHUB_APP_SLUG"
+open_url "https://github.com/settings/apps/$KEYSTATIC_GITHUB_APP_SLUG/installations"
+step "Install the app on your account → Only select repositories → website → Install."
+if _gh_ready && gh api "apps/$KEYSTATIC_GITHUB_APP_SLUG" >/dev/null 2>&1; then
+  note "  ✓ the app exists"
+else
+  warn "couldn't find app '$KEYSTATIC_GITHUB_APP_SLUG' with gh: check the slug"
+fi
+note "OpenTofu configures the panel on the next run on main (generates KEYSTATIC_SECRET)."
+warn "Saves commit straight to main: don't protect main with required pull requests."
 pause
 
 stage "Privacy guard: client-name denylist"

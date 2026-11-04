@@ -59,6 +59,27 @@ call to action.
 Schemas live in `src/content.config.ts`. The build fails on invalid content,
 including a project that references a missing gig.
 
+### Admin panel
+
+Everything above can also be edited at `/keystatic`
+([Keystatic](https://keystatic.com), configured in `keystatic.config.ts`,
+which mirrors the schemas field by field; see
+[ADR 0004](docs/adr/0004-keystatic-admin-in-github-mode.md)):
+
+- **Locally**: `pnpm dev`, then <http://127.0.0.1:4321/keystatic>. Saves go
+  straight to the files in your checkout; commit them as usual.
+- **Online**: <https://jcortes.pages.dev/keystatic>. Sign in with GitHub;
+  saving needs write access to this repository. Each save is a commit on
+  `main`, which CI checks and deploys, so `main` must not require pull
+  requests (branch protection or rulesets would reject the panel's commits). Login works only on the production
+  host, not on preview deployments. It needs the GitHub App from the setup
+  wizard (see [Third-party accounts and secrets](#third-party-accounts-and-secrets)).
+
+The panel follows the files' conventions: the slug is the file name, and an
+entry's images live in `src/assets/<collection>/<slug>/`. Saving rewrites the
+whole file in Keystatic's YAML style (comments are dropped), which is why
+`src/content/**/*.yaml` is excluded from Prettier. Hand edits keep working.
+
 ## Contact
 
 `/contacto/` and `/en/contact/` hold the contact form. A gig's "Request a
@@ -128,9 +149,9 @@ accessibility checks in both themes, an SEO check (localized title and
 description, canonical URL, `hreflang` alternates, Open Graph image) and a
 phone-sized viewport check (no sideways scrolling).
 
-Lighthouse CI (`lighthouserc.json`) audits every built page and fails below 95
-on performance; accessibility, best practices and SEO are reported. Locally it
-needs Chrome; to use Playwright's Chromium:
+Lighthouse CI (`lighthouserc.json`) audits every built page except the admin
+panel and fails below 95 on performance; accessibility, best practices and SEO
+are reported. Locally it needs Chrome; to use Playwright's Chromium:
 `CHROME_PATH=$(node -e "console.log(require('@playwright/test').chromium.executablePath())") pnpm lighthouse`.
 
 It includes a **privacy guard** that scans the build, including the text of
@@ -155,9 +176,11 @@ the infrastructure and deploys, below.
 
 The site runs on Cloudflare Pages at `https://jcortes.pages.dev`. Everything
 it needs on Cloudflare is OpenTofu code in `infra/`: the Pages project
-(direct upload), the contact and event functions' bindings (`CONTACT_TO_EMAIL`,
+(direct upload), the functions' bindings (`CONTACT_TO_EMAIL`,
 `RESEND_API_KEY` and `TURNSTILE_SECRET_KEY` as secrets, the `EVENTS` Analytics
-Engine dataset) for production and previews, the Turnstile widget and the Web
+Engine dataset and, once the GitHub App exists, the admin panel's
+`KEYSTATIC_GITHUB_CLIENT_ID`, `KEYSTATIC_GITHUB_CLIENT_SECRET` and a generated
+`KEYSTATIC_SECRET`) for production and previews, the Turnstile widget and the Web
 Analytics site. State lives in a private R2 bucket
 ([ADR 0002](docs/adr/0002-opentofu-state-in-cloudflare-r2.md)).
 
@@ -172,15 +195,18 @@ After the checks pass, the workflow (jobs `infra` and `deploy`, in the
 - **On `main`**: `tofu apply`, then a production deploy.
 
 The build gets `SITE_URL`, `PUBLIC_TURNSTILE_SITE_KEY` and
-`PUBLIC_CF_ANALYTICS_TOKEN` from the OpenTofu outputs, and Wrangler
+`PUBLIC_CF_ANALYTICS_TOKEN` from the OpenTofu outputs (and
+`PUBLIC_KEYSTATIC_GITHUB_APP_SLUG` from a variable), and Wrangler
 (`pages deploy`) uploads `dist/` and the `functions/`. Until the first apply
 has created the project, the deploy job is skipped.
 
 No secret is in the repository. CI reads `CLOUDFLARE_API_TOKEN`,
-`RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `TOFU_STATE_ACCESS_KEY_ID` and
-`TOFU_STATE_SECRET_ACCESS_KEY` (secrets) and `CLOUDFLARE_ACCOUNT_ID` (a
-variable) from the `production` environment; the Turnstile secret goes from
-OpenTofu straight to Cloudflare.
+`RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `TOFU_STATE_ACCESS_KEY_ID`,
+`TOFU_STATE_SECRET_ACCESS_KEY` and `KEYSTATIC_GITHUB_CLIENT_SECRET` (secrets)
+and `CLOUDFLARE_ACCOUNT_ID`, `KEYSTATIC_GITHUB_CLIENT_ID` and
+`KEYSTATIC_GITHUB_APP_SLUG` (variables) from the `production` environment; the
+Turnstile secret and `KEYSTATIC_SECRET` go from OpenTofu straight to
+Cloudflare.
 
 ### First deployment
 
@@ -206,7 +232,8 @@ overrides.
 
 ## Third-party accounts and secrets
 
-Cloudflare, Resend and Cal.com are set up by hand, guided by a wizard:
+Cloudflare, Resend, Cal.com and the admin panel's GitHub App are set up by
+hand, guided by a wizard:
 
 ```sh
 ./scripts/setup-accounts.sh
@@ -215,9 +242,10 @@ Cloudflare, Resend and Cal.com are set up by hand, guided by a wizard:
 It opens each dashboard, tells you what to click, and stores the values in the
 git-ignored `.env` and in the `production` GitHub Actions environment
 (`CLOUDFLARE_API_TOKEN`, `TOFU_STATE_ACCESS_KEY_ID`,
-`TOFU_STATE_SECRET_ACCESS_KEY`, `RESEND_API_KEY` and `CONTACT_TO_EMAIL` as
-secrets;
-`CLOUDFLARE_ACCOUNT_ID` and `CALCOM_BOOKING_URL` as variables). CI jobs that
+`TOFU_STATE_SECRET_ACCESS_KEY`, `RESEND_API_KEY`, `CONTACT_TO_EMAIL` and
+`KEYSTATIC_GITHUB_CLIENT_SECRET` as secrets; `CLOUDFLARE_ACCOUNT_ID`,
+`CALCOM_BOOKING_URL`, `KEYSTATIC_GITHUB_CLIENT_ID` and
+`KEYSTATIC_GITHUB_APP_SLUG` as variables). CI jobs that
 need them must declare `environment: production`. Re-running it is safe: press
 Enter to keep a saved value.
 

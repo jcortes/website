@@ -20,3 +20,16 @@ variable "resend_api_key" {
   type        = string
   sensitive   = true
 }
+
+variable "keystatic_github_client_id" {
+  description = "Client ID of the GitHub App behind the online admin panel (Keystatic). Empty leaves the panel's API unconfigured."
+  type        = string
+  default     = ""
+}
+
+variable "keystatic_github_client_secret" {
+  description = "Client secret of that GitHub App."
+  type        = string
+  sensitive   = true
+  default     = ""
+}
