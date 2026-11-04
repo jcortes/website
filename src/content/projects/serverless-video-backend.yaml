@@ -1,0 +1,29 @@
+gigs: [custom-backend-apis]
+title:
+  es: Backend serverless para la creación de videos
+  en: Serverless backend for video creation
+descriptor:
+  es: Empresa de software de marketing automotriz
+  en: Automotive marketing software company
+role:
+  es: Desarrollador backend Node.js
+  en: Node.js backend developer
+problem:
+  es: >-
+    Una aplicación para crear videos necesitaba subir los videos en distintas resoluciones a un motor de edición
+    (OpenShot) y mantener sincronizado el estado de la app.
+  en: >-
+    A video creation app needed to upload videos in different resolutions to an editing engine (OpenShot)
+    and keep the app state in sync.
+solution:
+  es: >-
+    Implementé la subida de videos en varias resoluciones a OpenShot con peticiones HTTP multipart, sobre un backend
+    de Node.js y funciones AWS Lambda, con Firebase y Cloud Functions para el estado de la aplicación.
+  en: >-
+    I implemented uploading videos in several resolutions to OpenShot with multipart HTTP requests, on a Node.js and
+    AWS Lambda backend, with Firebase and Cloud Functions for the app state.
+result:
+  es: Las subidas de video en varias resoluciones funcionan sobre un backend serverless, sin servidores que mantener.
+  en: Video uploads in several resolutions run on a serverless backend, with no servers to maintain.
+tech: [Node.js, AWS Lambda, Firebase, Cloud Functions, OpenShot]
+confidential: true

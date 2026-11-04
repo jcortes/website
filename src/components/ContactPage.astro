@@ -1,0 +1,304 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCatalog, tiers } from "../content/catalog";
+import { getSettings } from "../content/settings";
+import { budgets, limits, type Field } from "../contact/submission";
+import type { FormMessages } from "../contact/form";
+import { useTranslations, type Locale } from "../i18n/ui";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const { gigs } = await getCatalog();
+const { bookingUrl, social: links } = await getSettings();
+// Spam protection; production builds only (see src/env.d.ts).
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+
+const messages: FormMessages = {
+  errors: {
+    required: t("contact.error.required"),
+    invalid: t("contact.error.invalid"),
+    invalidEmail: t("contact.error.invalidEmail"),
+    tooShort: t("contact.error.tooShort"),
+    tooLong: t("contact.error.tooLong"),
+  },
+  sending: t("contact.sending"),
+  notes: t("contact.call.notes"),
+  notesWithPackage: t("contact.call.notesWithPackage"),
+};
+
+const budgetOptions = (Object.keys(budgets) as (keyof typeof budgets)[]).map(
+  (value) => ({ value, label: t(`contact.budget.${value}`) }),
+);
+
+/** Attributes tying a control to its label, hint and error message. */
+const control = (field: Field, hint = false) => ({
+  id: `contact-${field}`,
+  name: field,
+  "data-field": field,
+  "aria-describedby": [
+    hint && `contact-${field}-hint`,
+    `contact-${field}-error`,
+  ]
+    .filter(Boolean)
+    .join(" "),
+});
+
+const inputClass =
+  "w-full rounded-md border border-line bg-surface-raised px-3 py-2 text-ink aria-invalid:border-red-500";
+const labelClass = "font-medium";
+const errorClass = "text-sm text-red-600 dark:text-red-400";
+const linkClass = "font-mono text-sm text-accent hover:underline";
+---
+
+<BaseLayout
+  locale={locale}
+  title={t("contact.title")}
+  description={t("contact.lead")}
+>
+  <div class="mx-auto grid max-w-6xl gap-16 px-6 py-16 sm:py-24 lg:grid-cols-[2fr_1fr]">
+    <div class="flex flex-col gap-10">
+      <header class="flex max-w-2xl flex-col gap-4">
+        <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">
+          {t("contact.title")}
+        </h1>
+        <p class="text-lg text-pretty text-ink-muted">{t("contact.lead")}</p>
+      </header>
+
+      <form
+        action="/api/contact"
+        method="post"
+        novalidate
+        aria-label={t("contact.form")}
+        data-contact-form
+        data-messages={JSON.stringify(messages)}
+        class="flex flex-col gap-6"
+      >
+        <input type="hidden" name="locale" value={locale} />
+
+        <div class="grid gap-6 sm:grid-cols-2">
+          <div class="flex flex-col gap-2">
+            <label for="contact-gig" class={labelClass}>
+              {t("contact.gig")}
+            </label>
+            <select {...control("gig")} class={inputClass}>
+              <option value="">{t("contact.gig.none")}</option>
+              {gigs.map((gig) => (
+                <option value={gig.id}>{gig.data.title[locale]}</option>
+              ))}
+            </select>
+            <p id="contact-gig-error" class={errorClass} hidden></p>
+          </div>
+          <div class="flex flex-col gap-2">
+            <label for="contact-package" class={labelClass}>
+              {t("contact.package")}
+            </label>
+            <select {...control("package")} class={inputClass}>
+              <option value="">{t("contact.package.none")}</option>
+              {tiers.map((tier) => (
+                <option value={tier}>{t(`contact.package.${tier}`)}</option>
+              ))}
+            </select>
+            <p id="contact-package-error" class={errorClass} hidden></p>
+          </div>
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-2">
+          <div class="flex flex-col gap-2">
+            <label for="contact-name" class={labelClass}>
+              {t("contact.name")}
+            </label>
+            <input
+              {...control("name")}
+              type="text"
+              autocomplete="name"
+              required
+              maxlength={limits.name}
+              class={inputClass}
+            />
+            <p id="contact-name-error" class={errorClass} hidden></p>
+          </div>
+          <div class="flex flex-col gap-2">
+            <label for="contact-email" class={labelClass}>
+              {t("contact.email")}
+            </label>
+            <input
+              {...control("email")}
+              type="email"
+              autocomplete="email"
+              required
+              maxlength={limits.email}
+              class={inputClass}
+            />
+            <p id="contact-email-error" class={errorClass} hidden></p>
+          </div>
+          <div class="flex flex-col gap-2">
+            <label for="contact-company" class={labelClass}>
+              {t("contact.company")}
+              <span class="font-normal text-ink-muted">
+                ({t("contact.optional")})
+              </span>
+            </label>
+            <input
+              {...control("company")}
+              type="text"
+              autocomplete="organization"
+              maxlength={limits.company}
+              class={inputClass}
+            />
+            <p id="contact-company-error" class={errorClass} hidden></p>
+          </div>
+          <div class="flex flex-col gap-2">
+            <label for="contact-budget" class={labelClass}>
+              {t("contact.budget")}
+              <span class="font-normal text-ink-muted">
+                ({t("contact.optional")})
+              </span>
+            </label>
+            <select {...control("budget")} class={inputClass}>
+              <option value="">{t("contact.budget.none")}</option>
+              {budgetOptions.map(({ value, label }) => (
+                <option value={value}>{label}</option>
+              ))}
+            </select>
+            <p id="contact-budget-error" class={errorClass} hidden></p>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label for="contact-message" class={labelClass}>
+            {t("contact.message")}
+          </label>
+          <p id="contact-message-hint" class="text-sm text-ink-muted">
+            {t("contact.messageHint")}
+          </p>
+          <textarea
+            {...control("message", true)}
+            rows="7"
+            required
+            minlength={limits.messageMin}
+            maxlength={limits.message}
+            class={inputClass}
+          ></textarea>
+          <p id="contact-message-error" class={errorClass} hidden></p>
+        </div>
+
+        <div
+          id="contact-failure"
+          role="alert"
+          tabindex="-1"
+          hidden
+          class="flex flex-col gap-2 rounded-xl border border-red-500/60 p-5"
+        >
+          <p class="font-semibold">{t("contact.failure.title")}</p>
+          <p class="text-pretty text-ink-muted">{t("contact.failure.body")}</p>
+          <ul class="flex flex-wrap gap-4">
+            <li>
+              <a
+                href={bookingUrl}
+                data-cal-link
+                data-base={bookingUrl}
+                data-track="book_call"
+                class={linkClass}
+              >
+                {t("contact.call.book")} ↗
+              </a>
+            </li>
+            {links.linkedin && (
+              <li>
+                <a href={links.linkedin} rel="me noopener" class={linkClass}>
+                  LinkedIn ↗
+                </a>
+              </li>
+            )}
+            <li>
+              <a href={links.github} rel="me noopener" class={linkClass}>
+                GitHub ↗
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        {turnstileSiteKey && (
+          <div
+            data-turnstile
+            data-sitekey={turnstileSiteKey}
+            data-language={locale}
+            class="min-h-16"
+          />
+        )}
+
+        <button
+          type="submit"
+          class="self-start rounded-md bg-accent px-5 py-2.5 font-medium text-surface transition-opacity hover:opacity-90 disabled:opacity-60"
+        >
+          {t("contact.submit")}
+        </button>
+      </form>
+
+      <div
+        id="contact-success"
+        role="status"
+        tabindex="-1"
+        hidden
+        class="flex flex-col gap-2 rounded-xl border border-accent p-6"
+      >
+        <p class="text-xl font-semibold">{t("contact.success.title")}</p>
+        <p class="text-pretty text-ink-muted">{t("contact.success.body")}</p>
+      </div>
+    </div>
+
+    <aside class="flex flex-col gap-8 lg:pt-20">
+      <section
+        aria-labelledby="call"
+        class="flex flex-col gap-4 rounded-xl border border-line bg-surface-raised p-6"
+      >
+        <h2 id="call" class="text-xl font-semibold">
+          {t("contact.call.title")}
+        </h2>
+        <p class="text-pretty text-ink-muted">{t("contact.call.lead")}</p>
+        <a
+          href={bookingUrl}
+          data-cal-link
+          data-base={bookingUrl}
+          data-track="book_call"
+          class="rounded-md border border-accent px-4 py-2.5 text-center font-medium text-accent transition-colors hover:bg-accent hover:text-surface"
+        >
+          {t("contact.call.book")}
+        </a>
+      </section>
+      <section aria-labelledby="elsewhere" class="flex flex-col gap-3">
+        <h2
+          id="elsewhere"
+          class="font-mono text-xs tracking-widest text-accent uppercase"
+        >
+          {t("contact.elsewhere")}
+        </h2>
+        <ul class="flex flex-col gap-2">
+          {links.linkedin && (
+            <li>
+              <a href={links.linkedin} rel="me noopener" class={linkClass}>
+                LinkedIn ↗
+              </a>
+            </li>
+          )}
+          <li>
+            <a href={links.github} rel="me noopener" class={linkClass}>
+              GitHub ↗
+            </a>
+          </li>
+        </ul>
+      </section>
+    </aside>
+  </div>
+</BaseLayout>
+
+<script>
+  import { setupContactForm } from "../contact/form";
+
+  const form = document.querySelector<HTMLFormElement>("[data-contact-form]");
+  if (form) setupContactForm(form);
+</script>

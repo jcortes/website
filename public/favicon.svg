@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="JC — circuit gear (solid)">
+  <title>JC — circuit gear (solid)</title>
+  <path fill="#2dd4bf" d="M26.38 7.64L27.82 2.29A30 30 0 0 1 36.18 2.29L37.62 7.64A25 25 0 0 1 45.25 10.8L50.05 8.04A30 30 0 0 1 55.96 13.95L53.2 18.75A25 25 0 0 1 56.36 26.38L61.71 27.82A30 30 0 0 1 61.71 36.18L56.36 37.62A25 25 0 0 1 53.2 45.25L55.96 50.05A30 30 0 0 1 50.05 55.96L45.25 53.2A25 25 0 0 1 37.62 56.36L36.18 61.71A30 30 0 0 1 27.82 61.71L26.38 56.36A25 25 0 0 1 18.75 53.2L13.95 55.96A30 30 0 0 1 8.04 50.05L10.8 45.25A25 25 0 0 1 7.64 37.62L2.29 36.18A30 30 0 0 1 2.29 27.82L7.64 26.38A25 25 0 0 1 10.8 18.75L8.04 13.95A30 30 0 0 1 13.95 8.04L18.75 10.8A25 25 0 0 1 26.38 7.64Z"/>
+  <circle cx="32" cy="32" r="20" fill="none" stroke="#070d1a" stroke-width="1.4" stroke-dasharray="3 2.4"/>
+  <g transform="translate(32 32) scale(0.88) translate(-32.5 -31)">
+  <g fill="none" stroke="#070d1a" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M19 23H30M27 23V35L23 39H19"/>
+    <path d="M46 23H38L34 27V35L38 39H46"/>
+  </g>
+  <g fill="#2dd4bf" stroke="#070d1a" stroke-width="1.6">
+    <circle cx="19" cy="23" r="2.4"/>
+    <circle cx="19" cy="39" r="2.4"/>
+    <circle cx="46" cy="23" r="2.4"/>
+    <circle cx="46" cy="39" r="2.4"/>
+  </g>
+  </g>
+</svg>

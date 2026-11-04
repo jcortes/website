@@ -1,0 +1,9 @@
+# E2E fixture: the production build has no testimonials, so this is the only
+# one, and only in builds with CONTENT_FIXTURES=true.
+quote:
+  es: Testimonio de prueba para la suite E2E.
+  en: Test testimonial for the E2E suite.
+author:
+  name: E2E Tester
+  role: { es: Directora de pruebas, en: Head of testing }
+  company: Fixture Inc.

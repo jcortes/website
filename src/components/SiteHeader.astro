@@ -1,0 +1,55 @@
+---
+import { localizedPath, sectionPath } from "../i18n/paths";
+import { useTranslations, type Locale } from "../i18n/ui";
+import LanguageSwitcher from "./LanguageSwitcher.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+// Chosen variant; alternatives live alongside it in src/assets/brand/.
+import Logo from "../assets/brand/logo-c-solid.svg";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<header class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-4 gap-y-3 px-4 py-5 sm:px-6">
+  <a
+    href={localizedPath("/", locale)}
+    class="flex items-center gap-3 font-mono text-sm font-semibold tracking-wide"
+  >
+    <Logo class="size-9" />
+    <span>Jorge Cortés</span>
+    <span class="sr-only">· {t("nav.home")}</span>
+  </a>
+  <!-- On phones the navigation gets its own row, below the logo and controls. -->
+  <nav
+    aria-label={t("nav.main")}
+    class="order-last basis-full sm:order-none sm:ml-auto sm:basis-auto"
+  >
+    <ul class="-mx-2.5 flex flex-wrap items-center gap-x-1 sm:mx-0">
+      {(
+        [
+          ["services", "nav.services"],
+          ["about", "nav.about"],
+          ["contact", "nav.contact"],
+          ["built", "nav.built"],
+        ] as const
+      ).map(([section, label]) => (
+        <li>
+          <a
+            href={sectionPath(locale, section)}
+            class="inline-block rounded-md px-2.5 py-2 text-sm text-ink-muted transition-colors hover:text-accent"
+          >
+            {t(label)}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+  <div class="flex items-center gap-2 sm:gap-3">
+    <LanguageSwitcher locale={locale} />
+    <ThemeToggle locale={locale} />
+  </div>
+</header>

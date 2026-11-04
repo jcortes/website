@@ -1,0 +1,11 @@
+dist/
+dist-e2e/
+.astro/
+pnpm-lock.yaml
+playwright-report/
+test-results/
+src/assets/brand/
+public/favicon.svg
+# Written by the admin panel (Keystatic), which has its own YAML style; its
+# commits go straight to main, so Prettier must not fail CI on them.
+src/content/**/*.yaml

@@ -1,0 +1,142 @@
+order: 1
+title:
+  es: "Despliega con confianza: pipeline de CI/CD con GitHub Actions"
+  en: "Ship with confidence: a CI/CD pipeline with GitHub Actions"
+summary:
+  es: Cada cambio se prueba, se construye y se despliega de forma automática, sin pasos manuales ni sorpresas en producción.
+  en: Every change is tested, built and deployed automatically, with no manual steps and no surprises in production.
+description:
+  es: >-
+    Si hoy desplegar depende de una persona, de una lista de pasos o de cruzar los dedos, cada release es un riesgo.
+    Diseño e implemento un pipeline en GitHub Actions que ejecuta lint, pruebas y build en cada pull request,
+    publica entornos de vista previa y despliega a producción de forma repetible, con los secretos fuera del repositorio.
+  en: >-
+    If deploying today depends on one person, a checklist or crossed fingers, every release is a risk.
+    I design and build a GitHub Actions pipeline that runs linting, tests and the build on every pull request,
+    publishes preview environments and deploys to production repeatably, with secrets kept out of the repository.
+category:
+  es: DevOps · CI/CD
+  en: DevOps · CI/CD
+tags:
+  - { es: GitHub Actions, en: GitHub Actions }
+  - { es: Integración continua, en: Continuous integration }
+  - { es: Despliegue continuo, en: Continuous deployment }
+  - { es: Pruebas automatizadas, en: Automated testing }
+gallery:
+  - image: ../../assets/gigs/ci-cd-github-actions/gallery/0/image.svg
+    alt:
+      es: "Diagrama del pipeline: cada pull request pasa por lint, pruebas y build y genera una vista previa; al fusionar a main se repiten los checks, se aprueba y se despliega a producción."
+      en: "Pipeline diagram: every pull request goes through linting, tests and build and gets a preview; merging to main repeats the checks, requires approval and deploys to production."
+packages:
+  basic:
+    name: { es: Básico, en: Basic }
+    scope:
+      es: Integración continua para un repositorio, para que ningún cambio roto llegue a la rama principal.
+      en: Continuous integration for one repository, so no broken change reaches the main branch.
+    deliverables:
+      - {
+          es: "Workflow de GitHub Actions que ejecuta lint, pruebas y build en cada pull request",
+          en: "GitHub Actions workflow running linting, tests and the build on every pull request",
+        }
+      - {
+          es: Caché de dependencias para ejecuciones rápidas,
+          en: Dependency caching for fast runs,
+        }
+      - {
+          es: Checks obligatorios en la rama principal,
+          en: Required status checks on the main branch,
+        }
+      - {
+          es: Documentación breve en el README,
+          en: Short documentation in the README,
+        }
+    deliveryDays: 3
+    revisions: 1
+  standard:
+    name: { es: Estándar, en: Standard }
+    scope:
+      es: Integración y despliegue continuos hacia staging y producción, con aprobaciones y secretos bien gestionados.
+      en: Continuous integration and deployment to staging and production, with approvals and properly managed secrets.
+    deliverables:
+      - { es: Todo lo del paquete Básico, en: Everything in Basic }
+      - {
+          es: Despliegue automático a staging y a producción,
+          en: Automatic deployment to staging and production,
+        }
+      - {
+          es: Secretos y aprobaciones con GitHub Environments,
+          en: Secrets and approvals with GitHub Environments,
+        }
+      - {
+          es: Avisos cuando el pipeline falla,
+          en: Alerts when the pipeline fails,
+        }
+    deliveryDays: 7
+    revisions: 2
+  premium:
+    name: { es: Premium, en: Premium }
+    scope:
+      es: Una plataforma de entrega completa para tu equipo, con entornos de vista previa y workflows reutilizables.
+      en: A complete delivery platform for your team, with preview environments and reusable workflows.
+    deliverables:
+      - { es: Todo lo del paquete Estándar, en: Everything in Standard }
+      - {
+          es: Entorno de vista previa por cada pull request,
+          en: A preview environment for every pull request,
+        }
+      - {
+          es: Workflows reutilizables y acciones compuestas para varios repositorios,
+          en: Reusable workflows and composite actions across repositories,
+        }
+      - {
+          es: Estrategia de rollback documentada,
+          en: A documented rollback strategy,
+        }
+      - {
+          es: Sesión de traspaso con tu equipo,
+          en: A handover session with your team,
+        }
+    deliveryDays: 14
+    revisions: 3
+faq:
+  - question:
+      es: ¿Necesito tener el código en GitHub?
+      en: Does my code need to be on GitHub?
+    answer:
+      es: Sí, el pipeline vive en GitHub Actions. Si tu código está en otra plataforma, podemos incluir la migración en la propuesta.
+      en: Yes, the pipeline runs on GitHub Actions. If your code lives elsewhere, the migration can be part of the proposal.
+  - question:
+      es: ¿Funciona con mi stack?
+      en: Will it work with my stack?
+    answer:
+      es: GitHub Actions soporta la mayoría de lenguajes y plataformas (Node.js, Python, Docker y más). Lo confirmamos en el diagnóstico inicial.
+      en: GitHub Actions supports most languages and platforms (Node.js, Python, Docker and more). We confirm it during the initial diagnosis.
+  - question:
+      es: ¿Quién paga los minutos de GitHub Actions?
+      en: Who pays for the GitHub Actions minutes?
+    answer:
+      es: Los workflows se ejecutan en tu cuenta. Los diseño con caché y condiciones para evitar ejecuciones innecesarias.
+      en: The workflows run on your account. I design them with caching and conditions to avoid unnecessary runs.
+  - question:
+      es: ¿Qué pasa si necesito ajustes después de la entrega?
+      en: What if I need changes after delivery?
+    answer:
+      es: Cada paquete incluye rondas de revisión. Para soporte continuo podemos acordar un plan aparte.
+      en: Every package includes revision rounds. For ongoing support we can agree on a separate plan.
+requirements:
+  - {
+      es: Acceso al repositorio con rol de mantenedor o administrador,
+      en: Repository access with maintainer or admin role,
+    }
+  - {
+      es: Cómo se construye y se despliega la aplicación hoy,
+      en: How the application is built and deployed today,
+    }
+  - {
+      es: Credenciales del entorno de destino con solo los permisos necesarios,
+      en: Credentials for the target environment with only the permissions needed,
+    }
+  - {
+      es: Una persona de contacto técnico para resolver dudas,
+      en: A technical contact person for questions,
+    }

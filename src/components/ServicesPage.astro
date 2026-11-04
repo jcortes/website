@@ -1,0 +1,35 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCatalog } from "../content/catalog";
+import GigCard from "./GigCard.astro";
+import { useTranslations, type Locale } from "../i18n/ui";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const { gigs } = await getCatalog();
+---
+
+<BaseLayout
+  locale={locale}
+  title={t("services.title")}
+  description={t("services.lead")}
+>
+  <section class="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-16 sm:py-24">
+    <header class="flex max-w-3xl flex-col gap-4">
+      <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">
+        {t("services.title")}
+      </h1>
+      <p class="text-lg text-pretty text-ink-muted">{t("services.lead")}</p>
+    </header>
+
+    <ul class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {gigs.map((gig) => (
+        <GigCard gig={gig} locale={locale} headingLevel={2} />
+      ))}
+    </ul>
+  </section>
+</BaseLayout>

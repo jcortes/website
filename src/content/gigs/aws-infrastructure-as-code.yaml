@@ -1,0 +1,130 @@
+order: 2
+title:
+  es: "Infraestructura reproducible en AWS: infraestructura como código con Terraform/OpenTofu"
+  en: "Reproducible AWS infrastructure: infrastructure as code with Terraform/OpenTofu"
+summary:
+  es: Tu infraestructura en código versionado, revisable y fácil de recrear, en lugar de configuraciones hechas a mano en la consola.
+  en: Your infrastructure as versioned code that is reviewable and easy to recreate, instead of settings clicked together in the console.
+description:
+  es: >-
+    Cuando la infraestructura se crea a mano, nadie sabe con certeza qué hay desplegado, cada entorno es un poco distinto
+    y recuperarse de un error es lento. Defino tu infraestructura de AWS como código con Terraform u OpenTofu:
+    cada cambio pasa por un plan revisado antes de aplicarse, los entornos son consistentes y todo queda documentado en el repositorio.
+  en: >-
+    When infrastructure is built by hand, nobody knows for sure what is deployed, every environment is slightly different
+    and recovering from a mistake is slow. I define your AWS infrastructure as code with Terraform or OpenTofu:
+    every change goes through a reviewed plan before it is applied, environments stay consistent and everything is documented in the repository.
+category:
+  es: Nube · AWS
+  en: Cloud · AWS
+tags:
+  - { es: AWS, en: AWS }
+  - { es: Terraform, en: Terraform }
+  - { es: OpenTofu, en: OpenTofu }
+  - { es: Infraestructura como código, en: Infrastructure as code }
+gallery:
+  - image: ../../assets/gigs/aws-infrastructure-as-code/gallery/0/image.svg
+    alt:
+      es: "Diagrama de infraestructura como código: el código de Terraform/OpenTofu genera un plan revisado en el pull request y, con el estado remoto bloqueado, se aplica desde CI sobre la red, el cómputo, los datos y los permisos IAM en AWS."
+      en: "Infrastructure-as-code diagram: Terraform/OpenTofu code produces a plan reviewed in the pull request and, with locked remote state, is applied from CI to the network, compute, data and IAM permissions on AWS."
+packages:
+  basic:
+    name: { es: Básico, en: Basic }
+    scope:
+      es: Un stack sencillo en código, o los recursos existentes más importantes llevados a código.
+      en: A simple stack in code, or your most important existing resources brought under code.
+    deliverables:
+      - {
+          es: Código de Terraform/OpenTofu para los recursos acordados,
+          en: Terraform/OpenTofu code for the agreed resources,
+        }
+      - { es: Estado remoto con bloqueo, en: Remote state with locking }
+      - {
+          es: Documentación de uso en el README,
+          en: Usage documentation in the README,
+        }
+    deliveryDays: 5
+    revisions: 1
+  standard:
+    name: { es: Estándar, en: Standard }
+    scope:
+      es: La infraestructura completa de una aplicación, con entornos de staging y producción.
+      en: The full infrastructure of one application, with staging and production environments.
+    deliverables:
+      - { es: Todo lo del paquete Básico, en: Everything in Basic }
+      - {
+          es: "Red, cómputo (Lambda o ECS Fargate) y datos (RDS o DynamoDB)",
+          en: "Network, compute (Lambda or ECS Fargate) and data (RDS or DynamoDB)",
+        }
+      - {
+          es: Permisos IAM de mínimo privilegio,
+          en: Least-privilege IAM permissions,
+        }
+      - {
+          es: Entornos de staging y producción a partir de los mismos módulos,
+          en: Staging and production environments from the same modules,
+        }
+    deliveryDays: 10
+    revisions: 2
+  premium:
+    name: { es: Premium, en: Premium }
+    scope:
+      es: Infraestructura multientorno gestionada desde CI, incluyendo la importación de lo que ya existe.
+      en: Multi-environment infrastructure managed from CI, including importing what already exists.
+    deliverables:
+      - { es: Todo lo del paquete Estándar, en: Everything in Standard }
+      - { es: Módulos reutilizables, en: Reusable modules }
+      - {
+          es: Plan en cada pull request y apply desde GitHub Actions,
+          en: A plan on every pull request and apply from GitHub Actions,
+        }
+      - {
+          es: Importación de recursos creados a mano,
+          en: Import of hand-made resources,
+        }
+      - { es: Detección de desviaciones (drift), en: Drift detection }
+      - {
+          es: Sesión de traspaso con tu equipo,
+          en: A handover session with your team,
+        }
+    deliveryDays: 20
+    revisions: 3
+faq:
+  - question:
+      es: ¿Terraform u OpenTofu?
+      en: Terraform or OpenTofu?
+    answer:
+      es: Son compatibles en la mayoría de casos; OpenTofu es la alternativa de código abierto. Te recomiendo uno según tu contexto y licencias.
+      en: They are compatible in most cases; OpenTofu is the open-source alternative. I recommend one based on your context and licensing.
+  - question:
+      es: ¿Puedes trabajar con infraestructura que ya existe?
+      en: Can you work with infrastructure that already exists?
+    answer:
+      es: Sí. Los recursos existentes se importan al código sin recrearlos.
+      en: Yes. Existing resources are imported into code without recreating them.
+  - question:
+      es: ¿Se verán afectados mis servicios en producción?
+      en: Will my production services be affected?
+    answer:
+      es: Cada cambio se revisa con un plan antes de aplicarse, y los cambios con riesgo se acuerdan contigo y se programan.
+      en: Every change is reviewed as a plan before it is applied, and risky changes are agreed with you and scheduled.
+  - question:
+      es: ¿Quién paga los costos de AWS?
+      en: Who pays the AWS costs?
+    answer:
+      es: La infraestructura vive en tu cuenta de AWS. Te aviso de las decisiones que afectan el costo antes de tomarlas.
+      en: The infrastructure lives in your AWS account. I flag decisions that affect cost before making them.
+requirements:
+  - {
+      es: Acceso a tu cuenta de AWS mediante un rol o usuario IAM para el proyecto,
+      en: Access to your AWS account through an IAM role or user for the project,
+    }
+  - {
+      es: Una descripción de la arquitectura y los recursos actuales,
+      en: A description of the current architecture and resources,
+    }
+  - { es: Los entornos que necesitas, en: The environments you need }
+  - {
+      es: "Tus preferencias o restricciones de región, costo y cumplimiento",
+      en: "Your preferences or constraints on region, cost and compliance",
+    }

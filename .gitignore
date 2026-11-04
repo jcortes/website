@@ -1,0 +1,18 @@
+# Original CV: contains private data and must never be committed.
+/cv.pdf
+
+node_modules/
+dist/
+dist-e2e/
+.astro/
+test-results/
+playwright-report/
+.DS_Store
+
+# Local secrets: never commit.
+.env
+.env.*
+!.env.example
+.lighthouseci/
+# Local state of `wrangler pages dev`.
+.wrangler/

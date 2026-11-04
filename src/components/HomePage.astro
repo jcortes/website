@@ -1,0 +1,236 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import GigCard from "./GigCard.astro";
+import { getCatalog } from "../content/catalog";
+import { getProfile } from "../content/profile";
+import { getSettings } from "../content/settings";
+import { getTestimonials } from "../content/testimonials";
+import { cvPath, sectionPath } from "../i18n/paths";
+import { useTranslations, type Locale } from "../i18n/ui";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const [{ gigs }, profile, settings, testimonials] = await Promise.all([
+  getCatalog(),
+  getProfile(),
+  getSettings(),
+  getTestimonials(),
+]);
+const years = `${settings.yearsOfExperience}+`;
+
+const steps = ["diagnosis", "proposal", "implementation", "support"] as const;
+
+const primaryButton =
+  "inline-block rounded-md bg-accent px-5 py-2.5 font-medium text-surface transition-opacity hover:opacity-90";
+const secondaryButton =
+  "inline-block rounded-md border border-accent px-5 py-2.5 font-medium text-accent transition-colors hover:bg-accent hover:text-surface";
+const sectionClass = "mx-auto flex max-w-6xl flex-col gap-8 px-6 py-16";
+const headingClass = "text-3xl font-semibold tracking-tight";
+---
+
+<BaseLayout locale={locale}>
+  <section
+    aria-labelledby="hero"
+    class="mx-auto flex max-w-6xl flex-col gap-6 px-6 pt-20 pb-16 sm:pt-28"
+  >
+    <p class="font-mono text-sm tracking-widest text-accent uppercase">
+      {profile.name} · {profile.headline[locale]}
+    </p>
+    <h1
+      id="hero"
+      class="max-w-4xl text-4xl font-semibold tracking-tight text-balance sm:text-6xl"
+    >
+      {t("home.title")}
+    </h1>
+    <p class="max-w-3xl text-xl text-pretty">{profile.positioning[locale]}</p>
+    <p class="max-w-3xl text-lg text-pretty text-ink-muted">
+      {t("home.value").replace("{years}", String(settings.yearsOfExperience))}
+    </p>
+    <ul class="flex flex-wrap gap-4 pt-2">
+      <li>
+        <a
+          href={settings.bookingUrl}
+          data-track="book_call"
+          class={primaryButton}
+        >
+          {t("home.bookCall")}
+        </a>
+      </li>
+      <li>
+        <a href={sectionPath(locale, "services")} class={secondaryButton}>
+          {t("home.seeServices")}
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="trust" class="mx-auto max-w-6xl px-6">
+    <h2 id="trust" class="sr-only">
+      {t("home.trust")}
+    </h2>
+    <div class="flex flex-col gap-6 rounded-xl border border-line bg-surface-raised/80 p-6 sm:flex-row sm:items-center sm:gap-10">
+      <p class="flex items-baseline gap-2 whitespace-nowrap">
+        <span class="font-mono text-4xl font-semibold text-accent">
+          {years}
+        </span>{" "}
+        <span class="text-ink-muted">{t("home.trust.years")}</span>
+      </p>
+      <ul
+        aria-label={t("home.trust.tech")}
+        class="flex flex-wrap gap-2 font-mono text-sm"
+      >
+        {settings.trustBar.map((tech) => (
+          <li class="rounded-md border border-line px-2.5 py-1 text-ink-muted">
+            {tech}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section aria-labelledby="services" class={sectionClass}>
+    <header class="flex flex-col gap-3">
+      <h2 id="services" class={headingClass}>
+        {t("home.services")}
+      </h2>
+      <p class="max-w-2xl text-lg text-pretty text-ink-muted">
+        {t("home.services.lead")}
+      </p>
+    </header>
+    <ul class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {gigs.map((gig, i) => (
+        <GigCard
+          gig={gig}
+          locale={locale}
+          headingLevel={3}
+          class={i === 0 ? "md:col-span-2 lg:row-span-2" : undefined}
+        />
+      ))}
+    </ul>
+    <a
+      href={sectionPath(locale, "services")}
+      class="self-start font-mono text-sm text-accent hover:underline"
+    >
+      {t("home.services.all")} →
+    </a>
+  </section>
+
+  <section aria-labelledby="process" class={sectionClass}>
+    <h2 id="process" class={headingClass}>
+      {t("home.process")}
+    </h2>
+    <ol class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {steps.map((step, i) => (
+        <li class="flex flex-col gap-2 rounded-xl border border-line bg-surface-raised p-6">
+          <span aria-hidden="true" class="font-mono text-sm text-accent">
+            {String(i + 1).padStart(2, "0")}
+          </span>
+          <h3 class="text-lg font-semibold">{t(`home.process.${step}`)}</h3>
+          <p class="text-pretty text-ink-muted">
+            {t(`home.process.${step}.body`)}
+          </p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section aria-labelledby="about" class={sectionClass}>
+    <h2 id="about" class={headingClass}>
+      {t("home.about")}
+    </h2>
+    <div class="flex max-w-3xl flex-col gap-4">
+      <p class="text-lg text-pretty text-ink-muted">
+        {profile.summary[0]![locale]}
+      </p>
+      <ul class="flex flex-wrap items-center gap-4 pt-2">
+        <li>
+          <a href={sectionPath(locale, "about")} class={secondaryButton}>
+            {t("home.about.more")}
+          </a>
+        </li>
+        <li>
+          <a
+            href={cvPath(locale)}
+            download
+            type="application/pdf"
+            class="font-mono text-sm text-accent hover:underline"
+          >
+            {t("about.downloadCv")}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  {testimonials.length > 0 && (
+    <section aria-labelledby="testimonials" class={sectionClass}>
+      <h2 id="testimonials" class={headingClass}>
+        {t("home.testimonials")}
+      </h2>
+      <ul class="grid gap-6 md:grid-cols-2">
+        {testimonials.map(({ data: { quote, author, link } }) => {
+          const byline = [
+            author.name,
+            author.role?.[locale],
+            author.company,
+          ].filter(Boolean);
+          return (
+            <li>
+              <figure class="flex h-full flex-col gap-4 rounded-xl border border-line bg-surface-raised p-6">
+                <blockquote class="text-lg text-pretty">
+                  <p>“{quote[locale]}”</p>
+                </blockquote>
+                {byline.length > 0 && (
+                  <figcaption class="mt-auto text-sm text-ink-muted">
+                    {link ? (
+                      <a
+                        href={link}
+                        rel="noopener"
+                        class="text-accent hover:underline"
+                      >
+                        {byline.join(" · ")}
+                      </a>
+                    ) : (
+                      byline.join(" · ")
+                    )}
+                  </figcaption>
+                )}
+              </figure>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  )}
+
+  <section aria-labelledby="cta" class="mx-auto max-w-6xl px-6 pt-8 pb-24">
+    <div class="flex flex-col items-start gap-5 rounded-2xl border border-accent/50 bg-surface-raised p-8 sm:p-12">
+      <h2 id="cta" class={headingClass}>
+        {t("home.cta")}
+      </h2>
+      <p class="max-w-2xl text-lg text-pretty text-ink-muted">
+        {t("home.cta.lead")}
+      </p>
+      <ul class="flex flex-wrap gap-4">
+        <li>
+          <a
+            href={settings.bookingUrl}
+            data-track="book_call"
+            class={primaryButton}
+          >
+            {t("home.bookCall")}
+          </a>
+        </li>
+        <li>
+          <a href={sectionPath(locale, "contact")} class={secondaryButton}>
+            {t("home.cta.contact")}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

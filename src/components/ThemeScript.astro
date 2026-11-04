@@ -1,0 +1,16 @@
+---
+// Runs synchronously in <head> so the remembered theme is applied before the
+// first paint (no flash). Dark is the default; only "light" is opt-in.
+---
+
+<script is:inline>
+  (() => {
+    let theme = "dark";
+    try {
+      if (localStorage.getItem("theme") === "light") theme = "light";
+    } catch {
+      // Storage unavailable (privacy mode): keep the default.
+    }
+    document.documentElement.dataset.theme = theme;
+  })();
+</script>

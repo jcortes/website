@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="JC — circuit gear (outline)">
+  <title>JC — circuit gear (outline)</title>
+  <g fill="none" stroke="#2dd4bf" stroke-width="2.6" stroke-linejoin="round">
+    <path d="M26.6 8.62L27.96 3.28A29 29 0 0 1 36.04 3.28L37.4 8.62A24 24 0 0 1 44.72 11.65L49.45 8.84A29 29 0 0 1 55.16 14.55L52.35 19.28A24 24 0 0 1 55.38 26.6L60.72 27.96A29 29 0 0 1 60.72 36.04L55.38 37.4A24 24 0 0 1 52.35 44.72L55.16 49.45A29 29 0 0 1 49.45 55.16L44.72 52.35A24 24 0 0 1 37.4 55.38L36.04 60.72A29 29 0 0 1 27.96 60.72L26.6 55.38A24 24 0 0 1 19.28 52.35L14.55 55.16A29 29 0 0 1 8.84 49.45L11.65 44.72A24 24 0 0 1 8.62 37.4L3.28 36.04A29 29 0 0 1 3.28 27.96L8.62 26.6A24 24 0 0 1 11.65 19.28L8.84 14.55A29 29 0 0 1 14.55 8.84L19.28 11.65A24 24 0 0 1 26.6 8.62Z"/>
+    <circle cx="32" cy="32" r="19.5" stroke-width="1.6" stroke-dasharray="3 2.4"/>
+  </g>
+  <g transform="translate(32 32) scale(0.88) translate(-32.5 -31)">
+  <g fill="none" stroke="#2dd4bf" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M19 23H30M27 23V35L23 39H19"/>
+    <path d="M46 23H38L34 27V35L38 39H46"/>
+  </g>
+  <g fill="#2dd4bf" stroke="#2dd4bf" stroke-width="1.6">
+    <circle cx="19" cy="23" r="2.4"/>
+    <circle cx="19" cy="39" r="2.4"/>
+    <circle cx="46" cy="23" r="2.4"/>
+    <circle cx="46" cy="39" r="2.4"/>
+  </g>
+  </g>
+</svg>

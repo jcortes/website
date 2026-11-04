@@ -1,0 +1,40 @@
+gigs: [ci-cd-github-actions, custom-backend-apis]
+title:
+  es: Controles de calidad automáticos para un catálogo de miles de integraciones
+  en: Automated quality checks for a catalog of thousands of integrations
+descriptor:
+  es: Plataforma de integraciones de código abierto · Estados Unidos
+  en: Open-source integration platform · United States
+role:
+  es: Desarrollador Node.js
+  en: Node.js developer
+duration:
+  es: Más de 4 años
+  en: 4+ years
+problem:
+  es: >-
+    La plataforma publica componentes (fuentes y acciones) que se conectan con más de 3.000 aplicaciones.
+    Cuando un cambio afectaba a un componente, directamente o a través de dependencias compartidas, era fácil olvidar
+    subir su versión, y los errores de las aplicaciones integradas eran difíciles de detectar entre tantas.
+  en: >-
+    The platform publishes components (sources and actions) that connect to more than 3,000 apps.
+    When a change affected a component, directly or through shared dependencies, it was easy to forget to bump
+    its version, and errors in integrated apps were hard to spot among so many.
+solution:
+  es: >-
+    Implementé una GitHub Action que recorre el árbol de dependencias de los archivos modificados y verifica que cada
+    componente afectado tenga una versión nueva, y un workflow de GitHub que monitorea errores en las más de 3.000
+    aplicaciones integradas. También desarrollé nuevos componentes de fuentes y acciones para la plataforma.
+  en: >-
+    I built a GitHub Action that walks the dependency tree of the changed files and checks that every affected
+    component has a new version, and a GitHub workflow that monitors errors across the more than 3,000 integrated apps.
+    I also developed new source and action components for the platform.
+result:
+  es: >-
+    Las versiones olvidadas se detectan en el propio pull request, antes de publicar, y los errores de las aplicaciones
+    integradas los reporta un workflow automático en lugar de una revisión manual.
+  en: >-
+    Missing version bumps are caught in the pull request itself, before publishing, and errors in integrated apps
+    are reported by an automated workflow instead of manual review.
+tech: [Node.js, JavaScript, TypeScript, GitHub Actions, REST APIs]
+confidential: true
