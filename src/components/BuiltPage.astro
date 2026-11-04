@@ -41,7 +41,7 @@ const copy = {
         intro: "GitHub Actions verifica cada cambio antes de publicarlo.",
         items: [
           "Lint (ESLint y Prettier), chequeo de tipos y pruebas unitarias (Vitest) de los manejadores HTTP.",
-          "Lighthouse CI en cada página: falla por debajo de 95 en rendimiento.",
+          "Lighthouse CI en cada página, en paralelo sin frenar el despliegue: falla por debajo de 95 en rendimiento.",
           "Pruebas end-to-end con Playwright sobre el build de producción: rutas en ambos idiomas, formulario, eventos de conversión, accesibilidad con axe, SEO y una guarda de privacidad que busca teléfonos y nombres de clientes en el HTML y el PDF.",
           "En cada pull request: tofu fmt, validate y plan (publicado en el PR) y un despliegue de vista previa con su propia URL.",
           "Al fusionar en main: tofu apply y despliegue a producción.",
@@ -84,7 +84,7 @@ const copy = {
         intro: "GitHub Actions verifies every change before it goes live.",
         items: [
           "Lint (ESLint and Prettier), typechecking and unit tests (Vitest) for the HTTP handlers.",
-          "Lighthouse CI on every page: fails below 95 on performance.",
+          "Lighthouse CI on every page, in parallel without holding up the deploy: fails below 95 on performance.",
           "End-to-end tests with Playwright against the production build: routes in both languages, the contact form, conversion events, axe accessibility checks, SEO, and a privacy guard that scans the HTML and the PDF for phone numbers and client names.",
           "On every pull request: tofu fmt, validate and plan (posted to the PR), and a preview deploy with its own URL.",
           "On merge to main: tofu apply and a production deploy.",

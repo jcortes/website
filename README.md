@@ -167,10 +167,14 @@ pnpm preview      # serve dist/ locally
 
 ## CI
 
-`.github/workflows/ci.yml` runs lint, typecheck, unit tests, build,
-Lighthouse CI and E2E on every pull request and on pushes to `main`. The
-Lighthouse reports are uploaded as a build artifact. Then it plans or applies
-the infrastructure and deploys, below.
+`.github/workflows/ci.yml` runs lint, typecheck, unit tests, build and E2E on
+every pull request and on pushes to `main`. Then it plans or applies the
+infrastructure and deploys, below.
+
+`.github/workflows/lighthouse.yml` runs Lighthouse CI on the same events, in
+parallel, and uploads the reports as a build artifact. It doesn't block the
+deploy: a score below the threshold fails its check, but by then the change may
+already be live on `main`, and nothing rolls it back.
 
 ## Infrastructure and deployment
 
