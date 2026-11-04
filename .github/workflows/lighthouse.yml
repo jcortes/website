@@ -1,0 +1,50 @@
+name: Lighthouse
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# A separate workflow so that audits never hold up a deploy: ci.yml keeps one
+# run at a time per ref, so a job there would make the next push to main wait
+# for it. A newer push replaces the audit in progress; it covers the same
+# changes and more.
+concurrency:
+  group: lighthouse-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  lighthouse:
+    name: Lighthouse CI
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      # Every built page; fails below 95 on performance and reports
+      # accessibility, best practices and SEO (see lighthouserc.json).
+      - name: Lighthouse CI
+        run: pnpm lighthouse
+
+      - name: Upload Lighthouse reports
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci/reports/
+          retention-days: 7
