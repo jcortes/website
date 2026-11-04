@@ -300,7 +300,16 @@ note "    Account · Account Settings · Edit   (Web Analytics: create)"
 note "    Account · Account Settings · Read   (Web Analytics: read; Edit doesn't cover it)"
 step "Account Resources: Include → your account. Continue to summary → Create Token."
 step "Copy the token (it's shown only once)."
-require CLOUDFLARE_API_TOKEN "Paste the API token:" secret
+while :; do
+  require CLOUDFLARE_API_TOKEN "Paste the API token:" secret
+  # A user token verifies here; anything else (a token ID, a truncated paste,
+  # the Global API Key) gets 400/401 and would only fail later in tofu apply.
+  code=$(_authed_code "$CLOUDFLARE_API_TOKEN" "$CF_API/user/tokens/verify")
+  [[ "$code" == 200 ]] && { note "  ✓ token is valid"; break; }
+  warn "Cloudflare rejected the token (HTTP $code). Copy the token value itself"
+  warn "(shown once after Create Token), not its ID or name, and paste it again."
+  CLOUDFLARE_API_TOKEN=""
+done
 write_env CLOUDFLARE_API_TOKEN "$CLOUDFLARE_API_TOKEN"
 env_secret CLOUDFLARE_API_TOKEN "$CLOUDFLARE_API_TOKEN"
 say "Checking what the token can reach (status codes only):"
