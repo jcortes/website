@@ -321,6 +321,11 @@ cf_check() {
 cf_check "Pages" "pages/projects"
 cf_check "Turnstile" "challenges/widgets"
 cf_check "Web Analytics" "rum/site_info/list"
+say "Conversion events go to Workers Analytics Engine (docs/adr/0003). It must be"
+say "enabled once per account, from the dashboard only; until then the Pages deploy"
+say "fails with 'You need to enable Analytics Engine'."
+open_url "https://dash.cloudflare.com/$CLOUDFLARE_ACCOUNT_ID/workers/analytics-engine"
+step "Click Enable / Set up Analytics Engine (free tier is enough)."
 pause
 
 stage "Cloudflare R2: OpenTofu state"
