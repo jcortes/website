@@ -219,6 +219,19 @@ jobs:
             --branch=${{ github.head_ref || github.ref_name }}
             --commit-hash=${{ github.event.pull_request.head.sha || github.sha }}
 
+      # The admin panel's API is the one function whose configuration can be
+      # missing without failing anything above: until the GitHub App exists,
+      # warn; once it does, its login must redirect to GitHub.
+      - name: Smoke test the admin panel login
+        env:
+          GITHUB_APP_CLIENT_ID: ${{ vars.KEYSTATIC_GITHUB_CLIENT_ID }}
+        run: |
+          if [[ -z "$GITHUB_APP_CLIENT_ID" ]]; then
+            echo "::warning::Admin panel unconfigured: its GitHub login answers 500. Run the GitHub App stage of scripts/setup-accounts.sh."
+          else
+            .github/scripts/smoke-admin-login.sh "${{ steps.deploy.outputs.deployment-url }}"
+          fi
+
       - name: Post the preview URL to the PR
         if: ${{ github.event_name == 'pull_request' }}
         env:
