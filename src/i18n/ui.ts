@@ -9,7 +9,7 @@ export const languageNames: Record<Locale, string> = {
 
 export const ui = {
   es: {
-    "site.title": "Jorge Cortés · Ingeniero de Software y DevOps",
+    "site.title": "Jorge Cortes · Ingeniero de Software y DevOps",
     "site.description":
       "Ingeniero de sistemas independiente con más de 15 años en desarrollo backend, nube (AWS) y CI/CD.",
     "nav.skipToContent": "Saltar al contenido",
@@ -139,7 +139,7 @@ export const ui = {
     "home.cta.contact": "Escríbeme",
   },
   en: {
-    "site.title": "Jorge Cortés · Software & DevOps Engineer",
+    "site.title": "Jorge Cortes · Software & DevOps Engineer",
     "site.description":
       "Independent systems engineer with 15+ years in backend development, cloud (AWS) and CI/CD.",
     "nav.skipToContent": "Skip to content",

@@ -146,7 +146,7 @@ for (const l of locales) {
       expect(bytes.subarray(0, 5).toString("latin1")).toBe("%PDF-");
       const text = await pdfText(bytes);
       for (const expected of [
-        "Jorge Cortés",
+        "Jorge Cortes",
         l.experience,
         l.independent,
         "Turing",

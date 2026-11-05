@@ -1,7 +1,7 @@
 # Profile/CV singleton: feeds the About page and the generated CV PDF.
 # Public repository: no phone numbers, no references, no client names. Clients
 # are described only by industry and region.
-name: Jorge Cortés
+name: Jorge Cortes
 headline:
   es: Ingeniero de Software y DevOps
   en: Software & DevOps Engineer

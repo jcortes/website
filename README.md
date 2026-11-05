@@ -1,6 +1,6 @@
 # website
 
-Personal professional site of Jorge Cortés: Software & DevOps engineer.
+Personal professional site of Jorge Cortes: Software & DevOps engineer.
 Bilingual (Spanish at `/`, English under `/en/`), built with
 [Astro](https://astro.build) and [Tailwind CSS](https://tailwindcss.com).
 
