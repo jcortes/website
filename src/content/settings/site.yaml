@@ -1,5 +1,5 @@
 # Site settings singleton (see src/content/settings.ts). Public values only.
-bookingUrl: https://cal.com/jcortes/discovery-call-30-min
+bookingUrl: https://cal.com/jcortes/30min
 yearsOfExperience: 15
 trustBar:
   - AWS
