@@ -3,14 +3,17 @@ import { localizedPath, sectionPath } from "../i18n/paths";
 import { useTranslations, type Locale } from "../i18n/ui";
 import LanguageSwitcher from "./LanguageSwitcher.astro";
 import ThemeToggle from "./ThemeToggle.astro";
+import MotionToggle from "./MotionToggle.astro";
 // Chosen variant; alternatives live alongside it in src/assets/brand/.
 import Logo from "../assets/brand/logo-c-solid.svg";
 
 interface Props {
   locale: Locale;
+  /** The home page has the hero signal, so it gets the motion toggle. */
+  home?: boolean;
 }
 
-const { locale } = Astro.props;
+const { locale, home = false } = Astro.props;
 const t = useTranslations(locale);
 ---
 
@@ -40,7 +43,7 @@ const t = useTranslations(locale);
         <li>
           <a
             href={sectionPath(locale, section)}
-            class="inline-block rounded-md px-2.5 py-2 text-sm text-ink-muted transition-colors hover:text-accent"
+            class="inline-block rounded-md px-2.5 py-2 text-sm text-ink-muted transition-colors hover:text-ink"
           >
             {t(label)}
           </a>
@@ -50,6 +53,7 @@ const t = useTranslations(locale);
   </nav>
   <div class="flex items-center gap-2 sm:gap-3">
     <LanguageSwitcher locale={locale} />
+    {home && <MotionToggle locale={locale} />}
     <ThemeToggle locale={locale} />
   </div>
 </header>

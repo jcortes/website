@@ -23,7 +23,7 @@ const { social } = await getSettings();
 >
   <article class="mx-auto flex max-w-5xl flex-col gap-16 px-6 py-16 sm:py-24">
     <header class="flex max-w-3xl flex-col gap-5">
-      <p class="font-mono text-sm tracking-widest text-accent uppercase">
+      <p class="font-mono text-sm tracking-widest text-ink-muted uppercase">
         {profile.name} · {profile.headline[locale]}
       </p>
       <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">
@@ -39,7 +39,7 @@ const { social } = await getSettings();
             href={cvPath(locale)}
             download
             type="application/pdf"
-            class="inline-block rounded-md border border-accent px-4 py-2.5 font-medium text-accent transition-colors hover:bg-accent hover:text-surface"
+            class="inline-block rounded-md border border-line px-4 py-2.5 font-medium text-ink transition-colors hover:border-ink-muted"
           >
             {t("about.downloadCv")}
           </a>
@@ -48,7 +48,7 @@ const { social } = await getSettings();
           <a
             href={social.github}
             rel="me noopener"
-            class="font-mono text-sm text-accent hover:underline"
+            class="link-quiet font-mono text-sm"
           >
             {t("about.github")} ↗
           </a>
@@ -58,7 +58,7 @@ const { social } = await getSettings();
             <a
               href={social.linkedin}
               rel="me noopener"
-              class="font-mono text-sm text-accent hover:underline"
+              class="link-quiet font-mono text-sm"
             >
               LinkedIn ↗
             </a>
@@ -76,11 +76,11 @@ const { social } = await getSettings();
           <li class="relative pb-10 pl-8 last:pb-0">
             <span
               aria-hidden="true"
-              class="absolute top-1.5 -left-[5px] size-2.5 rounded-full border-2 border-accent bg-surface"
+              class="absolute top-1.5 -left-[5px] size-2.5 rounded-full border-2 border-ink-muted bg-surface"
             />
             <article aria-labelledby={`role-${i}`} class="flex flex-col gap-3">
               <header class="flex flex-col gap-1">
-                <p class="font-mono text-xs tracking-widest text-accent uppercase">
+                <p class="font-mono text-xs tracking-widest text-ink-muted uppercase">
                   {periodBounds(locale, job, t("about.present")).map(
                     ({ label, datetime }, j) => (
                       <>
@@ -115,7 +115,7 @@ const { social } = await getSettings();
                   ))}
                 </ul>
               )}
-              <ul class="flex list-disc flex-col gap-1.5 pl-5 text-pretty marker:text-accent">
+              <ul class="flex list-disc flex-col gap-1.5 pl-5 text-pretty marker:text-ink-muted">
                 {job.achievements.map((item) => (
                   <li>{item[locale]}</li>
                 ))}
@@ -145,7 +145,7 @@ const { social } = await getSettings();
           <div class="flex flex-col gap-3 rounded-xl border border-line bg-surface-raised p-5">
             <h3
               id={`skills-${i}`}
-              class="font-mono text-xs tracking-widest text-accent uppercase"
+              class="font-mono text-xs tracking-widest text-ink-muted uppercase"
             >
               {area[locale]}
             </h3>
@@ -213,7 +213,7 @@ const { social } = await getSettings();
               {course.certification && (
                 <>
                   {course.provider && " · "}
-                  <span class="text-accent">{t("about.certification")}</span>
+                  <span class="text-ink">{t("about.certification")}</span>
                 </>
               )}
             </span>

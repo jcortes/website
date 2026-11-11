@@ -1,42 +1,22 @@
 ---
-// Decorative PCB-style traces with a few "signal pulses" travelling along
-// them. Pure SVG + CSS; the pulses stop under prefers-reduced-motion.
+// Decorative PCB-style traces: the static back layer of every page. Motion
+// lives only in the home hero (HeroSignal), where it points at the Primary
+// CTA; nothing moves back here.
 
-// Traces in a 1440×900 board, using right angles and 45° bends. Some carry
-// an animated signal pulse with its own timing (seconds).
-interface Trace {
-  d: string;
-  pulse?: { duration: number; delay: number };
-}
-
-const traces: Trace[] = [
-  {
-    d: "M0 120 H180 L240 180 H420 L480 120 H640",
-    pulse: { duration: 7, delay: 0 },
-  },
-  { d: "M0 300 H90 L150 360 H330", pulse: { duration: 6, delay: 3.5 } },
-  {
-    d: "M0 640 H220 L280 580 H460 L520 520 H600",
-    pulse: { duration: 9, delay: 2.5 },
-  },
-  { d: "M0 780 H140 L200 840 H380" },
-  {
-    d: "M1440 90 H1260 L1200 150 H1020 L960 210 H860",
-    pulse: { duration: 8, delay: 1 },
-  },
-  { d: "M1440 330 H1320 L1260 390 H1100" },
-  {
-    d: "M1440 560 H1300 L1240 500 H1060 L1000 560 H900",
-    pulse: { duration: 10, delay: 4 },
-  },
-  {
-    d: "M1440 760 H1220 L1160 820 H980 L920 760 H820",
-    pulse: { duration: 9, delay: 6 },
-  },
-  { d: "M300 0 V60 L360 120" },
-  { d: "M1100 900 V820 L1040 760 H980" },
-  { d: "M700 900 V840 L760 780 H880" },
-  { d: "M760 0 V50 L820 110 H900" },
+// Traces in a 1440×900 board, using right angles and 45° bends.
+const traces: string[] = [
+  "M0 120 H180 L240 180 H420 L480 120 H640",
+  "M0 300 H90 L150 360 H330",
+  "M0 640 H220 L280 580 H460 L520 520 H600",
+  "M0 780 H140 L200 840 H380",
+  "M1440 90 H1260 L1200 150 H1020 L960 210 H860",
+  "M1440 330 H1320 L1260 390 H1100",
+  "M1440 560 H1300 L1240 500 H1060 L1000 560 H900",
+  "M1440 760 H1220 L1160 820 H980 L920 760 H820",
+  "M300 0 V60 L360 120",
+  "M1100 900 V820 L1040 760 H980",
+  "M700 900 V840 L760 780 H880",
+  "M760 0 V50 L820 110 H900",
 ];
 
 // Vias (pads) sitting on trace ends.
@@ -78,7 +58,7 @@ const pads: Array<[number, number]> = [
       stroke-width="2"
       stroke-linejoin="round"
     >
-      {traces.map(({ d }) => (
+      {traces.map((d) => (
         <path d={d} />
       ))}
     </g>
@@ -92,24 +72,6 @@ const pads: Array<[number, number]> = [
         <circle cx={cx} cy={cy} r="5" />
       ))}
     </g>
-    <g
-      class="text-accent"
-      stroke="currentColor"
-      stroke-width="2.5"
-      stroke-linecap="round"
-    >
-      {traces.map(
-        ({ d, pulse }) =>
-          pulse && (
-            <path
-              class="circuit-pulse"
-              d={d}
-              pathLength="100"
-              style={`animation-duration: ${pulse.duration}s; animation-delay: -${pulse.delay}s`}
-            />
-          ),
-      )}
-    </g>
   </svg>
 </div>
 
@@ -117,26 +79,5 @@ const pads: Array<[number, number]> = [
   .circuit-background {
     opacity: 0.55;
     mask-image: radial-gradient(ellipse at center, transparent 20%, black 85%);
-  }
-
-  .circuit-pulse {
-    stroke-dasharray: 8 92;
-    stroke-dashoffset: 100;
-    animation-name: circuit-signal;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-  }
-
-  @keyframes circuit-signal {
-    to {
-      stroke-dashoffset: 0;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .circuit-pulse {
-      animation: none;
-      stroke-dashoffset: 0;
-    }
   }
 </style>

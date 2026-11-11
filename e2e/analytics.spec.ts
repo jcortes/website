@@ -26,8 +26,8 @@ async function captureEvents(page: Page): Promise<Reported[]> {
 }
 
 for (const [path, name] of [
-  ["/", "Agendar una llamada"],
-  ["/en/", "Book a call"],
+  ["/", "Agenda tu diagnóstico gratis de 30 min"],
+  ["/en/", "Book your free 30-min diagnosis"],
 ] as const) {
   test(`clicking "${name}" on ${path} reports a book_call event`, async ({
     page,
@@ -46,7 +46,7 @@ test("booking a call from the contact page reports a book_call event", async ({
   await page.goto("/en/contact/");
   await page
     .getByRole("complementary")
-    .getByRole("link", { name: "Book a 30-min call" })
+    .getByRole("link", { name: "Book your free 30-min diagnosis" })
     .click();
   await expect
     .poll(() => events)

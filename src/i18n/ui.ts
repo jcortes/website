@@ -61,7 +61,7 @@ export const ui = {
     "contact.call.title": "¿Prefieres conversar?",
     "contact.call.lead":
       "Agenda una llamada de 30 minutos y revisamos tu caso juntos.",
-    "contact.call.book": "Agendar una llamada de 30 min",
+    "contact.call.book": "Agenda tu diagnóstico gratis de 30 min",
     "contact.call.notes": "Me interesa: {gig}",
     "contact.call.notesWithPackage": "Me interesa: {gig} (paquete {package})",
     "contact.elsewhere": "También me encuentras en",
@@ -105,10 +105,12 @@ export const ui = {
     "theme.toLight": "Cambiar a modo claro",
     "theme.toDark": "Cambiar a modo oscuro",
     "og.tagline": "{years}+ años · Backend, nube (AWS) y CI/CD",
-    "home.title": "Ingeniero de Software y DevOps independiente",
-    "home.value":
-      "{years}+ años llevando software a producción: entregas automatizadas, infraestructura como código y backends en los que puedes confiar.",
-    "home.bookCall": "Agendar una llamada",
+    "home.title": "Despliega a producción sin miedo a romper nada",
+    "home.subtitle":
+      "Para startups y equipos pequeños sin DevOps: automatizo tus despliegues, tu infraestructura en AWS y tu backend para que publicar sea rutina, no un riesgo.",
+    "home.bookCall": "Agenda tu diagnóstico gratis de 30 min",
+    "motion.pause": "Pausar animaciones",
+    "motion.play": "Reanudar animaciones",
     "home.seeServices": "Ver servicios",
     "home.trust": "En resumen",
     "home.trust.years": "años de experiencia",
@@ -192,7 +194,7 @@ export const ui = {
     "contact.call.title": "Prefer to talk?",
     "contact.call.lead":
       "Book a 30-minute call and we'll go over your case together.",
-    "contact.call.book": "Book a 30-min call",
+    "contact.call.book": "Book your free 30-min diagnosis",
     "contact.call.notes": "Interested in: {gig}",
     "contact.call.notesWithPackage": "Interested in: {gig} ({package} package)",
     "contact.elsewhere": "You can also find me on",
@@ -236,10 +238,12 @@ export const ui = {
     "theme.toLight": "Switch to light mode",
     "theme.toDark": "Switch to dark mode",
     "og.tagline": "{years}+ years · Backend, cloud (AWS) and CI/CD",
-    "home.title": "Independent Software & DevOps Engineer",
-    "home.value":
-      "{years}+ years shipping software to production: automated delivery, infrastructure as code and backends you can rely on.",
-    "home.bookCall": "Book a call",
+    "home.title": "Ship to production without fear of breaking anything",
+    "home.subtitle":
+      "For startups and small teams without DevOps: I automate your deployments, your AWS infrastructure and your backend so releasing is routine, not a risk.",
+    "home.bookCall": "Book your free 30-min diagnosis",
+    "motion.pause": "Pause animations",
+    "motion.play": "Resume animations",
     "home.seeServices": "See services",
     "home.trust": "At a glance",
     "home.trust.years": "years of experience",
