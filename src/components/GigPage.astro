@@ -25,7 +25,7 @@ const projects = (await getCatalog()).relatedWork(gig);
 >
   <article class="mx-auto flex max-w-6xl flex-col gap-16 px-6 py-16 sm:py-24">
     <header class="flex max-w-3xl flex-col gap-5">
-      <p class="font-mono text-sm tracking-widest text-accent uppercase">
+      <p class="font-mono text-sm tracking-widest text-ink-muted uppercase">
         {data.category[locale]}
       </p>
       <h1 class="text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
@@ -75,7 +75,7 @@ const projects = (await getCatalog()).relatedWork(gig);
           return (
             <article
               aria-labelledby={`package-${tier}`}
-              class="flex flex-col gap-5 rounded-xl border border-line bg-surface-raised p-6 data-[tier=standard]:border-accent"
+              class="flex flex-col gap-5 rounded-xl border border-line bg-surface-raised p-6 data-[tier=standard]:border-ink-muted"
               data-tier={tier}
             >
               <h3 id={`package-${tier}`} class="text-xl font-semibold">
@@ -85,13 +85,13 @@ const projects = (await getCatalog()).relatedWork(gig);
               <div class="flex flex-col gap-2">
                 <h4
                   id={`package-${tier}-deliverables`}
-                  class="font-mono text-xs tracking-widest text-accent uppercase"
+                  class="font-mono text-xs tracking-widest text-ink-muted uppercase"
                 >
                   {t("gig.deliverables")}
                 </h4>
                 <ul
                   aria-labelledby={`package-${tier}-deliverables`}
-                  class="flex list-disc flex-col gap-1.5 pl-5 marker:text-accent"
+                  class="flex list-disc flex-col gap-1.5 pl-5 marker:text-ink-muted"
                 >
                   {pkg.deliverables.map((item) => (
                     <li>{item[locale]}</li>
@@ -102,10 +102,7 @@ const projects = (await getCatalog()).relatedWork(gig);
                 <li>{plural("gig.deliveryDays", pkg.deliveryDays)}</li>
                 <li>{plural("gig.revisions", pkg.revisions)}</li>
               </ul>
-              <a
-                href={quotePath(locale, gig.id, tier)}
-                class="rounded-md border border-accent px-4 py-2.5 text-center font-medium text-accent transition-colors hover:bg-accent hover:text-surface"
-              >
+              <a href={quotePath(locale, gig.id, tier)} class="cta-action">
                 {t("gig.requestQuote")}
                 <span class="sr-only">: {pkg.name[locale]}</span>
               </a>
@@ -125,7 +122,7 @@ const projects = (await getCatalog()).relatedWork(gig);
         <ul class="flex flex-col gap-3">
           {data.requirements.map((item) => (
             <li class="flex gap-3 text-pretty text-ink-muted">
-              <span aria-hidden="true" class="font-mono text-accent">
+              <span aria-hidden="true" class="font-mono text-ink-muted">
                 ▸
               </span>
               <span>{item[locale]}</span>
@@ -145,7 +142,7 @@ const projects = (await getCatalog()).relatedWork(gig);
                 {question[locale]}
                 <span
                   aria-hidden="true"
-                  class="font-mono text-accent transition-transform group-open:rotate-45"
+                  class="font-mono text-ink-muted transition-transform group-open:rotate-45"
                 >
                   +
                 </span>

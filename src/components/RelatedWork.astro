@@ -31,7 +31,7 @@ const t = useTranslations(locale);
             class="flex flex-col gap-5 rounded-xl border border-line bg-surface-raised p-6"
           >
             <header class="flex flex-col gap-2">
-              <p class="font-mono text-xs tracking-widest text-accent uppercase">
+              <p class="font-mono text-xs tracking-widest text-ink-muted uppercase">
                 {client ? `${client} · ` : ""}
                 {data.descriptor[locale]}
               </p>
@@ -62,7 +62,7 @@ const t = useTranslations(locale);
                 ] as const
               ).map(([label, text]) => (
                 <div class="flex flex-col gap-1">
-                  <dt class="font-mono text-xs tracking-widest text-accent uppercase">
+                  <dt class="font-mono text-xs tracking-widest text-ink-muted uppercase">
                     {t(label)}
                   </dt>
                   <dd class="text-pretty text-ink-muted">{text[locale]}</dd>
@@ -93,11 +93,7 @@ const t = useTranslations(locale);
               <ul class="flex flex-wrap gap-4 text-sm">
                 {links.map(({ label, url }) => (
                   <li>
-                    <a
-                      href={url}
-                      rel="noopener"
-                      class="text-accent hover:underline"
-                    >
+                    <a href={url} rel="noopener" class="link-quiet">
                       {label[locale]}
                     </a>
                   </li>

@@ -4,7 +4,7 @@ test("the root renders the home page in Spanish", async ({ page }) => {
   await page.goto("/");
   await expect(page.locator("html")).toHaveAttribute("lang", "es");
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "Ingeniero",
+    "producción",
   );
 });
 
@@ -12,7 +12,7 @@ test("/en/ renders the home page in English", async ({ page }) => {
   await page.goto("/en/");
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "Engineer",
+    "production",
   );
 });
 

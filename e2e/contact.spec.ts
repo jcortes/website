@@ -27,7 +27,7 @@ const locales = [
     tooShort: /al menos 20 caracteres/,
     success: "¡Gracias! Recibí tu mensaje",
     failure: "No se pudo enviar tu mensaje",
-    book: "Agendar una llamada de 30 min",
+    book: "Agenda tu diagnóstico gratis de 30 min",
     notes: "Me interesa:",
   },
   {
@@ -51,7 +51,7 @@ const locales = [
     tooShort: /at least 20 characters/,
     success: "Thanks! I got your message",
     failure: "Your message couldn't be sent",
-    book: "Book a 30-min call",
+    book: "Book your free 30-min diagnosis",
     notes: "Interested in:",
   },
 ] as const;

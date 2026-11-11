@@ -12,9 +12,9 @@ const locales = [
   {
     lang: "es",
     path: "/",
-    hero: "Ingeniero de Software y DevOps independiente",
+    hero: "Despliega a producción sin miedo a romper nada",
     years: "15+ años de experiencia",
-    bookCall: "Agendar una llamada",
+    bookCall: "Agenda tu diagnóstico gratis de 30 min",
     seeServices: "Ver servicios",
     services: "/servicios/",
     testimonial: "Testimonio de prueba para la suite E2E.",
@@ -30,9 +30,9 @@ const locales = [
   {
     lang: "en",
     path: "/en/",
-    hero: "Independent Software & DevOps Engineer",
+    hero: "Ship to production without fear of breaking anything",
     years: "15+ years of experience",
-    bookCall: "Book a call",
+    bookCall: "Book your free 30-min diagnosis",
     seeServices: "See services",
     services: "/en/services/",
     testimonial: "Test testimonial for the E2E suite.",
@@ -69,6 +69,34 @@ for (const l of locales) {
       ).toHaveAttribute("href", BOOKING_URL);
       await hero.getByRole("link", { name: l.seeServices }).click();
       await expect(page).toHaveURL(l.services);
+    });
+
+    test("the accent marks only the actions to click", async ({ page }) => {
+      await page.goto(l.path);
+      // Every visible element painted in the accent (text, fill or border)
+      // must be the Primary CTA: the accent is a highlighter, not decoration.
+      const accented = await page.evaluate(() => {
+        const probe = document.createElement("span");
+        probe.style.color = "var(--color-accent)";
+        document.body.append(probe);
+        const accent = getComputedStyle(probe).color;
+        probe.remove();
+        return [...document.querySelectorAll<HTMLElement>("body *")]
+          .filter((el) => {
+            if (el.closest("svg") || !el.checkVisibility()) return false;
+            const css = getComputedStyle(el);
+            return (
+              css.backgroundColor === accent ||
+              (css.color === accent && el.textContent?.trim()) ||
+              (css.borderTopWidth !== "0px" && css.borderTopColor === accent)
+            );
+          })
+          .map((el) => el.className);
+      });
+      expect(accented.length).toBeGreaterThan(0);
+      for (const className of accented) {
+        expect(className).toContain("cta-primary");
+      }
     });
 
     test("the trust bar shows only the years and the key technologies", async ({
