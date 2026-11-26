@@ -391,6 +391,10 @@ export default config({
             name: requiredText("Name", "Course titles aren't translated."),
             provider: fields.text({ label: "Provider" }),
             certification: fields.checkbox({ label: "Certification" }),
+            certificate: fields.url({
+              label: "Certificate",
+              description: "Public link to the certificate (optional).",
+            }),
           }),
           {
             label: "Courses and certifications",
@@ -402,6 +406,10 @@ export default config({
           fields.object({
             language: localized("Language"),
             level: localized("Level"),
+            certificate: fields.url({
+              label: "Certificate",
+              description: "Public link that backs the level (optional).",
+            }),
           }),
           {
             label: "Languages",

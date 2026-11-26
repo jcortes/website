@@ -8,6 +8,8 @@ const ACCENT = "#0f766e";
 const INK = "#0f172a";
 const MUTED = "#475569";
 const MARGIN = 50;
+/** The CV mentions the portfolio projects right after this job. */
+const PORTFOLIO_AFTER_EMPLOYER = "Turing";
 
 /**
  * The CV as a print-styled A4 PDF, from the same profile as the About page.
@@ -106,6 +108,43 @@ export function renderCvPdf(
     body(paragraph[locale], MUTED);
   }
 
+  // The CV has no portfolio section: the projects are mentioned briefly inside
+  // the experience, right after this employer (or at the end if it's absent).
+  const afterEmployer = profile.experience.findIndex(
+    (job) => job.employer === PORTFOLIO_AFTER_EMPLOYER,
+  );
+  const portfolioAt =
+    afterEmployer >= 0 ? afterEmployer : profile.experience.length - 1;
+  const portfolioMention = () => {
+    if (profile.portfolio.length === 0) return;
+    doc.moveDown(0.8);
+    keep(50);
+    doc
+      .font("Helvetica-Bold")
+      .fontSize(10.5)
+      .fillColor(INK)
+      .text(t("about.portfolioCv"), MARGIN, doc.y, { width });
+    doc.moveDown(0.3);
+    for (const project of profile.portfolio) {
+      const url = project.repository ?? project.website!;
+      keep(14);
+      doc
+        .font("Helvetica")
+        .fontSize(9.5)
+        .fillColor(INK)
+        .text(`•  ${project.title[locale]} · `, MARGIN + 4, doc.y, {
+          continued: true,
+          lineGap: 1.5,
+        })
+        .fillColor(ACCENT)
+        .text(url.replace(/^https?:\/\//, "").replace(/\/$/, ""), {
+          link: url,
+          lineGap: 1.5,
+        });
+    }
+    doc.x = MARGIN;
+  };
+
   heading(t("about.experience"));
   profile.experience.forEach((job, i) => {
     if (i > 0) doc.moveDown(0.8);
@@ -146,38 +185,8 @@ export function renderCvPdf(
         .fillColor(MUTED)
         .text(`${t("about.tech")}: ${job.tech.join(", ")}`);
     }
+    if (i === portfolioAt) portfolioMention();
   });
-
-  if (profile.portfolio.length > 0) {
-    heading(t("about.portfolio"));
-    profile.portfolio.forEach((project, i) => {
-      if (i > 0) doc.moveDown(0.6);
-      keep(50);
-      doc
-        .font("Helvetica-Bold")
-        .fontSize(10)
-        .fillColor(INK)
-        .text(project.title[locale]);
-      for (const url of [project.website, project.repository]) {
-        if (!url) continue;
-        doc
-          .font("Helvetica")
-          .fontSize(8.5)
-          .fillColor(ACCENT)
-          .text(url.replace(/^https?:\/\//, "").replace(/\/$/, ""), {
-            link: url,
-          });
-      }
-      doc.moveDown(0.2);
-      body(project.description[locale]);
-      doc.moveDown(0.2);
-      doc
-        .font("Helvetica")
-        .fontSize(8.5)
-        .fillColor(MUTED)
-        .text(`${t("about.tech")}: ${project.tech.join(", ")}`);
-    });
-  }
 
   heading(t("about.skills"));
   for (const { area, items } of profile.skills) {
@@ -207,22 +216,42 @@ export function renderCvPdf(
   }
 
   heading(t("about.courses"));
-  bullets(
-    profile.courses.map((course) =>
-      [
-        course.name,
-        course.provider,
-        course.certification ? t("about.certification") : undefined,
-      ]
-        .filter(Boolean)
-        .join(" · "),
-    ),
-  );
+  // Drawn line by line rather than with `bullets` so a certificate can be a
+  // link: its URL is too long to print, so it reads "View certificate".
+  for (const course of profile.courses) {
+    const text = [
+      course.name,
+      course.provider,
+      course.certification ? t("about.certification") : undefined,
+    ]
+      .filter(Boolean)
+      .join(" · ");
+    keep(14);
+    doc
+      .font("Helvetica")
+      .fontSize(9.5)
+      .fillColor(INK)
+      .text(`•  ${text}`, MARGIN + 4, doc.y, {
+        width: width - 4,
+        lineGap: 1.5,
+        continued: Boolean(course.certificate),
+      });
+    if (course.certificate) {
+      doc
+        .fillColor(ACCENT)
+        .text(` · ${t("about.certificate")}`, { link: course.certificate });
+    }
+  }
+  doc.x = MARGIN;
 
   heading(t("about.languages"));
   body(
     profile.languages
-      .map(({ language, level }) => `${language[locale]} (${level[locale]})`)
+      .map(
+        ({ language, level, certificate }) =>
+          `${language[locale]} (${level[locale]})` +
+          (certificate ? ` · ${certificate.replace(/^https?:\/\//, "")}` : ""),
+      )
       .join("  ·  "),
   );
 

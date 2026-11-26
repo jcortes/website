@@ -249,10 +249,24 @@ const { social } = await getSettings();
           {t("about.languages")}
         </h2>
         <dl class="flex flex-col gap-2">
-          {profile.languages.map(({ language, level }) => (
+          {profile.languages.map(({ language, level, certificate }) => (
             <div class="flex gap-2">
               <dt class="font-medium">{language[locale]}</dt>
-              <dd class="text-ink-muted">· {level[locale]}</dd>
+              <dd class="text-ink-muted">
+                · {level[locale]}
+                {certificate && (
+                  <>
+                    {" · "}
+                    <a
+                      href={certificate}
+                      rel="noopener"
+                      class="font-mono text-sm text-accent underline underline-offset-2"
+                    >
+                      {t("about.certificate")} ↗
+                    </a>
+                  </>
+                )}
+              </dd>
             </div>
           ))}
         </dl>
@@ -273,6 +287,18 @@ const { social } = await getSettings();
                 <>
                   {course.provider && " · "}
                   <span class="text-ink">{t("about.certification")}</span>
+                </>
+              )}
+              {course.certificate && (
+                <>
+                  {(course.provider || course.certification) && " · "}
+                  <a
+                    href={course.certificate}
+                    rel="noopener"
+                    class="text-accent underline underline-offset-2"
+                  >
+                    {t("about.certificate")} ↗
+                  </a>
                 </>
               )}
             </span>

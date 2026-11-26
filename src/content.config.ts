@@ -189,10 +189,17 @@ const profile = defineCollection({
         name: z.string().trim().min(1),
         provider: z.string().trim().min(1).optional(),
         certification: z.boolean().default(false),
+        // The public certificate of completion, linked where shown.
+        certificate: z.url().optional(),
       }),
     ),
     languages: nonEmptyList(
-      z.strictObject({ language: localized, level: localized }),
+      z.strictObject({
+        language: localized,
+        level: localized,
+        // A public certificate that backs the level, linked where shown.
+        certificate: z.url().optional(),
+      }),
     ),
   }),
 });
