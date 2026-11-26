@@ -163,7 +163,7 @@ for (const l of locales) {
           test("confidential projects link nowhere outside the site", async ({
             page,
           }) => {
-            // Client names are covered by the privacy guard's denylist.
+            // Confidential projects have no client name or links (schema).
             const related = section(page, l.relatedWork);
             await expect(related.getByRole("article").first()).toBeVisible();
             for (const link of await related.getByRole("link").all()) {

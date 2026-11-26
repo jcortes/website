@@ -3,7 +3,7 @@ import { defineConfig, devices } from "@playwright/test";
 
 const PORT = 4329;
 
-// Local runs pick up PRIVACY_DENYLIST (and the rest) from the git-ignored
+// Local runs pick up PRIVACY_DENYLIST (optional) and the rest from the git-ignored
 // .env written by scripts/setup-accounts.sh. CI passes secrets as env vars.
 if (existsSync(".env")) process.loadEnvFile(".env");
 

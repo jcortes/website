@@ -130,14 +130,29 @@ const experience = z
     start: yearMonth,
     // Omitted while the role is current.
     end: yearMonth.optional(),
-    // Who the work was for, only as anonymized descriptors (industry and
-    // region), never by name.
+    // Who the work was for: a name, or a descriptor (industry and region).
     clients: z.array(localized).optional(),
     achievements: nonEmptyList(localized),
     tech: z.array(z.string().trim().min(1)),
   })
   .refine((e) => !e.end || e.end >= e.start, {
     message: "An experience entry cannot end before it starts",
+  });
+
+// A recent portfolio project, shown on the About page and in the CV. Every
+// project links somewhere: its public repository, or, when the repository is
+// private, the website where the project runs.
+const portfolioProject = z
+  .strictObject({
+    title: localized,
+    description: localized,
+    tech: nonEmptyList(z.string().trim().min(1)),
+    repository: z.url().optional(),
+    website: z.url().optional(),
+  })
+  .refine((p) => p.repository || p.website, {
+    message:
+      "A portfolio project needs a public repository or, if the repository is private, the website where it runs",
   });
 
 // Singleton: exactly one file (see src/content/profile.ts). It feeds both the
@@ -151,6 +166,8 @@ const profile = defineCollection({
     positioning: localized,
     summary: nonEmptyList(localized),
     experience: nonEmptyList(experience),
+    // Newest first; the section is hidden while the list is empty.
+    portfolio: z.array(portfolioProject).default([]),
     skills: nonEmptyList(
       z.strictObject({
         area: localized,

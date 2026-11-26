@@ -327,8 +327,7 @@ export default config({
             }),
             clients: fields.array(localized("Client descriptor"), {
               label: "Clients",
-              description:
-                "Anonymized descriptors only (industry and region), never names.",
+              description: "A name, or a descriptor (industry and region).",
               itemLabel: esLabel,
             }),
             achievements: localizedList("Achievements", { multiline: true }),
@@ -339,6 +338,27 @@ export default config({
             itemLabel: (props) =>
               `${props.fields.role.fields.es.value || "(empty)"} · ${props.fields.start.value}`,
             validation: { length: { min: 1 } },
+          },
+        ),
+        portfolio: fields.array(
+          fields.object({
+            title: localized("Title"),
+            description: localized("Description", { multiline: true }),
+            tech: stringList("Technologies"),
+            repository: fields.url({
+              label: "Repository",
+              description: "Public repositories only; leave empty if private.",
+            }),
+            website: fields.url({
+              label: "Website",
+              description:
+                "Where the project runs. Required when the repository is private (the build rejects a project with neither).",
+            }),
+          }),
+          {
+            label: "Recent portfolio",
+            description: "Newest first.",
+            itemLabel: esLabelOf("title"),
           },
         ),
         skills: fields.array(
