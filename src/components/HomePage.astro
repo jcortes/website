@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import GigCard from "./GigCard.astro";
+import HeroSignal from "./HeroSignal.astro";
 import { getCatalog } from "../content/catalog";
 import { getProfile } from "../content/profile";
 import { getSettings } from "../content/settings";
@@ -24,20 +25,20 @@ const years = `${settings.yearsOfExperience}+`;
 
 const steps = ["diagnosis", "proposal", "implementation", "support"] as const;
 
-const primaryButton =
-  "inline-block rounded-md bg-accent px-5 py-2.5 font-medium text-surface transition-opacity hover:opacity-90";
-const secondaryButton =
-  "inline-block rounded-md border border-accent px-5 py-2.5 font-medium text-accent transition-colors hover:bg-accent hover:text-surface";
+// Only "book a call" is a button (the Primary CTA, see GLOSSARY.md); every
+// other action on the page is a quiet text link.
+// Padded to a comfortable touch target, like the button beside it.
+const quietLink = "link-quiet inline-block py-2.5 font-medium";
 const sectionClass = "mx-auto flex max-w-6xl flex-col gap-8 px-6 py-16";
 const headingClass = "text-3xl font-semibold tracking-tight";
 ---
 
-<BaseLayout locale={locale}>
+<BaseLayout locale={locale} home>
   <section
     aria-labelledby="hero"
     class="mx-auto flex max-w-6xl flex-col gap-6 px-6 pt-20 pb-16 sm:pt-28"
   >
-    <p class="font-mono text-sm tracking-widest text-accent uppercase">
+    <p class="font-mono text-sm tracking-widest text-ink-muted uppercase">
       {profile.name} · {profile.headline[locale]}
     </p>
     <h1
@@ -46,22 +47,22 @@ const headingClass = "text-3xl font-semibold tracking-tight";
     >
       {t("home.title")}
     </h1>
-    <p class="max-w-3xl text-xl text-pretty">{profile.positioning[locale]}</p>
-    <p class="max-w-3xl text-lg text-pretty text-ink-muted">
-      {t("home.value").replace("{years}", String(settings.yearsOfExperience))}
+    <p class="max-w-3xl text-xl text-pretty text-ink-muted">
+      {t("home.subtitle")}
     </p>
-    <ul class="flex flex-wrap gap-4 pt-2">
-      <li>
+    <ul class="flex flex-wrap items-center gap-x-8 gap-y-4 pt-2">
+      <li class="relative">
         <a
           href={settings.bookingUrl}
           data-track="book_call"
-          class={primaryButton}
+          class="cta-primary"
         >
           {t("home.bookCall")}
         </a>
+        <HeroSignal />
       </li>
       <li>
-        <a href={sectionPath(locale, "services")} class={secondaryButton}>
+        <a href={sectionPath(locale, "services")} class={quietLink}>
           {t("home.seeServices")}
         </a>
       </li>
@@ -74,9 +75,7 @@ const headingClass = "text-3xl font-semibold tracking-tight";
     </h2>
     <div class="flex flex-col gap-6 rounded-xl border border-line bg-surface-raised/80 p-6 sm:flex-row sm:items-center sm:gap-10">
       <p class="flex items-baseline gap-2 whitespace-nowrap">
-        <span class="font-mono text-4xl font-semibold text-accent">
-          {years}
-        </span>{" "}
+        <span class="font-mono text-4xl font-semibold text-ink">{years}</span>{" "}
         <span class="text-ink-muted">{t("home.trust.years")}</span>
       </p>
       <ul
@@ -113,7 +112,7 @@ const headingClass = "text-3xl font-semibold tracking-tight";
     </ul>
     <a
       href={sectionPath(locale, "services")}
-      class="self-start font-mono text-sm text-accent hover:underline"
+      class="link-quiet self-start font-mono text-sm"
     >
       {t("home.services.all")} →
     </a>
@@ -126,7 +125,7 @@ const headingClass = "text-3xl font-semibold tracking-tight";
     <ol class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
       {steps.map((step, i) => (
         <li class="flex flex-col gap-2 rounded-xl border border-line bg-surface-raised p-6">
-          <span aria-hidden="true" class="font-mono text-sm text-accent">
+          <span aria-hidden="true" class="font-mono text-sm text-ink-muted">
             {String(i + 1).padStart(2, "0")}
           </span>
           <h3 class="text-lg font-semibold">{t(`home.process.${step}`)}</h3>
@@ -148,7 +147,7 @@ const headingClass = "text-3xl font-semibold tracking-tight";
       </p>
       <ul class="flex flex-wrap items-center gap-4 pt-2">
         <li>
-          <a href={sectionPath(locale, "about")} class={secondaryButton}>
+          <a href={sectionPath(locale, "about")} class={quietLink}>
             {t("home.about.more")}
           </a>
         </li>
@@ -157,7 +156,7 @@ const headingClass = "text-3xl font-semibold tracking-tight";
             href={cvPath(locale)}
             download
             type="application/pdf"
-            class="font-mono text-sm text-accent hover:underline"
+            class="link-quiet font-mono text-sm"
           >
             {t("about.downloadCv")}
           </a>
@@ -187,11 +186,7 @@ const headingClass = "text-3xl font-semibold tracking-tight";
                 {byline.length > 0 && (
                   <figcaption class="mt-auto text-sm text-ink-muted">
                     {link ? (
-                      <a
-                        href={link}
-                        rel="noopener"
-                        class="text-accent hover:underline"
-                      >
+                      <a href={link} rel="noopener" class="link-quiet">
                         {byline.join(" · ")}
                       </a>
                     ) : (
@@ -208,25 +203,25 @@ const headingClass = "text-3xl font-semibold tracking-tight";
   )}
 
   <section aria-labelledby="cta" class="mx-auto max-w-6xl px-6 pt-8 pb-24">
-    <div class="flex flex-col items-start gap-5 rounded-2xl border border-accent/50 bg-surface-raised p-8 sm:p-12">
+    <div class="flex flex-col items-start gap-5 rounded-2xl border border-line bg-surface-raised p-8 sm:p-12">
       <h2 id="cta" class={headingClass}>
         {t("home.cta")}
       </h2>
       <p class="max-w-2xl text-lg text-pretty text-ink-muted">
         {t("home.cta.lead")}
       </p>
-      <ul class="flex flex-wrap gap-4">
+      <ul class="flex flex-wrap items-center gap-x-8 gap-y-4">
         <li>
           <a
             href={settings.bookingUrl}
             data-track="book_call"
-            class={primaryButton}
+            class="cta-primary"
           >
             {t("home.bookCall")}
           </a>
         </li>
         <li>
-          <a href={sectionPath(locale, "contact")} class={secondaryButton}>
+          <a href={sectionPath(locale, "contact")} class={quietLink}>
             {t("home.cta.contact")}
           </a>
         </li>

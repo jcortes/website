@@ -1,0 +1,64 @@
+---
+// The site's only motion: one signal pulse running along a trace into the
+// Primary CTA, to lead the eye to it. Rendered inside the CTA's (relative)
+// wrapper: the trace runs below the button and bends up into its center, so
+// it never crosses text. Hidden on phones, where the hero buttons wrap.
+// The pulse stops under prefers-reduced-motion and when the visitor pauses
+// animations (MotionToggle sets data-motion="off" on <html>).
+
+// 360×40 board; the trace ends at the top-right corner, which sits under the
+// button's center. Final 45° bend: 28 across, 28 up.
+const trace = "M0 36 H332 L360 8";
+---
+
+<svg
+  data-testid="hero-signal"
+  aria-hidden="true"
+  class="pointer-events-none absolute top-full right-1/2 -z-10 mt-1 hidden h-10 w-[360px] sm:block"
+  viewBox="0 0 360 40"
+  fill="none"
+  stroke-width="2"
+  stroke-linejoin="round"
+  stroke-linecap="round"
+>
+  <path class="text-line" stroke="currentColor" d={trace}></path>
+  <path
+    class="hero-signal-pulse text-ink-muted"
+    stroke="currentColor"
+    stroke-width="2.5"
+    pathLength="100"
+    d={trace}
+  ></path>
+</svg>
+
+<style>
+  svg {
+    /* Fade the trace in from the left so it seems to come from the board. */
+    mask-image: linear-gradient(to right, transparent, black 40%);
+  }
+
+  .hero-signal-pulse {
+    /* One 12-unit dash with a gap longer than the path: a single pulse. */
+    stroke-dasharray: 12 200;
+    stroke-dashoffset: 12;
+    animation: hero-signal 4s ease-in infinite;
+  }
+
+  @keyframes hero-signal {
+    /* Travel into the button, then rest (hidden) before the next pulse. */
+    55%,
+    100% {
+      stroke-dashoffset: -100;
+    }
+  }
+
+  :global([data-motion="off"]) .hero-signal-pulse {
+    animation: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-signal-pulse {
+      animation: none;
+    }
+  }
+</style>

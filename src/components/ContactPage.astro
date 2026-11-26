@@ -51,7 +51,7 @@ const inputClass =
   "w-full rounded-md border border-line bg-surface-raised px-3 py-2 text-ink aria-invalid:border-red-500";
 const labelClass = "font-medium";
 const errorClass = "text-sm text-red-600 dark:text-red-400";
-const linkClass = "font-mono text-sm text-accent hover:underline";
+const linkClass = "link-quiet font-mono text-sm";
 ---
 
 <BaseLayout
@@ -231,10 +231,7 @@ const linkClass = "font-mono text-sm text-accent hover:underline";
           />
         )}
 
-        <button
-          type="submit"
-          class="self-start rounded-md bg-accent px-5 py-2.5 font-medium text-surface transition-opacity hover:opacity-90 disabled:opacity-60"
-        >
+        <button type="submit" class="cta-action self-start">
           {t("contact.submit")}
         </button>
       </form>
@@ -244,7 +241,7 @@ const linkClass = "font-mono text-sm text-accent hover:underline";
         role="status"
         tabindex="-1"
         hidden
-        class="flex flex-col gap-2 rounded-xl border border-accent p-6"
+        class="flex flex-col gap-2 rounded-xl border border-ink-muted p-6"
       >
         <p class="text-xl font-semibold">{t("contact.success.title")}</p>
         <p class="text-pretty text-ink-muted">{t("contact.success.body")}</p>
@@ -265,7 +262,7 @@ const linkClass = "font-mono text-sm text-accent hover:underline";
           data-cal-link
           data-base={bookingUrl}
           data-track="book_call"
-          class="rounded-md border border-accent px-4 py-2.5 text-center font-medium text-accent transition-colors hover:bg-accent hover:text-surface"
+          class="cta-primary"
         >
           {t("contact.call.book")}
         </a>
@@ -273,7 +270,7 @@ const linkClass = "font-mono text-sm text-accent hover:underline";
       <section aria-labelledby="elsewhere" class="flex flex-col gap-3">
         <h2
           id="elsewhere"
-          class="font-mono text-xs tracking-widest text-accent uppercase"
+          class="font-mono text-xs tracking-widest text-ink-muted uppercase"
         >
           {t("contact.elsewhere")}
         </h2>

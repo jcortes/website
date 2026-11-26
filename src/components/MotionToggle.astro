@@ -1,0 +1,94 @@
+---
+import { useTranslations, type Locale } from "../i18n/ui";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<!--
+  Pauses and resumes the hero signal (the site's only animation), remembered
+  in localStorage as "motion". Only on the home page, where something moves;
+  hidden on phones (no signal there) and under prefers-reduced-motion
+  (nothing moves at all).
+-->
+<button
+  type="button"
+  data-motion-toggle
+  data-label-pause={t("motion.pause")}
+  data-label-play={t("motion.play")}
+  aria-label={t("motion.pause")}
+  class="motion-toggle hidden size-9 place-items-center rounded-md border border-line bg-surface text-ink-muted transition-colors hover:border-ink-muted hover:text-ink sm:grid"
+>
+  <!-- Pause bars: shown while animations run -->
+  <svg
+    data-icon="pause"
+    class="size-4"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    aria-hidden="true"
+  >
+    <rect x="6" y="5" width="4" height="14" rx="1"></rect>
+    <rect x="14" y="5" width="4" height="14" rx="1"></rect>
+  </svg>
+  <!-- Play triangle: shown while paused -->
+  <svg
+    data-icon="play"
+    class="size-4"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    aria-hidden="true"
+  >
+    <path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"></path>
+  </svg>
+</button>
+
+<style>
+  :global(html:not([data-motion="off"])) [data-icon="play"],
+  :global(html[data-motion="off"]) [data-icon="pause"] {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .motion-toggle {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const root = document.documentElement;
+
+  const paused = () => root.dataset.motion === "off";
+
+  function syncLabel(button: HTMLButtonElement) {
+    const label = paused()
+      ? button.dataset.labelPlay
+      : button.dataset.labelPause;
+    if (label) button.setAttribute("aria-label", label);
+  }
+
+  function setPaused(off: boolean) {
+    if (off) root.dataset.motion = "off";
+    else delete root.dataset.motion;
+    try {
+      if (off) localStorage.setItem("motion", "off");
+      else localStorage.removeItem("motion");
+    } catch {
+      // Storage unavailable: the choice lasts for this page only.
+    }
+  }
+
+  for (const button of document.querySelectorAll<HTMLButtonElement>(
+    "[data-motion-toggle]",
+  )) {
+    syncLabel(button);
+    button.addEventListener("click", () => {
+      setPaused(!paused());
+      syncLabel(button);
+    });
+  }
+</script>

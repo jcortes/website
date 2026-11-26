@@ -50,3 +50,47 @@
     @apply outline-2 outline-offset-2 outline-accent;
   }
 }
+
+/*
+ * The accent is a highlighter, not decoration (see GLOSSARY.md, "Accent"):
+ * only these action classes and the focus ring use it. Everything else stays
+ * in ink, ink-muted and line.
+ */
+@layer components {
+  /* The Primary CTA: the one front-layer element, filled and lifted. */
+  .cta-primary {
+    @apply inline-block rounded-md bg-accent px-5 py-2.5 text-center font-semibold text-surface transition duration-200 hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0;
+    box-shadow:
+      0 1px 2px rgb(15 23 42 / 0.12),
+      0 8px 20px -6px rgb(15 23 42 / 0.35);
+  }
+
+  .cta-primary:hover {
+    box-shadow:
+      0 2px 4px rgb(15 23 42 / 0.12),
+      0 14px 28px -8px rgb(15 23 42 / 0.4);
+  }
+
+  /* A dark shadow is invisible on navy: lift with a faint accent glow. */
+  [data-theme="dark"] .cta-primary {
+    box-shadow:
+      0 0 0 1px rgb(45 212 191 / 0.25),
+      0 8px 24px -6px rgb(45 212 191 / 0.35);
+  }
+
+  [data-theme="dark"] .cta-primary:hover {
+    box-shadow:
+      0 0 0 1px rgb(45 212 191 / 0.35),
+      0 14px 32px -8px rgb(45 212 191 / 0.45);
+  }
+
+  /* A key action that isn't the Primary CTA: accent, but flat. */
+  .cta-action {
+    @apply inline-block rounded-md bg-accent px-5 py-2.5 text-center font-medium text-surface transition-opacity hover:opacity-90 disabled:opacity-60;
+  }
+
+  /* Every other link: neutral ink, underlined on hover. */
+  .link-quiet {
+    @apply text-ink underline decoration-line underline-offset-4 transition-colors hover:decoration-ink;
+  }
+}

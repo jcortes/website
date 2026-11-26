@@ -1,6 +1,7 @@
 ---
-// Runs synchronously in <head> so the remembered theme is applied before the
-// first paint (no flash). Dark is the default; only "light" is opt-in.
+// Runs synchronously in <head> so the remembered theme (and paused motion,
+// see MotionToggle) is applied before the first paint (no flash). Dark is
+// the default; only "light" is opt-in.
 ---
 
 <script is:inline>
@@ -8,6 +9,9 @@
     let theme = "dark";
     try {
       if (localStorage.getItem("theme") === "light") theme = "light";
+      if (localStorage.getItem("motion") === "off") {
+        document.documentElement.dataset.motion = "off";
+      }
     } catch {
       // Storage unavailable (privacy mode): keep the default.
     }

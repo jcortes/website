@@ -113,7 +113,7 @@ const repoLabel = new URL(REPO).pathname.slice(1);
 <BaseLayout locale={locale} title={c.title} description={c.lead}>
   <article class="mx-auto flex max-w-5xl flex-col gap-16 px-6 py-16 sm:py-24">
     <header class="flex max-w-3xl flex-col gap-5">
-      <p class="font-mono text-sm tracking-widest text-accent uppercase">
+      <p class="font-mono text-sm tracking-widest text-ink-muted uppercase">
         {c.kicker}
       </p>
       <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">
@@ -124,7 +124,7 @@ const repoLabel = new URL(REPO).pathname.slice(1);
         <a
           href={REPO}
           rel="noopener"
-          class="inline-block rounded-md border border-accent px-4 py-2.5 font-medium text-accent transition-colors hover:bg-accent hover:text-surface"
+          class="inline-block rounded-md border border-line px-4 py-2.5 font-medium text-ink transition-colors hover:border-ink-muted"
         >
           {c.repo}: <span class="font-mono">{repoLabel}</span> ↗
         </a>
@@ -142,7 +142,7 @@ const repoLabel = new URL(REPO).pathname.slice(1);
         <p class="max-w-3xl text-lg text-pretty text-ink-muted">
           {section.intro}
         </p>
-        <ul class="flex max-w-3xl list-disc flex-col gap-3 pl-5 marker:text-accent">
+        <ul class="flex max-w-3xl list-disc flex-col gap-3 pl-5 marker:text-ink-muted">
           {section.items.map((item) => (
             <li class="text-pretty">{item}</li>
           ))}
