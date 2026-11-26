@@ -19,9 +19,13 @@ const locales = [
     skillAreas: [
       "Desarrollo",
       "Nube y DevOps",
+      "IA aplicada",
       "Bases de datos",
       "Herramientas",
     ],
+    portfolio: "Portafolio reciente",
+    portfolioProject: "Gateway de infraestructura para agentes de IA",
+    viewCode: "Ver código",
     education: "Formación",
     courses: "Cursos y certificaciones",
     languages: "Idiomas",
@@ -42,7 +46,16 @@ const locales = [
     clients: "Clients",
     tech: "Technologies",
     skills: "Skills",
-    skillAreas: ["Development", "Cloud & DevOps", "Databases", "Tools"],
+    skillAreas: [
+      "Development",
+      "Cloud & DevOps",
+      "Applied AI",
+      "Databases",
+      "Tools",
+    ],
+    portfolio: "Recent portfolio",
+    portfolioProject: "Infrastructure gateway for AI agents",
+    viewCode: "View code",
     education: "Education",
     courses: "Courses and certifications",
     languages: "Languages",
@@ -102,6 +115,27 @@ for (const l of locales) {
       }
     });
 
+    test("lists the recent portfolio with technologies and public code links", async ({
+      page,
+    }) => {
+      await page.goto(l.path);
+      const projects = section(page, l.portfolio).getByRole("article");
+      await expect(projects).toHaveCount(5);
+      await expect(projects.first().getByRole("heading")).toHaveText(
+        l.portfolioProject,
+      );
+      for (const project of await projects.all()) {
+        await expect(project.getByRole("paragraph")).not.toBeEmpty();
+        await expect(
+          project.getByRole("list", { name: l.tech }).getByRole("listitem"),
+        ).not.toHaveCount(0);
+      }
+      // Only public repositories are linked.
+      await expect(
+        section(page, l.portfolio).getByRole("link", { name: l.viewCode }),
+      ).toHaveCount(3);
+    });
+
     test("shows skills by area, education, courses, languages and GitHub", async ({
       page,
     }) => {
@@ -151,6 +185,8 @@ for (const l of locales) {
         l.independent,
         "Turing",
         "Universidad Manuela Beltrán",
+        // Headings are letter-spaced in the PDF, so check a project instead.
+        l.portfolioProject,
         l.references,
       ]) {
         // Case-insensitive: the PDF sets section headings in capitals.

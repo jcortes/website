@@ -341,6 +341,22 @@ export default config({
             validation: { length: { min: 1 } },
           },
         ),
+        portfolio: fields.array(
+          fields.object({
+            title: localized("Title"),
+            description: localized("Description", { multiline: true }),
+            tech: stringList("Technologies"),
+            repository: fields.url({
+              label: "Repository",
+              description: "Public repositories only; leave empty if private.",
+            }),
+          }),
+          {
+            label: "Recent portfolio",
+            description: "Newest first.",
+            itemLabel: esLabelOf("title"),
+          },
+        ),
         skills: fields.array(
           fields.object({
             area: localized("Area"),

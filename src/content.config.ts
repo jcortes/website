@@ -140,6 +140,15 @@ const experience = z
     message: "An experience entry cannot end before it starts",
   });
 
+// A recent portfolio project, shown on the About page and in the CV. Private
+// repositories have no link.
+const portfolioProject = z.strictObject({
+  title: localized,
+  description: localized,
+  tech: nonEmptyList(z.string().trim().min(1)),
+  repository: z.url().optional(),
+});
+
 // Singleton: exactly one file (see src/content/profile.ts). It feeds both the
 // About page and the CV PDF.
 const profile = defineCollection({
@@ -151,6 +160,8 @@ const profile = defineCollection({
     positioning: localized,
     summary: nonEmptyList(localized),
     experience: nonEmptyList(experience),
+    // Newest first; the section is hidden while the list is empty.
+    portfolio: z.array(portfolioProject).default([]),
     skills: nonEmptyList(
       z.strictObject({
         area: localized,

@@ -148,6 +148,36 @@ export function renderCvPdf(
     }
   });
 
+  if (profile.portfolio.length > 0) {
+    heading(t("about.portfolio"));
+    profile.portfolio.forEach((project, i) => {
+      if (i > 0) doc.moveDown(0.6);
+      keep(50);
+      doc
+        .font("Helvetica-Bold")
+        .fontSize(10)
+        .fillColor(INK)
+        .text(project.title[locale]);
+      if (project.repository) {
+        doc
+          .font("Helvetica")
+          .fontSize(8.5)
+          .fillColor(ACCENT)
+          .text(project.repository.replace(/^https?:\/\//, ""), {
+            link: project.repository,
+          });
+      }
+      doc.moveDown(0.2);
+      body(project.description[locale]);
+      doc.moveDown(0.2);
+      doc
+        .font("Helvetica")
+        .fontSize(8.5)
+        .fillColor(MUTED)
+        .text(`${t("about.tech")}: ${project.tech.join(", ")}`);
+    });
+  }
+
   heading(t("about.skills"));
   for (const { area, items } of profile.skills) {
     doc

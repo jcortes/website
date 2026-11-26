@@ -48,12 +48,18 @@ experience:
           I design and build CI/CD pipelines with GitHub Actions, infrastructure as code on AWS, and custom backends
           and APIs for clients and companies.
       - es: >-
+          Construyo agentes de IA y servidores MCP con barreras de seguridad: políticas como código, aprobación
+          humana, permisos mínimos y registros de auditoría.
+        en: >-
+          I build AI agents and MCP servers with guardrails: policy as code, human approval, least-privilege
+          credentials and audit logs.
+      - es: >-
           Construí este sitio como pieza de portafolio: sitio estático con Astro, pruebas de extremo a extremo y
           entrega continua con GitHub Actions.
         en: >-
           I built this website as a portfolio piece: a static Astro site with end-to-end tests and continuous
           delivery through GitHub Actions.
-    tech: [GitHub Actions, AWS, Terraform, OpenTofu, Node.js, TypeScript, Astro]
+    tech: [GitHub Actions, AWS, Terraform, OpenTofu, Node.js, TypeScript, MCP, Kubernetes, Astro]
 
   - role:
       es: Desarrollador Node.js
@@ -347,6 +353,94 @@ experience:
           part of the One Laptop per Child project.
     tech: [GNU/Linux]
 
+# Recent portfolio projects, newest first. Only public repositories get a link.
+# Unlike experience clients, these businesses are named with the owner's consent.
+portfolio:
+  - title:
+      es: Gateway de infraestructura para agentes de IA
+      en: Infrastructure gateway for AI agents
+    description:
+      es: >-
+        Servidor MCP que permite a agentes de IA como Claude planear cambios de infraestructura en AWS y Kubernetes
+        sin poder aplicarlos por su cuenta: cada cambio pasa por políticas como código (OPA/Conftest), la aprobación
+        de una persona y un registro de auditoría de solo escritura. Aplica exactamente el plan revisado, verificado
+        con su hash, y detecta cambios hechos a mano (drift). Desarrollado con TDD, incluida una suite de integración
+        con OpenTofu, LocalStack y kind.
+      en: >-
+        An MCP server that lets AI agents like Claude plan infrastructure changes on AWS and Kubernetes without being
+        able to apply them on their own: every change goes through policy as code (OPA/Conftest), a human approval and
+        an append-only audit log. It applies exactly the reviewed plan, checked by its hash, and detects changes made
+        by hand (drift). Built test-first, including an integration suite against OpenTofu, LocalStack and kind.
+    tech: [TypeScript, Node.js, MCP, OpenTofu, OPA, Conftest, Kubernetes, LocalStack]
+    repository: https://github.com/jcortes/infra-agent-gateway
+
+  - title:
+      es: "Estudio Bolsillo: tienda en línea de dropshipping orgánico"
+      en: "Estudio Bolsillo: organic dropshipping online store"
+    description:
+      es: >-
+        Sitio estático para una tienda en Colombia de accesorios para creadores de contenido, con una página por
+        producto y tráfico desde videos cortos. El build valida cada producto (precio, margen mínimo, garantía y
+        ciudades de entrega) y falla si alguno incumple las reglas. Los pedidos contraentrega se validan en el
+        navegador y otra vez en un Google Apps Script con el mismo núcleo, se guardan en Google Sheets y se avisan por
+        Telegram. Se despliega en Cloudflare Pages.
+      en: >-
+        A static site for a Colombian store selling accessories for content creators, with one page per product and
+        traffic from short videos. The build validates every product (price, minimum margin, warranty and delivery
+        cities) and fails if any breaks the rules. Cash-on-delivery orders are validated in the browser and again in
+        a Google Apps Script with the same core, stored in Google Sheets and announced on Telegram. Deployed to
+        Cloudflare Pages.
+    tech: [Astro, TypeScript, Vitest, Google Apps Script, Google Sheets, Telegram, Cloudflare Pages]
+
+  - title:
+      es: Agente de IA que clasifica formularios de contacto en HubSpot
+      en: AI agent that triages contact forms into HubSpot
+    description:
+      es: >-
+        Agente en TypeScript, con un ciclo de herramientas propio y sin framework, que clasifica cada mensaje de un
+        formulario de contacto como prospecto, soporte o spam. Crea o actualiza el contacto en HubSpot con notas y
+        tareas de seguimiento, y redacta una respuesta que una persona aprueba en la terminal: el agente nunca envía
+        nada. Las reglas viven en el código y no solo en el prompt, y los mensajes se tratan como datos no confiables
+        para resistir la inyección de prompts.
+      en: >-
+        A TypeScript agent with its own tool loop and no framework that triages each contact-form message as a lead,
+        a support request or spam. It creates or updates the contact in HubSpot with notes and follow-up tasks, and
+        drafts a reply that a person approves in the terminal: the agent never sends anything. The rules live in code,
+        not only in the prompt, and messages are treated as untrusted data to resist prompt injection.
+    tech: [TypeScript, Node.js, Claude, OpenRouter, HubSpot API]
+    repository: https://github.com/jcortes/hubspot-contact-agent-demo
+
+  - title:
+      es: Servidor MCP remoto para HubSpot
+      en: Remote MCP server for HubSpot
+    description:
+      es: >-
+        Servidor MCP remoto en Next.js, desplegado en Vercel, que permite a Claude buscar contactos y negocios en
+        HubSpot, añadir notas y crear tareas de seguimiento. Usa Streamable HTTP y autenticación con token, no tiene
+        herramientas que borren o editen registros y trabaja con credenciales de permisos mínimos. Probado con el
+        cliente MCP oficial y la API de HubSpot simulada.
+      en: >-
+        A remote MCP server built with Next.js and deployed to Vercel that lets Claude search HubSpot contacts and
+        deals, add notes and create follow-up tasks. It speaks Streamable HTTP with token authentication, has no tool
+        that deletes or edits records and runs on least-privilege credentials. Tested with the official MCP client
+        against a simulated HubSpot API.
+    tech: [TypeScript, Next.js, MCP, Vercel, HubSpot API]
+    repository: https://github.com/jcortes/hubspot-mcp-demo
+
+  - title:
+      es: "Vela Publicidad: sitio web para un negocio de publicidad"
+      en: "Vela Publicidad: website for an advertising business"
+    description:
+      es: >-
+        Sitio estático para un negocio de publicidad en Ibagué, Colombia: presenta sus líneas de producto (papelería
+        comercial, sellos, avisos, pendones y asesoría) y lleva cada solicitud de cotización a WhatsApp con un mensaje
+        listo según el servicio. Incluye el logo en SVG y se despliega en Cloudflare.
+      en: >-
+        A static site for an advertising business in Ibagué, Colombia: it presents its product lines (business
+        stationery, stamps, signs, banners and advertising advice) and sends every quote request to WhatsApp with a
+        message ready for that service. Includes the logo in SVG and is deployed to Cloudflare.
+    tech: [Astro, Tailwind CSS, Cloudflare]
+
 skills:
   - area:
       es: Desarrollo
@@ -368,6 +462,8 @@ skills:
         Mongoose,
         Mocha,
         Chai,
+        Astro,
+        Next.js,
       ]
   - area:
       es: Nube y DevOps
@@ -383,8 +479,16 @@ skills:
         GitHub Actions,
         Terraform,
         OpenTofu,
+        Kubernetes,
+        OPA,
+        Cloudflare,
+        Vercel,
         CI/CD,
       ]
+  - area:
+      es: IA aplicada
+      en: Applied AI
+    items: [MCP, Claude, OpenRouter, Claude Code]
   - area:
       es: Bases de datos
       en: Databases
