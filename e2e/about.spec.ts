@@ -98,8 +98,7 @@ for (const l of locales) {
       const previous = roles.nth(1);
       await expect(previous).toContainText("Turing");
       await expect(previous).toContainText(l.previousPeriod);
-      // Clients appear only as anonymized descriptors (names are covered by
-      // the privacy guard's denylist).
+      // Clients are listed, by name or by industry and region.
       await expect(
         previous.getByRole("list", { name: l.clients }).getByRole("listitem"),
       ).not.toHaveCount(0);

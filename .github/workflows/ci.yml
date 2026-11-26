@@ -55,9 +55,9 @@ jobs:
       - name: E2E (against the production build, incl. privacy guard)
         run: pnpm test:e2e
         env:
-          # Client names the built site must never contain. A repository
-          # secret, so the names stay out of this public repo; the guard fails
-          # in CI when it's missing.
+          # Optional client names the built site must never contain. A
+          # repository secret, so the names stay out of this public repo. Empty
+          # for now (business names are allowed), which skips that check.
           PRIVACY_DENYLIST: ${{ secrets.PRIVACY_DENYLIST }}
 
       - name: Upload Playwright report

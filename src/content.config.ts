@@ -130,8 +130,7 @@ const experience = z
     start: yearMonth,
     // Omitted while the role is current.
     end: yearMonth.optional(),
-    // Who the work was for, only as anonymized descriptors (industry and
-    // region), never by name.
+    // Who the work was for: a name, or a descriptor (industry and region).
     clients: z.array(localized).optional(),
     achievements: nonEmptyList(localized),
     tech: z.array(z.string().trim().min(1)),

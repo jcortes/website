@@ -122,14 +122,12 @@ test.describe("privacy guard: client names", () => {
 
   test("no built file contains a client name from the denylist", async () => {
     const names = parseDenylist(process.env.PRIVACY_DENYLIST ?? "");
-    if (names.length === 0) {
-      // CI must always check; locally the secret is usually absent.
-      expect(
-        process.env.CI,
-        "PRIVACY_DENYLIST is empty: set the GitHub Actions secret",
-      ).toBeFalsy();
-      test.skip(true, "PRIVACY_DENYLIST not set (see README → Privacy)");
-    }
+    // Business names are allowed for now, so the list is empty and the check
+    // is skipped, in CI too. Filling the secret turns it back on.
+    test.skip(
+      names.length === 0,
+      "PRIVACY_DENYLIST is empty (see README → Privacy)",
+    );
 
     const files = await builtFiles(TEXT_EXTENSIONS);
     expect(files.length, "no build output found").toBeGreaterThan(0);

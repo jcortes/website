@@ -327,8 +327,7 @@ export default config({
             }),
             clients: fields.array(localized("Client descriptor"), {
               label: "Clients",
-              description:
-                "Anonymized descriptors only (industry and region), never names.",
+              description: "A name, or a descriptor (industry and region).",
               itemLabel: esLabel,
             }),
             achievements: localizedList("Achievements", { multiline: true }),

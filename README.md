@@ -41,8 +41,8 @@ languages (`{ es: …, en: … }`). The file name is the slug.
   experience, skills, education, courses, languages). It feeds the
   About page (`/sobre-mi/`, `/en/about/`) and the CV PDF generated from it at
   build time (`jorge-cortes-cv.pdf` next to each About page), so the two
-  never diverge. Clients appear only as anonymized descriptors; the profile
-  has no phone numbers and no references. See
+  never diverge. Clients and businesses may be named (or described by
+  industry and region); the profile has no phone numbers and no references. See
   [ADR 0001](docs/adr/0001-cv-pdf-generated-with-pdfkit.md).
 - `src/content/settings/site.yaml`: the Site settings singleton: the Cal.com
   booking URL behind every "Book a call" button, the social links (GitHub,
@@ -155,8 +155,8 @@ are reported. Locally it needs Chrome; to use Playwright's Chromium:
 `CHROME_PATH=$(node -e "console.log(require('@playwright/test').chromium.executablePath())") pnpm lighthouse`.
 
 It includes a **privacy guard** that scans the build, including the text of
-the CV PDFs, and fails if it finds a phone number or a client name from the
-denylist (see [Privacy](#privacy)).
+the CV PDFs, and fails if it finds a phone number or, when the optional
+denylist is set, a client name from it (see [Privacy](#privacy)).
 
 ## Build
 
@@ -268,9 +268,11 @@ copy). To switch variants, change that import and replace `public/favicon.svg`.
 This repository is public. The original CV (`cv.pdf`) is git-ignored and must
 never be committed, and no page may expose phone numbers.
 
-Client names are kept out of the repository too, including from the guard
-that checks for them: the denylist is the `PRIVACY_DENYLIST` repository
-secret (names separated by commas or newlines), set by the setup wizard. CI
-fails when it's missing, which includes pull requests from forks (GitHub
-doesn't pass them secrets). Locally, `pnpm test:e2e` reads it from `.env` and
-skips that check when it's absent.
+Client and business names are allowed for now: the portfolio names the
+businesses it was built for, and experience entries may name clients. The
+name check is still there for when a name must stay private: the denylist is
+the `PRIVACY_DENYLIST` repository secret (names separated by commas or
+newlines). It is empty today, so the check is skipped, in CI and locally. To
+turn it back on, set the secret (`gh secret set PRIVACY_DENYLIST`) and the
+same line in `.env`. See
+[ADR 0005](docs/adr/0005-business-names-allowed-denylist-optional.md).

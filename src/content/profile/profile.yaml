@@ -1,6 +1,6 @@
 # Profile/CV singleton: feeds the About page and the generated CV PDF.
-# Public repository: no phone numbers, no references, no client names. Clients
-# are described only by industry and region.
+# Public repository: no phone numbers and no references. Clients and businesses
+# may be named, or described by industry and region.
 name: Jorge Cortes
 headline:
   es: Ingeniero de Software y DevOps
@@ -184,8 +184,7 @@ experience:
   - role:
       es: Desarrollador Front-End
       en: Front-End Developer
-    # The employer was also the client and is on the privacy denylist, so it
-    # is described anonymously, like any other client.
+    # The employer was also the client; it is described by industry and region.
     location:
       es: Estados Unidos · Remoto
       en: United States · Remote
@@ -354,7 +353,6 @@ experience:
     tech: [GNU/Linux]
 
 # Recent portfolio projects, newest first. Only public repositories get a link.
-# Unlike experience clients, these businesses are named with the owner's consent.
 portfolio:
   - title:
       es: Gateway de infraestructura para agentes de IA

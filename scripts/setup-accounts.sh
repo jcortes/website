@@ -442,17 +442,6 @@ note "CI's smoke test then checks the login at $SITE_ORIGIN/keystatic."
 warn "Saves commit straight to main: don't protect main with required pull requests."
 pause
 
-stage "Privacy guard: client-name denylist"
-say "The E2E privacy guard fails the build if any of these names appears on the"
-say "site. The repository is public, so the list lives only in a GitHub secret"
-say "(repository-level, so pull-request CI can read it) and in your local .env."
-step "Type the names of clients you must never mention, separated by commas."
-note "Include product names and alternate spellings. Input is hidden."
-require PRIVACY_DENYLIST "Client names (comma-separated):" secret
-write_env PRIVACY_DENYLIST "$PRIVACY_DENYLIST"
-set_secret PRIVACY_DENYLIST "$PRIVACY_DENYLIST"
-pause
-
 finish
 }
 
