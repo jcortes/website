@@ -158,13 +158,14 @@ export function renderCvPdf(
         .fontSize(10)
         .fillColor(INK)
         .text(project.title[locale]);
-      if (project.repository) {
+      for (const url of [project.website, project.repository]) {
+        if (!url) continue;
         doc
           .font("Helvetica")
           .fontSize(8.5)
           .fillColor(ACCENT)
-          .text(project.repository.replace(/^https?:\/\//, ""), {
-            link: project.repository,
+          .text(url.replace(/^https?:\/\//, "").replace(/\/$/, ""), {
+            link: url,
           });
       }
       doc.moveDown(0.2);

@@ -26,6 +26,7 @@ const locales = [
     portfolio: "Portafolio reciente",
     portfolioProject: "Gateway de infraestructura para agentes de IA",
     viewCode: "Ver código",
+    viewSite: "Ver sitio",
     education: "Formación",
     courses: "Cursos y certificaciones",
     languages: "Idiomas",
@@ -56,6 +57,7 @@ const locales = [
     portfolio: "Recent portfolio",
     portfolioProject: "Infrastructure gateway for AI agents",
     viewCode: "View code",
+    viewSite: "View site",
     education: "Education",
     courses: "Courses and certifications",
     languages: "Languages",
@@ -128,11 +130,23 @@ for (const l of locales) {
         await expect(
           project.getByRole("list", { name: l.tech }).getByRole("listitem"),
         ).not.toHaveCount(0);
+        // Every project links to its code or, if private, to where it runs.
+        await expect(
+          project.getByRole("link", {
+            name: new RegExp(`${l.viewCode}|${l.viewSite}`),
+          }),
+        ).not.toHaveCount(0);
       }
-      // Only public repositories are linked.
+      const portfolio = section(page, l.portfolio);
       await expect(
-        section(page, l.portfolio).getByRole("link", { name: l.viewCode }),
+        portfolio.getByRole("link", { name: l.viewCode }),
       ).toHaveCount(3);
+      await expect(
+        portfolio.getByRole("link", { name: l.viewSite }),
+      ).toHaveCount(2);
+      await expect(
+        portfolio.getByRole("link", { name: l.viewSite }).first(),
+      ).toHaveAttribute("href", "https://estudiobolsillo.com/");
     });
 
     test("shows skills by area, education, courses, languages and GitHub", async ({
@@ -186,6 +200,7 @@ for (const l of locales) {
         "Universidad Manuela Beltrán",
         // Headings are letter-spaced in the PDF, so check a project instead.
         l.portfolioProject,
+        "vela-publicidad.pages.dev",
         l.references,
       ]) {
         // Case-insensitive: the PDF sets section headings in capitals.

@@ -139,14 +139,21 @@ const experience = z
     message: "An experience entry cannot end before it starts",
   });
 
-// A recent portfolio project, shown on the About page and in the CV. Private
-// repositories have no link.
-const portfolioProject = z.strictObject({
-  title: localized,
-  description: localized,
-  tech: nonEmptyList(z.string().trim().min(1)),
-  repository: z.url().optional(),
-});
+// A recent portfolio project, shown on the About page and in the CV. Every
+// project links somewhere: its public repository, or, when the repository is
+// private, the website where the project runs.
+const portfolioProject = z
+  .strictObject({
+    title: localized,
+    description: localized,
+    tech: nonEmptyList(z.string().trim().min(1)),
+    repository: z.url().optional(),
+    website: z.url().optional(),
+  })
+  .refine((p) => p.repository || p.website, {
+    message:
+      "A portfolio project needs a public repository or, if the repository is private, the website where it runs",
+  });
 
 // Singleton: exactly one file (see src/content/profile.ts). It feeds both the
 // About page and the CV PDF.

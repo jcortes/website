@@ -352,7 +352,8 @@ experience:
           part of the One Laptop per Child project.
     tech: [GNU/Linux]
 
-# Recent portfolio projects, newest first. Only public repositories get a link.
+# Recent portfolio projects, newest first. Each one links to its public
+# repository or, when the repository is private, to the website where it runs.
 portfolio:
   - title:
       es: Gateway de infraestructura para agentes de IA
@@ -389,6 +390,7 @@ portfolio:
         a Google Apps Script with the same core, stored in Google Sheets and announced on Telegram. Deployed to
         Cloudflare Pages.
     tech: [Astro, TypeScript, Vitest, Google Apps Script, Google Sheets, Telegram, Cloudflare Pages]
+    website: https://estudiobolsillo.com/
 
   - title:
       es: Agente de IA que clasifica formularios de contacto en HubSpot
@@ -438,6 +440,7 @@ portfolio:
         stationery, stamps, signs, banners and advertising advice) and sends every quote request to WhatsApp with a
         message ready for that service. Includes the logo in SVG and is deployed to Cloudflare.
     tech: [Astro, Tailwind CSS, Cloudflare]
+    website: https://vela-publicidad.pages.dev/
 
 skills:
   - area:

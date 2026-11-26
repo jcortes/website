@@ -349,6 +349,11 @@ export default config({
               label: "Repository",
               description: "Public repositories only; leave empty if private.",
             }),
+            website: fields.url({
+              label: "Website",
+              description:
+                "Where the project runs. Required when the repository is private (the build rejects a project with neither).",
+            }),
           }),
           {
             label: "Recent portfolio",
