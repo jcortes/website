@@ -528,6 +528,9 @@ education:
       en: ITIL, XML, web services, J2ME, J2EE, SQL Server Integration Services, BPM and project evaluation.
 
 courses:
+  - name: AI Coding Crash Course
+    provider: AI Hero · Matt Pocock
+    certificate: https://res.cloudinary.com/total-typescript/image/upload/certificate/03c2dbba-4a97-4c38-b5fe-128812eb8f9a/ai-coding-crash-course.png
   - name: Oracle Service Oriented Architecture Infrastructure Implementation Certified Expert
     provider: Oracle
     certification: true
@@ -557,5 +560,6 @@ languages:
       es: Inglés
       en: English
     level:
-      es: Intermedio
-      en: Intermediate
+      es: C1 Avanzado, EF SET
+      en: C1 Advanced, EF SET
+    certificate: https://cert.efset.org/en/8bvA44

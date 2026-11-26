@@ -31,6 +31,9 @@ const locales = [
     courses: "Cursos y certificaciones",
     languages: "Idiomas",
     spanish: /Español/,
+    english: "C1 Avanzado, EF SET",
+    certificate: "Ver certificado",
+    recentProjects: "Proyectos recientes",
     download: "Descargar CV (PDF)",
     references: "Referencias disponibles a solicitud",
   },
@@ -62,6 +65,9 @@ const locales = [
     courses: "Courses and certifications",
     languages: "Languages",
     spanish: /Spanish/,
+    english: "C1 Advanced, EF SET",
+    certificate: "View certificate",
+    recentProjects: "Recent projects",
     download: "Download CV (PDF)",
     references: "References available upon request",
   },
@@ -170,7 +176,19 @@ for (const l of locales) {
       await expect(
         section(page, l.courses).getByRole("listitem"),
       ).not.toHaveCount(0);
+      await expect(
+        section(page, l.courses).getByRole("link", {
+          name: l.certificate,
+        }),
+      ).toHaveAttribute(
+        "href",
+        "https://res.cloudinary.com/total-typescript/image/upload/certificate/03c2dbba-4a97-4c38-b5fe-128812eb8f9a/ai-coding-crash-course.png",
+      );
       await expect(section(page, l.languages)).toContainText(l.spanish);
+      await expect(section(page, l.languages)).toContainText(l.english);
+      await expect(
+        section(page, l.languages).getByRole("link", { name: l.certificate }),
+      ).toHaveAttribute("href", "https://cert.efset.org/en/8bvA44");
 
       await expect(
         page.getByRole("main").getByRole("link", { name: /GitHub/ }),
@@ -198,15 +216,30 @@ for (const l of locales) {
         l.independent,
         "Turing",
         "Universidad Manuela Beltrán",
-        // Headings are letter-spaced in the PDF, so check a project instead.
+        // Projects are mentioned inside the experience, not in a section.
+        l.recentProjects,
         l.portfolioProject,
         "vela-publicidad.pages.dev",
+        l.english,
+        "cert.efset.org/en/8bvA44",
+        "AI Coding Crash Course",
+        `AI Coding Crash Course · AI Hero · Matt Pocock · ${l.certificate}`,
         l.references,
       ]) {
         // Case-insensitive: the PDF sets section headings in capitals.
         expect(text.toLowerCase()).toContain(expected.toLowerCase());
       }
       expect(text).toMatch(l.years);
+      // The mention follows the Turing job, and no project description is
+      // repeated in the PDF.
+      const lower = text.toLowerCase();
+      expect(lower.indexOf(l.recentProjects.toLowerCase())).toBeGreaterThan(
+        lower.indexOf("turing"),
+      );
+      expect(lower.indexOf(l.recentProjects.toLowerCase())).toBeLessThan(
+        lower.indexOf("white prompt"),
+      );
+      expect(text).not.toContain("OPA/Conftest");
     });
   });
 }
