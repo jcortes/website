@@ -10,11 +10,11 @@ location:
   en: Bogotá, Colombia · Working remotely
 positioning:
   es: >-
-    Ingeniero de sistemas con 15+ años de experiencia en desarrollo backend, nube (AWS) y CI/CD. Ayudo a empresas a
-    automatizar sus entregas, llevar su infraestructura a código y construir backends y APIs confiables.
+    Ingeniero de sistemas con 15+ años de experiencia en desarrollo backend, nube (AWS) y CI/CD. Me especializo en
+    automatizar entregas, llevar la infraestructura a código y construir backends y APIs confiables.
   en: >-
-    Systems engineer with 15+ years of experience in backend development, cloud (AWS) and CI/CD. I help companies
-    automate their delivery, move their infrastructure to code and build reliable backends and APIs.
+    Systems engineer with 15+ years of experience in backend development, cloud (AWS) and CI/CD. I specialize in
+    automating delivery, moving infrastructure to code and building reliable backends and APIs.
 summary:
   - es: >-
       A lo largo de mi carrera he trabajado con clientes internacionales y he contribuido a productos de los que
@@ -42,11 +42,11 @@ experience:
     start: 2026-05
     achievements:
       - es: >-
-          Diseño e implemento pipelines de CI/CD con GitHub Actions, infraestructura como código en AWS y backends y
-          APIs a medida para clientes y empresas.
+          Desarrollo proyectos propios en los que diseño e implemento pipelines de CI/CD con GitHub Actions,
+          infraestructura como código en AWS y backends y APIs.
         en: >-
-          I design and build CI/CD pipelines with GitHub Actions, infrastructure as code on AWS, and custom backends
-          and APIs for clients and companies.
+          I work on my own projects, designing and building CI/CD pipelines with GitHub Actions, infrastructure as code
+          on AWS, and backends and APIs.
       - es: >-
           Construyo agentes de IA y servidores MCP con barreras de seguridad: políticas como código, aprobación
           humana, permisos mínimos y registros de auditoría.
